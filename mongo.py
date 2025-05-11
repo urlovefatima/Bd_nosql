@@ -1,4 +1,3 @@
-# events/mongo.py
 from pymongo import MongoClient
 import os
 from dotenv import load_dotenv
@@ -15,3 +14,5 @@ try:
 except Exception as e:
     print(f"Erreur de connexion MongoDB: {e}")
     db = None
+
+print(f"MONGO_DB_NAME: {MONGO_DB_NAME}")

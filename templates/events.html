@@ -9,8 +9,8 @@
     <ul>
         {% for event in events %}
             <li>{{ event.titre }} - {{ event.date_heure }}</li>
-        {% empty %}
-            <li>Aucun événement trouvé.</li>
+        {% comment %} {% empty %}
+            <li>Aucun événement trouvé.</li> {% endcomment %}
         {% endfor %}
     </ul>
 </body>
