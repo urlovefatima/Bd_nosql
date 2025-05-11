@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-from mongoengine import connect
+from pymongo import MongoClient
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -119,18 +119,23 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / "static"]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# load_dotenv()  # charge les variables d'environnement depuis .env
+load_dotenv()
 
-# MONGO_DB_NAME = os.getenv("MONGO_DB_NAME")
-# MONGO_DB_URI = os.getenv("MONGO_DB_URI")
+MONGO_URI = os.getenv('MONGO_URI')
+MONGO_DB_NAME = os.getenv('MONGO_DB_NAME')
 
-# connect(
-#     db=MONGO_DB_NAME,
-#     host=MONGO_DB_URI
-# )
+try:
+    mongo_client = MongoClient(MONGO_URI)
+    db = mongo_client[MONGO_DB_NAME]
+    print("Connexion à MongoDB établie avec succès")
+except Exception as e:
+    print(f"Erreur de connexion MongoDB: {e}")
+    db = None
