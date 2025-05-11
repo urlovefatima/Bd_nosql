@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'app',
 ]
 
 MIDDLEWARE = [
@@ -57,7 +58,7 @@ ROOT_URLCONF = 'events.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -77,10 +78,13 @@ WSGI_APPLICATION = 'events.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.dummy' 
+    # }
 }
 
 
@@ -127,15 +131,15 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-load_dotenv()
+# load_dotenv()
 
-MONGO_URI = os.getenv('MONGO_URI')
-MONGO_DB_NAME = os.getenv('MONGO_DB_NAME')
+# MONGO_URI = os.getenv('MONGO_URI')
+# MONGO_DB_NAME = os.getenv('MONGO_DB_NAME')
 
-try:
-    mongo_client = MongoClient(MONGO_URI)
-    db = mongo_client[MONGO_DB_NAME]
-    print("Connexion à MongoDB établie avec succès")
-except Exception as e:
-    print(f"Erreur de connexion MongoDB: {e}")
-    db = None
+# try:
+#     mongo_client = MongoClient(MONGO_URI)
+#     db = mongo_client[MONGO_DB_NAME]
+#     print("Connexion à MongoDB établie avec succès")
+# except Exception as e:
+#     print(f"Erreur de connexion MongoDB: {e}")
+#     db = None

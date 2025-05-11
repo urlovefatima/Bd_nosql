@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des événements</title>
+</head>
+<body>
+    <h1>Liste des événements</h1>
+    <ul>
+        {% for event in events %}
+            <li>{{ event.titre }} - {{ event.date_heure }}</li>
+        {% empty %}
+            <li>Aucun événement trouvé.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
