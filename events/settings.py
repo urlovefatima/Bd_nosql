@@ -12,8 +12,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
-from dotenv import load_dotenv
-from pymongo import MongoClient
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -82,9 +80,6 @@ DATABASES = {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': BASE_DIR / 'db.sqlite3',
     # }
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.dummy' 
-    # }
 }
 
 
@@ -131,15 +126,6 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# load_dotenv()
 
-# MONGO_URI = os.getenv('MONGO_URI')
-# MONGO_DB_NAME = os.getenv('MONGO_DB_NAME')
-
-# try:
-#     mongo_client = MongoClient(MONGO_URI)
-#     db = mongo_client[MONGO_DB_NAME]
-#     print("Connexion à MongoDB établie avec succès")
-# except Exception as e:
-#     print(f"Erreur de connexion MongoDB: {e}")
-#     db = None
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')  # Ou 'static/uploads/' si tu insistes
