@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des événements</title>
+</head>
+<body>
+    <h2>Créer une événement</h2>
+
+        <form method="post">
+            {% csrf_token %}
+            <input name="titre" value="{{ titre }}">
+            <input name="categorie" value="{{ categorie }}">
+            <input name="localisation" value="{{ localisation }}">
+            <input name="date_heure" value="{{ date_heure }}">
+            <input name="capacite" value="{{ capacite }}">
+            <input name="description" value="{{ description }}">
+            <input type="file" name="image" required><br><br>
+            <button type="submit">Créer l'événement</button>
+        </form>
+
+
+</body>
+</html>

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
+<head>
+    <meta charset="UTF-8">
     <title>Liste des événements</title>
-  </head>
-  <body>
-    <h1>Liste des événements</h1>
-<<<<<<< HEAD
+</head>
+<body>
+    <h2>Liste des événements</h2>
+
     {% for event in events %}
         <img src="{% static 'img/events.jpg' %}">
         <h2>{{ event.titre }}</h2>
@@ -17,19 +17,19 @@
             <li>{{ event.date_heure }}</li>
             <li>{{ event.capacite }}</li>
             <li>{{ event.description }}</li>
+            <li>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="event_id" value="{{ event.id }}">
+                    <button type="submit" onclick="return confirm('Supprimer cet événement ?')">Supprimer</button>
+                </form>
+            </li>
         </ul>
+        
+    </div>
     {% endfor %}
+
 </body>
-=======
-    <ul>
-      {% for event in events %}
-      <li>{{ event.titre }} - {{ event.date_heure }}</li>
-      {% comment %} {% empty %}
-      <li>Aucun événement trouvé.</li>
-      {% endcomment %} {% endfor %}
-    </ul>
-  </body>
->>>>>>> 8a8a7e7cb8c338d3e55400d5d029ce7c08a02694
 </html>
 
 {% comment %} {% empty %}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des categories</title>
+</head>
+<body>
+    <h1>Liste des catégories</h1>
+    {% for c in categories %}
+        <h2>{{ c }}</h2>
+        {% for event in events %}
+            
+            {% if event.categorie == c %}
+                <img src="{% static 'img/events.jpg' %}">
+                <h2>{{ event.titre }}</h2>
+                <ul>
+                    <li>{{ event.categorie }}</li>
+                    <li>{{ event.localisation }}</li>
+                    <li>{{ event.date_heure }}</li>
+                    <li>{{ event.capacite }}</li>
+                    <li>{{ event.description }}</li>
+                </ul>
+                
+            {% endif %}
+                
+        {% endfor %}
+    {% endfor %}
+</body>
+</html>
