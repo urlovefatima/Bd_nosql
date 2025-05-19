@@ -16,7 +16,8 @@ urlpatterns = [
     path('delete_event/', delete_event, name='delete_event'),
     path('create_event/', create_event, name='create_event'),
     path('historique/', get_historique, name='historique'),
-    # path('test/', TemplateView.as_view(template_name='test.html'), name='test'),
+    # path('test/', TemplateView.as_view(template_name='test.html'), name='test',
+]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
