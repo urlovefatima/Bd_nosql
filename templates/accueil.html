@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventify - Plateforme de réservation d'événements</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #3a2573;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Background image with overlay */
+        .bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('Vezeeee.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #f9f871;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #f9f871;
+        }
+
+        .connexion-btn {
+            background-color: #8a4fff;
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .connexion-btn:hover {
+            background-color: #7a3bed;
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            padding: 5% 5%;
+            align-items: center;
+            min-height: 85vh;
+        }
+
+        .hero-text {
+            flex: 1;
+        }
+
+        .hero-welcome {
+            margin-bottom: 3rem;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .ticket-icon {
+            margin-left: 10px;
+            font-size: 1.5rem;
+        }
+
+        .hero-title {
+            font-size: 10rem;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .dox {
+            color: #d9c2ff;
+        }
+
+        .dajje {
+            color: #f9f871;
+        }
+
+        .hero-subtitle {
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .highlight {
+            color: #af7dff;
+        }
+
+        .hero-content {
+            flex: 1;
+            max-width: 650px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 1024px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 100px;
+            }
+
+            .hero-title {
+                font-size: 4rem;
+            }
+
+            .hero-subtitle {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .hero-subtitle {
+                font-size: 2rem;
+            }
+        }
+
+         /* About Section */
+         .about-section {
+            background-color: white;
+            color: #000;
+            padding: 5% 0;
+            width: 100%;
+        }
+
+        .about-container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 40px;
+        }
+
+        .about-text {
+            flex: 0 0 40%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .about-title {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            line-height: 1.1;
+        }
+
+        .about-description {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .about-button {
+            display: inline-block;
+            background-color: #080041;
+            color: white;
+            text-decoration: none;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            font-weight: bold;
+            max-width: fit-content;
+            transition: all 0.3s ease;
+        }
+
+        .about-button:hover {
+            background-color: #0d0066;
+        }
+
+        .event-cards {
+            flex: 1;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            position: relative;
+        }
+
+        .concert-card {
+            background-color: #cd8b65;
+            color: white;
+            width: 45%;
+            height: 500px;
+            border-radius: 20px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .institut-logo {
+            background-color: white;
+            color: #777;
+            font-size: 0.75rem;
+            padding: 8px;
+            width: fit-content;
+            margin-bottom: 10px;
+        }
+
+        .concert-header {
+            margin-bottom: 150px;
+        }
+
+        .concert-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .concert-date {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #37adb4;
+            margin-bottom: 5px;
+        }
+
+        .concert-time {
+            font-size: 1rem;
+            color: white;
+        }
+
+        .artist-info {
+            margin-bottom: 20px;
+        }
+
+        .artist-name {
+            font-size: 2.5rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .artist-subtitle {
+            font-size: 1rem;
+            font-style: italic;
+        }
+
+        .concert-location {
+            font-size: 0.7rem;
+            line-height: 1.4;
+        }
+
+        .movie-card {
+            background-color: #000;
+            color: white;
+            width: 47%;
+            height: 350px;
+            border-radius: 20px;
+            padding: 20px;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            background-image: url('/api/placeholder/500/350');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .movie-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #f5d547;
+            margin-bottom: 5px;
+        }
+
+        .movie-tagline, .movie-release, .movie-format {
+            font-size: 0.8rem;
+            margin-bottom: 3px;
+        }
+
+        .stats-card {
+            background-color: white;
+            color: #000;
+            position: absolute;
+            right: 130px;
+            top: 120px;
+            width: 200px;
+            height: 150px;
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        .stats-number {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .stats-text {
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        @media (max-width: 1200px) {
+            .about-container {
+                flex-direction: column;
+            }
+            
+            .event-cards {
+                height: 700px;
+                position: relative;
+            }
+            
+            .concert-card {
+                width: 70%;
+                margin: 0 auto;
+            }
+            
+            .movie-card {
+                width: 60%;
+                position: relative;
+                margin-left: auto;
+                margin-top: 20px;
+            }
+            
+            .stats-card {
+                position: absolute;
+                right: 50px;
+                top: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .about-title {
+                font-size: 2.5rem;
+            }
+            
+            .event-cards {
+                height: auto;
+            }
+            
+            .concert-card, .movie-card {
+                width: 100%;
+                height: 400px;
+                position: relative;
+                margin: 10px 0;
+            }
+            
+            .stats-card {
+                position: relative;
+                width: 100%;
+                right: 0;
+                top: 0;
+                margin: 10px 0;
+            }
+        }
+
+
+
+          /* Discover Venues Section */
+          .discover-section {
+            background: linear-gradient(to right, #c5b4e3, #e6c2ef);
+            padding: 5% 0;
+            width: 100%;
+            height: 1339px;
+        }
+
+        .discover-container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 40px;
+        }
+
+        .discover-text {
+            flex: 0 0 30%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .discover-title {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #000;
+            line-height: 1.1;
+        }
+
+        .venue-cards {
+            flex: 1;
+            display: flex;
+            gap: 30px;
+            position: relative;
+        }
+
+        .venue-card {
+            border-radius: 25px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            width: 45%;
+        }
+
+        .venue-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .venue-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 20px;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .venue-label {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 8px;
+        }
+
+        .venue-name {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #000;
+        }
+
+        .venue-location {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .play-button {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #0e0049;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: none;
+            cursor: pointer;
+        }
+
+        .play-icon {
+            color: white;
+            font-size: 12px;
+        }
+
+        .basketball-card {
+            transform: translateY(30px);
+        }
+
+        .art-card {
+            margin-top: -30px;
+        }
+
+        @media (max-width: 1024px) {
+            .discover-container {
+                flex-direction: column;
+            }
+            
+            .venue-cards {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .venue-card {
+                width: 80%;
+                max-width: 400px;
+                margin: 20px 0;
+            }
+            
+            .basketball-card, .art-card {
+                transform: none;
+                margin-top: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .discover-title {
+                font-size: 3rem;
+            }
+            
+            .venue-card {
+                width: 100%;
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="bg-image"></div>
+        <nav>
+            <div class="logo">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M28 8H4V24H28V8Z" stroke="#F9F871" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4 12H28" stroke="#F9F871" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M10 18H22" stroke="#F9F871" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="logo-text">Eventify</span>
+            </div>
+            <div class="nav-links">
+                <a href="#">Home</a>
+                <a href="#">Événements</a>
+                <a href="#">Categorie</a>
+                <a href="#">Créer un événement</a>
+            </div>
+            <button class="connexion-btn">Connexion</button>
+        </nav>
+
+        <div class="hero">
+            <div class="hero-text">
+                <div class="hero-welcome">Bienvenue dans notre site de réservation d'événements ! <span class="ticket-icon">🎟️</span></div>
+                <div class="hero-title">
+                    <span class="dox">Dox</span><br>
+                    <span class="dajje">Dajje</span>
+                </div>
+            </div>
+            <div class="hero-content">
+                <h2 class="hero-subtitle">Là où vos <span class="highlight">événements</span> de rêve prennent vie!</h2>
+                <p>
+                    Non seulement vous pouvez acheter des billets pour les événements les plus tendance en ville, mais vous pouvez aussi créer les vôtres !
+                    Grâce à notre plateforme simple et intuitive, concevez facilement des billets personnalisés qui reflètent l'esprit de votre événement. Fini les billets génériques : place à des créations uniques, professionnelles et mémorables qui feront toute la différence.
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+     <!-- About Section -->
+     <div class="about-section">
+        <div class="about-container">
+            <div class="about-text">
+                <h2 class="about-title">A propos de Eventify</h2>
+                <p class="about-description">
+                    Eventify, c'est l'expertise en gestion d'événements qui accompagne et facilite 
+                    le travail des organisateurs pour les aider à atteindre leur objectif : réussir chaque 
+                    événement.
+                </p>
+                <a href="#" class="about-button">à propos de nous</a>
+            </div>
+            <div class="event-cards">
+                <div class="concert-card">
+                    <div class="institut-logo">INSTITUT FRANÇAIS</div>
+                    <div class="concert-header">
+                        <div class="concert-text">CONCERT</div>
+                        <div class="concert-date">SAMEDI 17 MAI</div>
+                        <div class="concert-time">20H - 23H</div>
+                    </div>
+                    <div class="artist-info">
+                        <h3 class="artist-name">AMADEU</h3>
+                        <div class="artist-subtitle">TAARU Gospel Show</div>
+                    </div>
+                    <div class="concert-location">
+                        INSTITUT FRANÇAIS DU SÉNÉGAL À DAKAR<br>
+                        THÉATRE DE VERDURE • 89 RUE JOSEPH GOMIS • DAKAR<br>
+                        TARIFS : PRÉVENTE 8 000F • SUR PLACE 12 000F
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <div class="movie-title">SINNERS</div>
+                    <div class="movie-tagline">WE ARE ALL SINNERS</div>
+                    <div class="movie-release">ONLY IN THEATERS APRIL 18</div>
+                    <div class="movie-format">SHOT WITH IMAX FILM CAMERAS</div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-number">46+</div>
+                    <div class="stats-text">Événements l'an dernier</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+     <!-- Discover Venues Section -->
+     <div class="discover-section">
+        <div class="discover-container">
+            <div class="discover-text">
+                <h2 class="discover-title">Découvrez<br>de superbes<br>lieux !</h2>
+            </div>
+            <div class="venue-cards">
+                <div class="venue-card basketball-card">
+                    <img src="/api/placeholder/600/800" alt="Basket Ball Match" class="venue-image">
+                    <div class="venue-info">
+                        <div class="venue-label">Lieu: 2</div>
+                        <h3 class="venue-name">THEBAL:<br>Match incontournable</h3>
+                        <div class="venue-location">
+                            Dakar Arena, Diamniadio
+                            <button class="play-button">
+                                <span class="play-icon">▶</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="venue-card art-card">
+                    <img src="/api/placeholder/600/800" alt="Biennale de Dakar" class="venue-image">
+                    <div class="venue-info">
+                        <div class="venue-label">LIEU : 1</div>
+                        <h3 class="venue-name">Biennale de Dakar<br>Mai 2025</h3>
+                        <div class="venue-location">
+                            Grand Théâtre National
+                            <button class="play-button">
+                                <span class="play-icon">▶</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>
