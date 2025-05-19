@@ -8,18 +8,62 @@
 <body>
     <h2>Créer une événement</h2>
 
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <input name="titre" value="{{ titre }}">
-            <input name="categorie" value="{{ categorie }}">
-            <input name="localisation" value="{{ localisation }}">
-            <input name="date_heure" value="{{ date_heure }}">
-            <input name="capacite" value="{{ capacite }}">
-            <input name="description" value="{{ description }}">
-            <input type="file" name="image" required><br><br>
+                {{ form.as_p }}
+            {% comment %} {% csrf_token %}
+
+            <label for="name">Nom de l'événement</label>
+            <input name="titre" value="{{ titre }}" required><br><br>
+
+            <label for="name">Catégorie</label>
+            <input name="categorie" value="{{ categorie }}" required><br><br>
+
+            <label for="name">Lieu</label>
+            <input name="localisation" value="{{ localisation }}" required><br><br>
+
+            <label for="name">Date et heure</label>
+            <input name="date_heure" value="{{ date_heure }}" required><br><br>
+
+            <label for="name">Nombre de places</label>
+            <input name="capacite" value="{{ capacite }}" required><br><br>
+
+            <label for="name">Description</label>
+            <input name="description" value="{{ description }}" required><br><br>
+
+            <label for="name">Affiche de l'événement</label>
+            <input type="file" name="image" required><br><br> {% endcomment %}
+
             <button type="submit">Créer l'événement</button>
         </form>
 
 
 </body>
 </html>
+
+{% comment %} <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label for="titre">Nom de l'événement</label>
+    <input type="text" name="titre" value="{{ request.POST.titre }}" required><br><br>
+
+    <label for="categorie">Catégorie</label>
+    <input type="text" name="categorie" value="{{ request.POST.categorie }}" required><br><br>
+
+    <label for="localisation">Lieu</label>
+    <input type="text" name="localisation" value="{{ request.POST.localisation }}" required><br><br>
+
+    <label for="date_heure">Date et heure</label>
+    <input type="datetime-local" name="date_heure" value="{{ request.POST.date_heure }}" required><br><br>
+
+    <label for="capacite">Nombre de places</label>
+    <input type="number" name="capacite" value="{{ request.POST.capacite }}" required><br><br>
+
+    <label for="description">Description</label>
+    <textarea name="description" required>{{ request.POST.description }}</textarea><br><br>
+
+    <label for="image">Affiche de l'événement</label>
+    <input type="file" name="image" accept="image/*" required><br><br>
+
+    <button type="submit">Créer l'événement</button>
+</form> {% endcomment %}

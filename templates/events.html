@@ -7,7 +7,6 @@
   </head>
   <body>
     <h1>Liste des événements</h1>
-<<<<<<< HEAD
     {% for event in events %}
         <img src="{% static 'img/events.jpg' %}">
         <h2>{{ event.titre }}</h2>
@@ -20,16 +19,6 @@
         </ul>
     {% endfor %}
 </body>
-=======
-    <ul>
-      {% for event in events %}
-      <li>{{ event.titre }} - {{ event.date_heure }}</li>
-      {% comment %} {% empty %}
-      <li>Aucun événement trouvé.</li>
-      {% endcomment %} {% endfor %}
-    </ul>
-  </body>
->>>>>>> 8a8a7e7cb8c338d3e55400d5d029ce7c08a02694
 </html>
 
 {% comment %} {% empty %}

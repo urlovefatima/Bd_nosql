@@ -1,20 +1,27 @@
-<<<<<<< HEAD
 from django.shortcuts import render, redirect
 from mongo import db 
 from bson.objectid import ObjectId 
-=======
-from django.shortcuts import get_object_or_404, render
-from bson import ObjectId
-from mongo import db  
->>>>>>> 8a8a7e7cb8c338d3e55400d5d029ce7c08a02694
+from .forms import EventForm
+from django.core.files.storage import FileSystemStorage
+import os
+from django.conf import settings
+from PIL import Image
+from datetime import datetime, timedelta
+
 
 def get_events(request):
     if db is not None :
         events = list(db.events.find({}, {"_id": 0}))
-        return render(request, 'events.html', {'events': events})
+        return render(request, 'test.html', {'events': events})
     else:
-        return render(request, 'events.html', {'events': []})
-<<<<<<< HEAD
+        return render(request, 'test.html', {'events': []})
+    
+def get_historique(request):
+    if db is not None :
+        events = list(db.events.find({}, {"_id": 0}))
+        return render(request, 'historique.html', {'events': events})
+    else:
+        return render(request, 'historique.html', {'events': []})
 
 def get_events_categories(request):
     if db is not None :
@@ -24,6 +31,71 @@ def get_events_categories(request):
     else:
         return render(request, 'categories.html', {'categories': [], 'events': []})
     
+def get_events_gratuits(request):
+    if db is not None :
+        events = list(db.events.find({"statut":"Gratuit"}, {"_id": 0}))
+        return render(request, 'events_gratuits.html', {'events': events})
+    else:
+        return render(request, 'events_gratuits.html', { 'events': []})
+
+def get_events_payants(request):
+    if db is not None :
+        events = list(db.events.find({"statut":"Payant"}, {"_id": 0}))
+        return render(request, 'events_payants.html', {'events': events})
+    else:
+        return render(request, 'events_payants.html', { 'events': []})
+    
+
+# def get_events_aujourdhui(request):
+#     if db is not None:
+#         events = list(db.events.find({
+#             "date_heure": {
+#                 "$gte": datetime(datetime.now().year, datetime.now().month, datetime.now().day, 0, 0, 0),
+#                 "$lt": datetime(datetime.now().year, datetime.now().month, datetime.now().day, 23, 59, 59, 999999)
+#             }
+#         }, { "_id": 0 }))
+#         return render(request, 'events_aujourdhui.html', {'events': events})
+#     else:
+#         return render(request, 'events_aujourdhui.html', {'events': []})
+    
+def get_events_aujourdhui(request):
+    if db is not None:
+        events = list(db.events.find({
+            "date_heure": {
+                "$gte": datetime.now(),
+                "$lt": datetime(datetime.now().year, datetime.now().month, datetime.now().day, 23, 59, 59, 999999)
+            }
+        }, {"_id": 0}))
+        return render(request, 'events_aujourdhui.html', {'events': events})
+    else:
+        return render(request, 'events_aujourdhui.html', {'events': []})
+    
+
+def get_events_semaine(request):
+    if db is not None:
+        events = list(db.events.find({
+            "date_heure": {
+                "$gte": datetime.now(),
+                "$lt": datetime.now() + timedelta(days=6-datetime.now().weekday())
+            }
+        }, {"_id": 0}))
+        return render(request, 'events_semaine.html', {'events': events})
+    else:
+        return render(request, 'events_semaine.html', {'events': []})
+    
+def get_events_mois(request):
+    if db is not None:
+        events = list(db.events.find({
+            "date_heure": {
+                "$gte": datetime.now(),
+                "$lt": datetime(datetime.now().year, datetime.now().month+1, 1) if datetime.now().month < 12 
+                      else datetime(datetime.now().year+1, 1, 1)
+            }
+        }, {"_id": 0}))
+        return render(request, 'events_mois.html', {'events': events})
+    else:
+        return render(request, 'events_mois.html', {'events': []})
+
 
 def delete_event(request):
     if request.method == "POST":
@@ -38,32 +110,50 @@ def delete_event(request):
     return render(request, "delete_event.html", {"events": events})
 
 def create_event(request):
-    if request.method== "POST":
-        titre = request.POST.get("titre")
-        categorie = request.POST.get("categorie")
-        localisation = request.POST.get("localisation")
-        date_heure = request.POST.get("date_heure")
-        capacite = request.POST.get("capacite")
-        description = request.POST.get("description")
-=======
-def get_historique(request, pk):
-    if db is not None:
-        try:
-            user_id = ObjectId(pk)
-        except Exception as e:
-            return render(request, 'historique.html', {'error': f"ID invalide: {e}"})
+    if request.method == 'POST':
+        form = EventForm(request.POST, request.FILES)
+        if form.is_valid():
+            titre = form.cleaned_data['titre']
+            categorie = form.cleaned_data['categorie']
+            localisation = form.cleaned_data['localisation']
+            date_heure = form.cleaned_data['date_heure']
+            capacite = form.cleaned_data['capacite']
+            description = form.cleaned_data['description']
+            image = form.cleaned_data['image']
 
-        user = db.users.find_one({"_id": user_id})
-        if not user:
-            return render(request, 'historique.html', {'error': "Utilisateur non trouvé."})
 
-       
-        events = list(db.events.find({"creator": user_id}))
+            image = form.cleaned_data['image']
+            image_url = f"media/{image.name}"
+            with open(image_url, 'wb+') as f:
+                for chunk in image.chunks():
+                    f.write(chunk)
+            try:
+                img = Image.open(image)
+                img.verify()
+            except (IOError, SyntaxError):
+                return render(request, 'create_event.html', {
+                    'form': form,
+                    'error': "Le fichier téléchargé n'est pas une image valide."
+                })
 
-        return render(request, 'historique.html', {
-            'events': events,
-            'user': user
-        })
+            fs = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT))
+            image_name = fs.save(image.name, image)
+            image_url = fs.url(image_name)  
+
+            
+            db.events.insert_one({
+                'titre': titre,
+                'categorie': categorie,
+                'localisation': localisation,
+                'date_heure': date_heure,
+                'capacite': capacite,
+                'description': description,
+                'image_url': image_url,
+            })
+            
+            return redirect('events')
     else:
-        return render(request, 'historique.html', {'error': "Base de données non disponible."})
->>>>>>> 8a8a7e7cb8c338d3e55400d5d029ce7c08a02694
+        form = EventForm()
+    
+    return render(request, 'create_event.html', {'form': form})
+            
