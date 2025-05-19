@@ -28,3 +28,6 @@ def get_historique(request, pk):
         })
     else:
         return render(request, 'historique.html', {'error': "Base de données non disponible."})
+    
+
+
