@@ -14,6 +14,7 @@ def inscription(request):
     if request.method == 'POST':
         data = request.POST
         erreurs = []
+        print(data)
 
         if db.users.find_one({"username": data['username']}):
             erreurs.append("Nom d'utilisateur déjà pris!")
@@ -41,7 +42,7 @@ def inscription(request):
             "prenom": data['prenom'],
             "username": data['username'],
             "email": data['email'],
-            "tel": data['tel'],
+            "tel": data['telephone'],
             "date_de_naissance": data['bornday'],
             "mot_de_passe": make_password(data['password'])
         }
@@ -55,35 +56,11 @@ def inscription(request):
     return render(request, 'inscription.html',  {'success': "Inscription réussie. Vous pouvez maintenant vous connecter."})
 
 
-# def connexion(request):
-#     if request.method == 'POST':
-#         data = request.POST
-#         email = data.get('email', '')
-#         password = data.get('password', '')
-
-#         if not email or not password:
-#             messages.error(request, "Email ou mot de passe manquant.")
-#             return render(request, 'connexion.html')
-
-#         user = users_collection.find_one({'email': email})
-
-#         if user and check_password(password, user['password']):
-#             request.session['email'] = email
-#             messages.success(request, "Connexion réussie.")
-#             return redirect('accueil')
-#         else:
-#             messages.error(request, "Email ou mot de passe incorrect.")
-#             return render(request, 'connexion.html')
-    
-#     return render(request, 'connexion.html')
-                
-
-
 def connexion(request):
     if request.method == 'POST':
         data = request.POST
         email = data.get('email', '')
-        password = data['password']  # Ici se trouve probablement l'erreur
+        password = data.get('password', '')
 
         if not email or not password:
             print("erreur")
@@ -100,8 +77,8 @@ def connexion(request):
             print("erreur 2")
             messages.error(request, "Email ou mot de passe incorrect.")
             return render(request, 'connexion.html')
-    
-    return render(request, 'connexion.html')
+    else:
+        return render(request, 'connexion.html')
 
 def accueil(request):
     return render(request, 'accueil.html')

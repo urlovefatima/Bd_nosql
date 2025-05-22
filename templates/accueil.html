@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -31,7 +32,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('Vezeeee.jpg');
+            background-image: url("{% static 'img/vezee.jpg'%}");
             background-size: cover;
             background-position: center;
             opacity: 0.5;
@@ -192,6 +193,7 @@
         .about-container {
             width: 90%;
             max-width: 1400px;
+            height: 880px;
             margin: 0 auto;
             display: flex;
             gap: 40px;
@@ -250,6 +252,9 @@
             padding: 20px;
             position: relative;
             overflow: hidden;
+            background-image: url("{% static 'img/massmonchouchou.jpg' %}");
+            background-size: cover;
+            background-position: center;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -318,7 +323,7 @@
             right: 0;
             bottom: 0;
             overflow: hidden;
-            background-image: url('/api/placeholder/500/350');
+            background-image: url("{% static 'img/sinners-poster-1-819x1024.webp' %}");
             background-size: cover;
             background-position: center;
             display: flex;
@@ -419,6 +424,7 @@
                 right: 0;
                 top: 0;
                 margin: 10px 0;
+                box-shadow: 10px -10px 10px 10px rgba(0, 0, 0, 0.1) !important;
             }
         }
 
@@ -620,29 +626,8 @@
                 <a href="#" class="about-button">à propos de nous</a>
             </div>
             <div class="event-cards">
-                <div class="concert-card">
-                    <div class="institut-logo">INSTITUT FRANÇAIS</div>
-                    <div class="concert-header">
-                        <div class="concert-text">CONCERT</div>
-                        <div class="concert-date">SAMEDI 17 MAI</div>
-                        <div class="concert-time">20H - 23H</div>
-                    </div>
-                    <div class="artist-info">
-                        <h3 class="artist-name">AMADEU</h3>
-                        <div class="artist-subtitle">TAARU Gospel Show</div>
-                    </div>
-                    <div class="concert-location">
-                        INSTITUT FRANÇAIS DU SÉNÉGAL À DAKAR<br>
-                        THÉATRE DE VERDURE • 89 RUE JOSEPH GOMIS • DAKAR<br>
-                        TARIFS : PRÉVENTE 8 000F • SUR PLACE 12 000F
-                    </div>
-                </div>
-                <div class="movie-card">
-                    <div class="movie-title">SINNERS</div>
-                    <div class="movie-tagline">WE ARE ALL SINNERS</div>
-                    <div class="movie-release">ONLY IN THEATERS APRIL 18</div>
-                    <div class="movie-format">SHOT WITH IMAX FILM CAMERAS</div>
-                </div>
+                <div class="concert-card"></div>
+                <div class="movie-card"></div>
                 <div class="stats-card">
                     <div class="stats-number">46+</div>
                     <div class="stats-text">Événements l'an dernier</div>
@@ -662,7 +647,7 @@
             </div>
             <div class="venue-cards">
                 <div class="venue-card basketball-card">
-                    <img src="/api/placeholder/600/800" alt="Basket Ball Match" class="venue-image">
+                    <img src="{% static 'img/Screenshot 2025-05-14 111143.png' %}" alt="Basket Ball Match" class="venue-image">
                     <div class="venue-info">
                         <div class="venue-label">Lieu: 2</div>
                         <h3 class="venue-name">THEBAL:<br>Match incontournable</h3>
@@ -675,7 +660,7 @@
                     </div>
                 </div>
                 <div class="venue-card art-card">
-                    <img src="/api/placeholder/600/800" alt="Biennale de Dakar" class="venue-image">
+                    <img src="{% static 'img/IMG-20250514-WA0049.jpg' %}" alt="Biennale de Dakar" class="venue-image">
                     <div class="venue-info">
                         <div class="venue-label">LIEU : 1</div>
                         <h3 class="venue-name">Biennale de Dakar<br>Mai 2025</h3>
@@ -688,6 +673,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+         <div class="discover-text">
+                <h2 class="discover-title2">Explorez de nouvelles idées dans des lieux d’une beauté saisissante. Participez à des matchs pleins d’adrénalines, conférences sur les startups tech, expositions d’art et rencontrez des esprits brillants venus du monde entier.</h2>
         </div>
     </div>
 
