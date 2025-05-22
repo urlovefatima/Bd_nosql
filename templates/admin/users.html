@@ -1,0 +1,147 @@
+{% extends "admin.html" %}
+{% load static %}
+
+{% block User %}
+<!-- Users Content (initially hidden) -->
+        <div id="users-content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h4 class="mb-1">Users</h4>
+                    <p class="text-muted">L'ensemble des utilisateurs</p>
+                </div>
+                
+                <div class="d-flex">
+                    <div class="search-bar position-relative me-3">
+                        <form action="{% url 'search_users' %}" method="GET">
+                            <input type="text" name="keyword" placeholder="Rechercher" value="{{ search_keyword|default:'' }}">
+                            <button type="submit" class="search-button bg-transparent border-0 position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%);">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <div class="d-flex">
+                        <button class="btn border me-2"><i class="fas fa-list"></i></button>
+                        <button class="btn border me-2"><i class="fas fa-th"></i></button>
+                        <button class="btn-add">
+                            <i class="fas fa-plus me-2"></i>
+                            Add new User
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% if users %}
+            <div class="row">
+                <!-- Single User Card -->
+                {% for user in users %}
+                 
+                <div class="col-md-4 col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="position-relative mb-3">
+                                <img src="{{ user.photo_profil }}" alt="User" class="rounded-circle mx-auto d-block" style="width: 100px; height: 100px;">
+                                <div class="position-absolute top-0 end-0">
+                                    <button class="btn btn-link p-2 no-arrow userMenuDropdown">
+                                        <i style="color:#7b10ff;" class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <div class="dropdown-menu user-dropdown" style="display: none; position: absolute; right: 0;">
+                                        {% comment %} <a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i> Edit</a>
+                                        <a class="dropdown-item" href="#"><i class="fas fa-envelope me-2"></i> Message</a> {% endcomment %}
+                                        <a class="dropdown-item text-danger" href="#" 
+                                        onclick="event.preventDefault(); document.getElementById('delete-user-{{ user.email }}').submit();">
+                                        <i class="fas fa-trash me-2"></i> Delete</a>
+                                        <form id="delete-user-{{ user.email }}" method="POST" action="{% url 'delete_user' user.email %}" style="display: none;">
+                                            {% csrf_token %}
+                                        </form>
+
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            
+                            <h5 class="text-center mb-1">{{user.prenom}} {{user.nom}}</h5>
+                            {% comment %} <p class="text-center text-muted small mb-3">Marketing Manager at<br>Highspeed Studios</p> {% endcomment %}
+                            
+                            <div class="d-flex justify-content-center mb-2">
+                                <a href="#" class="btn btn-sm btn-light me-2">
+                                    <i style="color:#7b10ff;" class="fas fa-phone"></i>
+                                </a>
+                                <span class="text-muted">{{user.tel}}</span>
+                            </div>
+                            
+                            <div class="d-flex justify-content-center">
+                                <a href="#" class="btn btn-sm btn-light me-2">
+                                    <i style="color:#7b10ff;" class="fas fa-envelope"></i>
+                                </a>
+                                <span class="text-muted">{{user.email}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 {% endfor %}
+                
+            </div>
+            {% else %}
+            <div class="text-center mt-5">
+                <img src="/media/profile_default.jpeg" alt="No Data" class="placeholder-image mb-3">
+                <h5 class="text-muted">No Users Found</h5>
+            </div>
+            {% endif %}
+            
+            
+            <!-- Pagination -->
+            {% comment %} <div class="d-flex justify-content-between align-items-center mt-4">
+                <span class="text-muted">Showing 1-10 from 46 data</span>
+                
+                <nav>
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">4</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div> {% endcomment %}
+        </div>
+        <script>
+        document.querySelectorAll('.userMenuDropdown').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.stopPropagation();
+
+                document.querySelectorAll('.user-dropdown').forEach(menu => {
+                    if (menu !== this.nextElementSibling) {
+                        menu.style.display = 'none';
+                    }
+                });
+
+                const dropdownMenu = this.nextElementSibling;
+                if (dropdownMenu.style.display === 'none' || dropdownMenu.style.display === '') {
+                    dropdownMenu.style.display = 'block';
+                } else {
+                    dropdownMenu.style.display = 'none';
+                }
+            });
+        });
+
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.user-dropdown').forEach(menu => {
+                menu.style.display = 'none';
+            });
+        });
+            document.addEventListener('DOMContentLoaded', function() {
+                document.querySelector('.actual_link').innerText = 'Users';
+                document.querySelector('.sidebar .nav-link.active').classList.remove('active');
+                document.getElementById('users-link').classList.add('active');
+            });
+        </script>
+{% endblock%}

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from mongo import users_collection, reservations_collection, events_collection
+# from mongo import users_collection, reservations_collection, events_collection
+from mongo import db
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib import messages
 from datetime import datetime
@@ -13,8 +14,9 @@ def inscription(request):
     if request.method == 'POST':
         data = request.POST
         erreurs = []
+        print(data)
 
-        if users_collection.find_one({"username": data['username']}):
+        if db.users.find_one({"username": data['username']}):
             erreurs.append("Nom d'utilisateur déjà pris!")
         email = data.get('email', '')
         if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
@@ -40,12 +42,12 @@ def inscription(request):
             "prenom": data['prenom'],
             "username": data['username'],
             "email": data['email'],
-            "tel": data['tel'],
+            "tel": data['telephone'],
             "date_de_naissance": data['bornday'],
             "mot_de_passe": make_password(data['password'])
         }
         print("insertion en cours")
-        users_collection.insert_one(user_doc)
+        db.users.insert_one(user_doc)
         print("insertion reussie")
         messages.success(request, "Inscription réussie. Vous pouvez maintenant vous connecter.")
         return redirect('connexion')
@@ -54,21 +56,18 @@ def inscription(request):
     return render(request, 'inscription.html',  {'success': "Inscription réussie. Vous pouvez maintenant vous connecter."})
 
 
-                
-
-
 def connexion(request):
     if request.method == 'POST':
         data = request.POST
         email = data.get('email', '')
-        password = data['password']  # Ici se trouve probablement l'erreur
+        password = data.get('password', '')
 
         if not email or not password:
             print("erreur")
             messages.error(request, "Email ou mot de passe manquant.")
             return render(request, 'connexion.html')
 
-        user = users_collection.find_one({'email': email})
+        user = db.users.find_one({'email': email})
 
         if user and check_password(password, user['mot_de_passe']):
             request.session['email'] = email
@@ -78,8 +77,8 @@ def connexion(request):
             print("erreur 2")
             messages.error(request, "Email ou mot de passe incorrect.")
             return render(request, 'connexion.html')
-    
-    return render(request, 'connexion.html')
+    else:
+        return render(request, 'connexion.html')
 
 def accueil(request):
     return render(request, 'accueil.html')
@@ -94,13 +93,13 @@ def reserver_evenement(request, event_id):
             messages.error(request, "Vous devez être connecté pour réserver.")
             return redirect("connexion")
 
-        event = events_collection.find_one({"_id": ObjectId(event_id)})
+        event = db.events.find_one({"_id": ObjectId(event_id)})
         if not event:
             messages.error(request, "Événement introuvable.")
             return redirect("liste_evenements")
 
         # Vérifie si l'utilisateur a déjà réservé
-        already_reserved = reservations_collection.find_one({
+        already_reserved = db.reservations.find_one({
             "event_id": ObjectId(event_id),
             "user_email": user_email
         })
@@ -109,14 +108,14 @@ def reserver_evenement(request, event_id):
             return redirect("liste_evenements")
 
         # Compter les réservations actuelles
-        count = reservations_collection.count_documents({"event_id": ObjectId(event_id)})
+        count = db.reservations.count_documents({"event_id": ObjectId(event_id)})
 
         if count >= event.get("max_places", 0):
             messages.error(request, "Il n'y a plus de places disponibles.")
             return redirect("liste_evenements")
 
         # Réservation
-        reservations_collection.insert_one({
+        db.reservations.insert_one({
             "event_id": ObjectId(event_id),
             "user_email": user_email,
             "timestamp": datetime.now()
@@ -134,7 +133,7 @@ def annuler_reservation(request, event_id):
         messages.error(request, "Vous devez être connecté pour annuler.")
         return redirect("connexion")
 
-    result = reservations_collection.delete_one({
+    result = db.reservations.delete_one({
         "event_id": ObjectId(event_id),
         "user_email": user_email
     })
@@ -149,6 +148,6 @@ def annuler_reservation(request, event_id):
 
 
 def nombre_reservations(event_id):
-    return reservations_collection.count_documents({
+    return db.reservations.count_documents({
         "event_id": ObjectId(event_id)
     })

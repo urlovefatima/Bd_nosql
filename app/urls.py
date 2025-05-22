@@ -6,7 +6,7 @@ from .views import get_events, get_events_categories, delete_event, create_event
 
 urlpatterns = [
     # path('events/', get_events, name='events'),
-    path('test/', get_events, name='events'),
+    path('', get_events, name='events'),
     path('categories/', get_events_categories, name='categories'),
     path('gratuits/', get_events_gratuits, name='gratuits'),
     path('payants/', get_events_payants, name='payants'),

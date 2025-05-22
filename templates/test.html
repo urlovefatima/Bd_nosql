@@ -3431,13 +3431,14 @@
     </style>
 </head>
 <body>
+    {% include "shared_component/navbar.html" %}
     <div class="container">
         <header>
-            <h1>Événements à découvrir</h1>
+            <h1 class="my-5">Événements à découvrir</h1>
             <p>Les rendez-vous culturels, artistiques et festifs à ne pas manquer</p>
         </header>
         
-        <section class="filter-section">
+        <section class="filter-section my-5">
             <div class="filters">
                 <button class="filter-btn active">Tous</button>
                 <button class="filter-btn">Catégorie</button>
@@ -3454,8 +3455,8 @@
                 {% for event in events %}
                     <article class="event-card">
                         <div class="event-image">
-                            {% if event.image_url %}
-                                <img src="{% static 'img/events.jpg' %}" alt="{{ event.titre }}">
+                            {% if event.image_url or event.photo_couverture %}
+                                <img src="{{ event.photo_couverture }}" alt="{{ event.titre }}">
                             {% else %}
                                 <img src="{% static 'img/event-placeholder.jpg' %}" alt="{{ event.titre }}">
                             {% endif %}
@@ -3490,7 +3491,7 @@
                                     <span>{{ event.capacite|default:"200" }} places</span>
                                 </div>
                                 <div class="event-action">
-                                    <a class="btn btn-primary">
+                                    <a class="btn btn-primary" href="{% url 'EventDetail:event_detail' event.id %}">
                                         <i class="fas fa-arrow-right"></i> Détails
                                     </a>
                                 </div>
@@ -3507,7 +3508,7 @@
             {% endif %}
         </div>
     </div>
-
+    {% include "shared_component/footer.html" %}
     <script>
         document.querySelectorAll('.filter-btn').forEach(button => {
             button.addEventListener('click', function() {

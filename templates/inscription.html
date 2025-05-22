@@ -205,7 +205,7 @@
             <h2>Inscrivez-vous !</h2>
         </div>
         
-        <form>
+        <form method="POST" action="{% url 'inscription' %}">
               {% csrf_token %}
             <div class="form-row">
                 <div class="form-group">
@@ -215,7 +215,7 @@
                 
                 <div class="form-group">
                     <label for="dob">Date de naissance</label>
-                    <input type="date" id="dob" name="dob">
+                    <input type="date" id="dob" name="bornday">
                 </div>
             </div>
             
@@ -251,7 +251,7 @@
                 
                 <div class="form-group">
                     <label for="repeatPassword">Confirmation mot de passe</label>
-                    <input type="repeatPassword" id="repeatPassword" name="repeatPassword">
+                    <input type="password" id="repeatPassword" name="repeatPassword">
                 </div>
             </div>
             

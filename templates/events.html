@@ -6,6 +6,7 @@
     <title>Liste des événements</title>
   </head>
   <body>
+    {% include "shared_component/navbar.html" %}
     <h1>Liste des événements</h1>
     {% for event in events %}
         <img src="{% static 'img/events.jpg' %}">
@@ -20,6 +21,3 @@
     {% endfor %}
 </body>
 </html>
-
-{% comment %} {% empty %}
-            <li>Aucun événement trouvé.</li> {% endcomment %}

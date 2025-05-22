@@ -194,7 +194,7 @@
             <h2>Connectez-vous !</h2>
         </div>
         
-        <form>
+        <form method ="POST" action="{% url 'connexion' %}">
             {% csrf_token %}
             <div class="form-group">
                 <label for="email">E-mail</label>
@@ -202,7 +202,7 @@
             </div>
             
             <div class="form-group">
-                <label for="password">Connexion</label>
+                <label for="password">Mot de passe</label>
                 <input type="password" id="password" name="password">
             </div>
             

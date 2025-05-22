@@ -1,24 +1,25 @@
 from bson import ObjectId
 from django.shortcuts import render
+from datetime import datetime
 from mongo import db  
-# Create your views here.
-def get_historique(request, pk):
+def get_historique(request, email):
     if db is not None:
         try:
-            user_id = ObjectId(pk)
+            user = db.users.find_one({"email": email})
         except Exception as e:
-            return render(request, 'historique.html', {'error': f"ID invalide: {e}"})
+            return render(request, 'historique.html', {'error': f"email invalide: {e}"})
 
-        user = db.users.find_one({"_id": user_id})
         if not user:
             return render(request, 'historique.html', {'error': "Utilisateur non trouvé."})
-
-       
-        events = list(db.events.find({"creator": user_id}))
-
+        user_id = user['_id']
+        events = []
+        list_events = list(db.events.find({"creator": user_id}))
+        for event in list_events:
+            if event['date_heure'] < datetime.now():
+                events.append(event)
+        
         return render(request, 'historique.html', {
-            'events': events,
-            'user': user
+            'events': events
         })
     else:
         return render(request, 'historique.html', {'error': "Base de données non disponible."})

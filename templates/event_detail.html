@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match de Gala | Détails de l'événement</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #7b10ff;
+            --primary-light: #9c4fff;
+            --primary-dark: #5a0db8;
+            --secondary: #f0e6ff;
+            --text-dark: #333;
+            --text-light: #fff;
+            --gray-light: #f8f9fa;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-dark);
+            background-color: #f9f7ff;
+
+        }.navbar {
+        background-color: #7b10ff ;
+        padding: 20px 0;
+        position: relative;
+        z-index: 20;
+      }
+
+      .logo-container {
+        display: flex;
+        align-items: center;
+      }
+
+      .logo-text {
+        color:rgb(255, 248, 185);
+        font-size: 28px;
+        font-weight: bold;
+        margin-left: 5px;
+      }
+
+      .logo-img {
+        width: 40px;
+        height: 40px;
+      }
+
+      .nav-link {
+        color: white !important;
+        font-size: 18px;
+        margin-left: 15px;
+        position: relative;
+        padding: 10px 5px !important;
+      }
+
+      .nav-link:hover::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #fffacd;
+      }
+
+      .btn-connexion {
+        background-color: #8a2be2 !important;
+        color: white !important;
+        border-radius: 25px;
+        padding: 10px 25px;
+        font-weight: 600;
+        border: none;
+        transition: all 0.3s ease;
+      }
+
+      .btn-connexion:hover {
+        background-color: #7823c7;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
+      }
+
+      
+        
+        .banner {
+            height: 350px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .banner-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.6));
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 2rem;
+            color: white;
+        }
+        
+        .event-profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            position: absolute;
+            bottom: -50px;
+            left: 50px;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            border-radius: 25px;
+            padding: 10px 30px;
+            font-weight: 600;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+        
+        .category-badge {
+            background-color: var(--secondary);
+            color: var(--primary);
+            font-weight: 600;
+            border-radius: 20px;
+            padding: 5px 15px;
+            text-transform: capitalize;
+        }
+        
+        .event-info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .event-info-icon {
+            background-color: var(--secondary);
+            color: var(--primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+        
+        .countdown-container {
+            background: linear-gradient(45deg, var(--primary), var(--primary-light));
+            border-radius: 15px;
+            padding: 20px;
+            color: white !important;
+        }
+        
+        .countdown-item {
+            text-align: center;
+            padding: 10px;
+        }
+        
+        .countdown-number {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        .countdown-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .section-title {
+            position: relative;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary);
+        }
+        
+        
+        @media (max-width: 768px) {
+            .banner {
+                height: 250px;
+            }
+            
+            .event-profile-img {
+                width: 80px;
+                height: 80px;
+                bottom: -40px;
+                left: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+          <a class="navbar-brand" href="#">
+            <div class="logo-container">
+              <svg
+                class="logo-img"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 100 100"
+              >
+                <rect
+                  x="15"
+                  y="20"
+                  width="70"
+                  height="55"
+                  rx="5"
+                  ry="5"
+                  fill="none"
+                  stroke="#fffacd"
+                  stroke-width="4"
+                />
+                <line
+                  x1="15"
+                  y1="40"
+                  x2="85"
+                  y2="40"
+                  stroke="#fffacd"
+                  stroke-width="4"
+                />
+                <line
+                  x1="30"
+                  y1="20"
+                  x2="30"
+                  y2="30"
+                  stroke="#fffacd"
+                  stroke-width="4"
+                />
+                <line
+                  x1="70"
+                  y1="20"
+                  x2="70"
+                  y2="30"
+                  stroke="#fffacd"
+                  stroke-width="4"
+                />
+                <path d="M25,50 L35,50 L35,60 L25,60 Z" fill="#fffacd" />
+                <path d="M45,50 L55,50 L55,60 L45,60 Z" fill="#fffacd" />
+                <path d="M65,50 L75,50 L75,60 L65,60 Z" fill="#fffacd" />
+                <path d="M25,70 L55,70 L55,80 L25,80 Z" fill="#fffacd" />
+              </svg>
+              <span class="logo-text">Eventify</span>
+            </div>
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div
+            class="collapse navbar-collapse justify-content-end"
+            id="navbarNav"
+          >
+            <ul class="navbar-nav align-items-center">
+              <li class="nav-item">
+                <a class="nav-link active" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Événements</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Catégorie</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Créer un événement</a>
+              </li>
+              <li class="nav-item ms-3">
+                <button class="btn btn-connexion">Connexion</button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+    <!-- Event Banner -->
+    <div class="banner" id="event-banner" style="background-image: url('{{ event.photo_couverture }}');">
+        <div class="banner-overlay">
+            <span class="category-badge my-5">{{event.categorie}}</span>
+            <h1 class="display-4 fw-bold">{{event.titre}}</h1>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <div class="row g-4">
+            <!-- Event Details -->
+            <div class="col-lg-6">
+                <div class="card p-4 mb-4">
+                    <h2 class="section-title">Détails de l'événement</h2>
+                    
+                    <div class="event-info-item">
+                        <div class="event-info-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <p class="mb-0 fw-bold">Lieu</p>
+                            <p class="mb-0" id="event-location">{{event.localisation}}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="event-info-item">
+                        <div class="event-info-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div>
+                            <p class="mb-0 fw-bold">Date & Heure</p>
+                            <p class="mb-0" id="event-datetime">{{event.date_heure|date:"d"}} {{event.date_heure|date:"M"}} {{event.date_heure|date:"y"}}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="event-info-item">
+                        <div class="event-info-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div>
+                            <p class="mb-0 fw-bold">Capacité</p>
+                            <p class="mb-0" id="event-capacity">{{event.capacite}} personnes</p>
+                        </div>
+                    </div>
+                    
+                    <div class="event-info-item">
+                        <div class="event-info-icon">
+                            <i class="fas fa-ticket-alt"></i>
+                        </div>
+                        <div>
+                            <p class="mb-0 fw-bold">Réservations</p>
+                            <p class="mb-0" id="event-reservations">{{nombre_reservation}} réservations</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card p-4">
+                    <h2 class="section-title">Description</h2>
+                    <p>Ce match de gala exceptionnel rassemblera les meilleurs talents sportifs de la région pour une compétition amicale mais intense. Venez encourager vos athlètes préférés et profiter d'une journée remplie d'action et de divertissement!</p>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-4">
+                        <button class="btn btn-primary me-md-2">Réserver maintenant</button>
+                        <button class="btn btn-outline-primary">Partager <i class="fas fa-share-alt ms-2"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="col-lg-6">
+                <div class="card p-4 mb-4 countdown-container">
+                    <h4 class="text-center mb-4">Compte à rebours</h4>
+                    <div class="row" id="countdown">
+                        <div class="col-3 countdown-item">
+                            <div class="countdown-number" id="days">00</div>
+                            <div class="countdown-label">Jours</div>
+                        </div>
+                        <div class="col-3 countdown-item">
+                            <div class="countdown-number" id="hours">00</div>
+                            <div class="countdown-label">Heures</div>
+                        </div>
+                        <div class="col-3 countdown-item">
+                            <div class="countdown-number" id="minutes">00</div>
+                            <div class="countdown-label">Minutes</div>
+                        </div>
+                        <div class="col-3 countdown-item">
+                            <div class="countdown-number" id="seconds">00</div>
+                            <div class="countdown-label">Secondes</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card p-4">
+                    <h4 class="section-title">Informations complémentaires</h4>
+                    <div class="mb-3">
+                        <p class="fw-bold mb-1">Catégorie</p>
+                        <span class="category-badge" id="event-category">{{event.categorie}}</span>
+                    </div>
+                    <div class="mb-3">
+                        <p class="fw-bold mb-1">Organisateur</p>
+                        <div class="d-flex align-items-center">
+                            <img src="{{ user.photo_profil }}" alt="Organisateur" class="rounded-circle me-2" width="30" height="30">
+                            <span>{{user.prenom}} {{user.nom}}</span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <p class="fw-bold mb-1">Places disponibles</p>
+                        <div class="progress" style="height: 10px;">
+                            <div class="progress-bar" id="availability-progress" role="progressbar" style="width: 1%; background-color: var(--primary);" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <small class="text-muted" id="availability-text">298 places disponibles sur 300</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    {% include "shared_component/footer.html" %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        
+        
+        // Calculer les places disponibles
+        const capacite = {{ event.capacite }};
+        const placesReservees = {{ nombre_reservation }};
+        const placesDisponibles = capacite - placesReservees;
+        const pourcentageReserve = (placesReservees / capacite) * 100;
+        
+        document.getElementById('availability-progress').style.width = `${pourcentageReserve}%`;
+        document.getElementById('availability-text').textContent = `${placesDisponibles} places disponibles sur ${capacite}`;
+        
+        // Fonction de compte à rebours utilisant la date de l'événement de la vue Django
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const eventTime = new Date('{{ event.date_heure|date:"c" }}').getTime();
+            const timeLeft = eventTime - now;
+            
+            if (timeLeft <= 0) {
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+                return;
+            }
+            
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+        
+        // Mettre à jour le compte à rebours toutes les secondes
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,358 @@
+{% extends "admin.html" %}
+{% load static %}
+
+
+{% block Dashboard %}
+<div id="dashboard-content">
+            <!-- Stats Cards -->
+            <div class="row">
+                {% comment %} <div class="col-md-3">
+                    <div class="card card-stats">
+                        <p class="stat-title">Views</p>
+                        <h3 class="stat-value">7,265</h3>
+                        <div class="d-flex align-items-center">
+                            <span class="stat-change positive">+11.01%</span>
+                            <i class="fas fa-arrow-up ms-2 text-success"></i>
+                        </div>
+                    </div>
+                </div>
+                 {% endcomment %}
+                <div class="col-md-4">
+                    <div class="card card-stats">
+                        <p class="stat-title">Reservations</p>
+                        <h3 class="stat-value">{{nomber_of_reservations}}</h3>
+                        <div class="d-flex align-items-center">
+                            <span class="stat-change negative">-0.03%</span>
+                            <i class="fas fa-arrow-down ms-2 text-danger"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card card-stats">
+                        <p class="stat-title">Users</p>
+                        <h3 class="stat-value">{{nomber_of_users}}</h3>
+                        <div class="d-flex align-items-center">
+                            <span class="stat-change positive">+15.03%</span>
+                            <i class="fas fa-arrow-up ms-2 text-success"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card card-stats">
+                        <p class="stat-title">Events</p>
+                        <h3 class="stat-value">{{nomber_of_events}}</h3>
+                        <div class="d-flex align-items-center">
+                            <span class="stat-change positive">+6.08%</span>
+                            <i class="fas fa-arrow-up ms-2 text-success"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Charts -->
+            <div class="row mt-4">
+                
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="section-title">Lieu des événements</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="location-chart">
+                                        <canvas id="locationChart" class="chart"></canvas>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mt-3">
+                                        {% for item in lieux_percentages %}
+                                            <div class="d-flex align-items-center mb-2">
+                                                <span class="me-2">•</span>
+                                                <span>{{ item.lieu }}</span>
+                                                <span class="ms-auto">{{ item.percentage }}%</span>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card categories">
+                            <div class="card-body">
+                                <h5 class="section-title">Répartition des réservations (Top 5 utilisateurs)</h5>
+                                <div class="chart-container" style="position: relative; height: 400px;">
+                                    <canvas id="radarChart"></canvas>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Location Charts -->
+            <div class="row mt-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="section-title">Evénements par catégorie</h5>
+                            <div class="device-chart">
+                                <canvas id="deviceChart" class="chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            
+            <!-- Marketing Chart -->
+            <!-- Bouton pour afficher les autres statistiques -->
+            <div class="text-center mt-4">
+                <button id="toggleStatsBtn" style= "background-color: #7b10ff;" class="btn btn-primary">Autres statistiques</button>
+            </div>
+
+            <!-- Statistiques additionnelles (cachées au début) -->
+            <div id="otherStats" class="d-none">
+                <!-- Première section -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="section-title">Marketing & SEO</h5>
+                                <div class="chart-container" style="height: 300px;">
+                                    <canvas id="marketingChart" class="chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deuxième section -->
+                <div class="row mt-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="tab-selector">
+                                <button class="active">Total Users</button>
+                                <button>Total Events</button>
+                                <button>Operating Status</button>
+                            </div>
+                            
+                            <div class="chart-container">
+                                <canvas id="usersChart" class="chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                document.querySelector('.actual_link').innerText = 'Dashboard';
+                document.querySelector('.sidebar .nav-link.active').classList.remove('active');
+                document.getElementById('dashboard-link').classList.add('active');
+
+                // Users Chart
+            const usersChartCtx = document.getElementById('usersChart').getContext('2d');
+            const usersChart = new Chart(usersChartCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    datasets: [
+                        {
+                            label: 'This year',
+                            data: [5000, 15000, 10000, 20000, 30000, 25000, 30000],
+                            borderColor: '#7b10ff',
+                            backgroundColor: 'rgba(123, 16, 255, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Last year',
+                            data: [2000, 10000, 5000, 15000, 20000, 30000, 20000],
+                            borderColor: '#ddd',
+                            backgroundColor: 'rgba(200, 200, 200, 0.1)',
+                            borderDash: [5, 5],
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            align: 'end'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            const ctx = document.getElementById('radarChart').getContext('2d');
+
+            const polarChart = new Chart(ctx, {
+                type: 'polarArea',
+                data: {
+                    labels: {{ top_usernames|safe }},
+                    datasets: [{
+                        label: 'Nombre de réservations',
+                        data: {{ top_reservation_counts|safe }},
+                        backgroundColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(54, 162, 235)',
+                            'rgb(255, 206, 86)',
+                            'rgb(75, 192, 192)',
+                            'rgb(153, 102, 255)'
+                        ],
+                        borderColor: 'rgba(255, 255, 255, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Top 5 utilisateurs par nombre de réservations'
+                        },
+                        legend: {
+                            position: 'right'
+                        }
+                    }
+                }
+            });
+            
+
+            
+            fetch("/admin_page/stats/")
+            .then(response => response.json())
+            .then(data => {
+                // Device Chart (Catégories)
+                const deviceChartCtx = document.getElementById('deviceChart').getContext('2d');
+                new Chart(deviceChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: data.categories.labels,
+                    datasets: [{
+                    data: data.categories.data,
+                    backgroundColor: [
+                        '#6610f2',
+                        '#20c997',
+                        '#000000',
+                        '#0d6efd',
+                        '#adb5bd',
+                        '#28c76f',
+                        '#dc3545',
+                        '#fd7e14'
+                    ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                    legend: { display: false }
+                    }
+                }
+                });
+
+                // Location Chart (Lieux)
+                const locationChartCtx = document.getElementById('locationChart').getContext('2d');
+                new Chart(locationChartCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: data.lieux.labels,
+                    datasets: [{
+                    data: data.lieux.data,
+                    backgroundColor: [
+                        '#7b10ff',
+                        '#6c757d',
+                        '#0d6efd',
+                        '#20c997',
+                        '#ffc107',
+                        '#198754',
+                        '#dc3545'
+                    ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                    legend: { display: false }
+                    },
+                    cutout: '70%'
+                }
+                });
+            })
+            .catch(error => {
+                console.error('Erreur lors du chargement des données stats:', error);
+            });
+
+            
+            // Marketing Chart
+            const marketingChartCtx = document.getElementById('marketingChart').getContext('2d');
+            const marketingChart = new Chart(marketingChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    datasets: [
+                        {
+                            label: 'Organic Search',
+                            data: [15000, 25000, 20000, 30000, 12000, 25000, 15000, 25000, 20000, 30000, 12000, 25000],
+                            backgroundColor: '#6610f2'
+                        },
+                        {
+                            label: 'Social Media',
+                            data: [10000, 30000, 15000, 25000, 10000, 20000, 10000, 30000, 15000, 25000, 10000, 20000],
+                            backgroundColor: '#20c997'
+                        },
+                        {
+                            label: 'Direct Traffic',
+                            data: [5000, 15000, 10000, 20000, 5000, 15000, 5000, 15000, 10000, 20000, 5000, 15000],
+                            backgroundColor: '#0d6efd'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            align: 'end'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+            });
+            document.getElementById("toggleStatsBtn").addEventListener("click", function() {
+        const statsSection = document.getElementById("otherStats");
+
+        // Toggle display
+        if (statsSection.classList.contains("d-none")) {
+            statsSection.classList.remove("d-none");
+            this.textContent = "Masquer les statistiques";
+        } else {
+            statsSection.classList.add("d-none");
+            this.textContent = "Autres statistiques";
+        }
+    });
+        </script>
+{% endblock %}
