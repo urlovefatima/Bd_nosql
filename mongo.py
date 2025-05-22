@@ -27,7 +27,6 @@ load_dotenv()
 MONGO_URI = os.getenv("MONGO_URI")
 MONGO_DB_NAME = os.getenv("MONGO_DB_NAME")
 
-<<<<<<< HEAD
 client = MongoClient(
     MONGO_URI,
     connect=False,  
@@ -42,7 +41,6 @@ def check_connection():
         print("MongoDB prêt")
     except Exception as e:
         print(f"MongoDB indisponible: {e}")
-=======
 try:
     mongo_client = MongoClient(MONGO_URI)
     db = mongo_client[MONGO_DB_NAME]
@@ -60,4 +58,3 @@ except Exception as e:
 print(f"MONGO_DB_NAME: {MONGO_DB_NAME}")
 
 
->>>>>>> 8cb7f816a4778204c83475ab234cf56a60d68ff7

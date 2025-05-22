@@ -3,7 +3,7 @@ from mongo import users_collection, reservations_collection, events_collection
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib import messages
 from datetime import datetime
-from bson import objectId
+from bson import ObjectId
 import re
 
 
@@ -54,27 +54,6 @@ def inscription(request):
     return render(request, 'inscription.html',  {'success': "Inscription réussie. Vous pouvez maintenant vous connecter."})
 
 
-# def connexion(request):
-#     if request.method == 'POST':
-#         data = request.POST
-#         email = data.get('email', '')
-#         password = data.get('password', '')
-
-#         if not email or not password:
-#             messages.error(request, "Email ou mot de passe manquant.")
-#             return render(request, 'connexion.html')
-
-#         user = users_collection.find_one({'email': email})
-
-#         if user and check_password(password, user['password']):
-#             request.session['email'] = email
-#             messages.success(request, "Connexion réussie.")
-#             return redirect('accueil')
-#         else:
-#             messages.error(request, "Email ou mot de passe incorrect.")
-#             return render(request, 'connexion.html')
-    
-#     return render(request, 'connexion.html')
                 
 
 
