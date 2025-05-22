@@ -21,9 +21,10 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('app.urls')),
+    path('events/', include('app.urls')),
     path('admin_page/', include('admin_app.urls')),
     path('event/', include('Event.urls')),
+    path('', include('authenticate.urls'))
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

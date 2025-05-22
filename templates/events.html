@@ -9,15 +9,15 @@
     {% include "shared_component/navbar.html" %}
     <h1>Liste des événements</h1>
     {% for event in events %}
-    <img src="{% static 'img/events.jpg' %}" />
-    <h2>{{ event.titre }}</h2>
-    <ul>
-      <li>{{ event.categorie }}</li>
-      <li>{{ event.localisation }}</li>
-      <li>{{ event.date_heure }}</li>
-      <li>{{ event.capacite }}</li>
-      <li>{{ event.description }}</li>
-    </ul>
+        <img src="{% static 'img/events.jpg' %}">
+        <h2>{{ event.titre }}</h2>
+        <ul>
+            <li>{{ event.categorie }}</li>
+            <li>{{ event.localisation }}</li>
+            <li>{{ event.date_heure }}</li>
+            <li>{{ event.capacite }}</li>
+            <li>{{ event.description }}</li>
+        </ul>
     {% endfor %}
-  </body>
+</body>
 </html>
