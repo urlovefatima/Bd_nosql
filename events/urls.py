@@ -26,7 +26,8 @@ urlpatterns = [
     path('admin_page/', include('admin_app.urls')),
     path('event/', include('Event.urls')),
     path('', include('authenticate.urls')),
-    path('profil/', TemplateView.as_view(template_name='profil.html'), name='profil'),
+    path('profil/', include('Profil.urls')),
+    path('', include('authenticate.urls'))
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

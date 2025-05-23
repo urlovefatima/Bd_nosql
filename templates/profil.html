@@ -3,335 +3,915 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eventify - Profil</title>
+    <title>Mon Profil | Dashboard Utilisateur</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #453994;
+            --primary-light: #8939b4;
+            --accent: #fff384;
+            --accent-secondary: #a400ff;
+            --text-dark: #1F2937;
+            --text-light: #6B7280;
+            --text-lighter: #9CA3AF;
+            --bg-light: #F9FAFB;
+            --bg-white: #FFFFFF;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow: 0 2px 4px rgba(0,0,0,0.06);
+            --shadow-lg: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
         }
         
         body {
-            background-color: #fff;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        
+        .dashboard-container {
+            display: flex;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
         }
         
-        .header {
-            background-color: #0a0a8f;
-            color: white;
-            padding: 15px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background: var(--bg-white);
+            box-shadow: var(--shadow-lg);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
         }
         
-        .logo {
-            display: flex;
-            align-items: center;
+        .sidebar-header {
+            padding: 2rem 1.5rem 1rem;
+            border-bottom: 1px solid #E5E7EB;
         }
         
-        .logo img {
-            width: 30px;
-            margin-right: 10px;
-        }
-        
-        .logo h1 {
-            font-size: 24px;
-            color: #ffd700;
-            font-weight: bold;
-        }
-        
-        .nav {
-            display: flex;
-            gap: 30px;
-        }
-        
-        .nav a {
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: 500;
-        }
-        
-        .main-content {
-            padding: 40px 50px;
-            flex: 1;
-        }
-        
-        .profile-header {
+        .user-info {
             display: flex;
             align-items: center;
-            margin-bottom: 60px;
+            gap: 1rem;
         }
         
-        .profile-header h1 {
-            font-size: 36px;
-            color: #333;
-            margin-right: 50px;
-        }
-        
-        .profile-pic {
-            width: 120px;
-            height: 120px;
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
             border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .user-details h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+        
+        .user-details p {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+        
+        .sidebar-nav {
+            padding: 1rem 0;
+        }
+        
+        .nav-item {
+            display: block;
+            padding: 0.875rem 1.5rem;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+            position: relative;
+        }
+        
+        .nav-item:hover {
+            background-color: rgba(69, 57, 148, 0.05);
+            color: var(--primary);
+            border-left-color: var(--primary);
+        }
+        
+        .nav-item.active {
+            background-color: rgba(69, 57, 148, 0.1);
+            color: var(--primary);
+            border-left-color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .nav-item i {
+            width: 20px;
+            margin-right: 0.75rem;
+            font-size: 1rem;
+        }
+        
+        .nav-item.logout {
+            color: #EF4444;
+            margin-top: 2rem;
+            border-top: 1px solid #E5E7EB;
+            padding-top: 1.5rem;
+        }
+        
+        .nav-item.logout:hover {
+            background-color: rgba(239, 68, 68, 0.05);
+            color: #DC2626;
+            border-left-color: #EF4444;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 2rem;
+        }
+        
+        .welcome-section {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 1rem;
+            padding: 2.5rem;
+            color: white;
+            margin-bottom: 2.5rem;
+            position: relative;
             overflow: hidden;
         }
         
-        .profile-pic img {
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .welcome-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .welcome-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+        
+        .welcome-subtitle {
+            font-size: 1.125rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+        
+        /* Section Styles */
+        .section {
+            margin-bottom: 3rem;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(69, 57, 148, 0.15);
+            padding-bottom: 0.75rem;
+        }
+        
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            position: relative;
+            padding-left: 1rem;
+        }
+        
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 70%;
+            background-color: var(--accent-secondary);
+            border-radius: 4px;
+        }
+        
+        /* Carousel Styles */
+        .carousel-navigation {
+            position: relative;
+        }
+        
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 0.75rem;
+        }
+        
+        .carousel-track {
+            display: flex;
+            gap: 1.5rem;
+            transition: transform 0.5s ease-in-out;
+            padding: 1rem 0;
+        }
+        
+        .event-card {
+            flex: 0 0 calc((100% - 3rem) / 3);
+            background: var(--bg-white);
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(0,0,0,0.05);
+            min-height: 420px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .event-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 8px rgba(69, 57, 148, 0.15);
+            border-color: rgba(69, 57, 148, 0.2);
+        }
+        
+        .event-image {
+            height: 180px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+        
+        .event-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.6s;
         }
         
-        .profile-actions {
+        .event-card:hover .event-image img {
+            transform: scale(1.05);
+        }
+        
+        .event-status {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-created {
+            background-color: var(--accent);
+            color: var(--text-dark);
+        }
+        
+        .status-reserved {
+            background-color: var(--accent-secondary);
+            color: white;
+        }
+        
+        .event-content {
+            padding: 1.25rem;
+            flex-grow: 1;
             display: flex;
-            justify-content: space-between;
-            gap: 30px;
-            margin-bottom: 60px;
+            flex-direction: column;
         }
         
-        .action-card {
+        .event-date-badge {
+            position: absolute;
+            top: -25px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 160px;
-            text-align: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(69, 57, 148, 0.3);
+            border: 3px solid white;
+            z-index: 10;
         }
         
-        .action-icon {
-            width: 80px;
-            height: 80px;
-            background-color: #9b59ff;
-            border-radius: 50%;
+        .event-date-badge .month {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            margin-bottom: -2px;
+        }
+        
+        .event-date-badge .day {
+            font-size: 1.25rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+        
+        .event-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            margin-top: 0.5rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        
+        .event-category {
+            display: inline-flex;
+            background-color: rgba(164, 0, 255, 0.1);
+            color: var(--accent-secondary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 2rem;
+            margin-bottom: 0.75rem;
+            max-width: fit-content;
+        }
+        
+        .event-details {
+            margin-bottom: 1rem;
+        }
+        
+        .event-detail {
             display: flex;
-            justify-content: center;
             align-items: center;
-            margin-bottom: 15px;
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
         }
         
-        .action-icon svg {
-            width: 30px;
-            height: 30px;
+        .event-detail i {
+            width: 20px;
+            color: var(--primary);
+            margin-right: 0.5rem;
         }
         
-        .action-title {
-            font-size: 16px;
-            font-weight: bold;
-            color: #0a0a8f;
-        }
-        
-        .footer {
-            background-color: #0a0a8f;
-            color: white;
-            padding: 40px 50px;
-            margin-top: auto;
-        }
-        
-        .footer-logo {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .footer-logo h2 {
-            font-size: 32px;
-            font-weight: bold;
-        }
-        
-        .footer-logo span {
-            color: #9b59ff;
-        }
-        
-        .footer-nav {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-        
-        .footer-nav a {
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-        }
-        
-        .footer hr {
-            border: none;
-            height: 1px;
-            background-color: rgba(255, 255, 255, 0.2);
-            margin: 20px 0;
-        }
-        
-        .footer-bottom {
+        .event-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid #F3F4F6;
         }
         
-        .language-selector {
+        .event-capacity {
+            font-size: 0.875rem;
+            color: var(--text-lighter);
             display: flex;
-            gap: 10px;
+            align-items: center;
         }
         
-        .language-btn {
-            background-color: #9b59ff;
-            color: white;
-            border: none;
-            padding: 5px 12px;
-            border-radius: 5px;
+        .event-capacity i {
+            margin-right: 0.4rem;
+            color: var(--primary);
+        }
+        
+        .btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            border-radius: 0.4rem;
             cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            border: none;
         }
         
-        .language-btn.inactive {
-            background-color: transparent;
-            border: 1px solid #9b59ff;
-        }
-        
-        .copyright {
+        .btn-primary {
+            background-color: var(--primary);
             color: white;
-            font-size: 14px;
         }
         
-        @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                padding: 15px;
-            }
-            
-            .nav {
-                margin-top: 15px;
-                gap: 15px;
+        .btn-primary:hover {
+            background-color: #3a2f7d;
+            transform: translateY(-1px);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        /* Navigation Buttons */
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--bg-white);
+            border: 1px solid #E5E7EB;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow);
+            z-index: 10;
+        }
+        
+        .prev-btn {
+            left: -20px;
+        }
+        
+        .next-btn {
+            right: -20px;
+        }
+        
+        .carousel-btn:hover {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 2px 6px rgba(69, 57, 148, 0.3);
+        }
+        
+        .carousel-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .carousel-btn:disabled:hover {
+            background-color: var(--bg-white);
+            color: var(--primary);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            background-color: var(--bg-white);
+            border-radius: 0.75rem;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            color: #D1D5DB;
+            margin-bottom: 1rem;
+        }
+        
+        .empty-state h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .empty-state p {
+            color: var(--text-light);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 250px;
             }
             
             .main-content {
-                padding: 20px;
+                margin-left: 250px;
             }
             
-            .profile-header {
-                flex-direction: column;
-                text-align: center;
+            .event-card {
+                flex: 0 0 calc((100% - 1.5rem) / 2);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
             }
             
-            .profile-header h1 {
-                margin-right: 0;
-                margin-bottom: 20px;
+            .sidebar.open {
+                transform: translateX(0);
             }
             
-            .profile-actions {
-                flex-wrap: wrap;
-                justify-content: center;
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
             }
             
-            .footer {
-                padding: 20px;
+            .welcome-title {
+                font-size: 2rem;
             }
             
-            .footer-nav {
-                flex-wrap: wrap;
-                justify-content: center;
+            .event-card {
+                flex: 0 0 calc(100% - 1rem);
             }
             
-            .footer-bottom {
-                flex-direction: column;
-                gap: 15px;
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .welcome-section {
+                padding: 1.5rem;
+            }
+            
+            .welcome-title {
+                font-size: 1.75rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1001;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
             }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="logo">
-            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="30" height="20" rx="2" fill="#ffd700"/>
-                <path d="M5 5H25M5 10H25M5 15H15" stroke="#0a0a8f" stroke-width="2"/>
-            </svg>
-            <h1>Eventify</h1>
-        </div>
-        
-        <nav class="nav">
-            <a href="#">Home</a>
-            <a href="#">Événements</a>
-            <a href="#">Categorie</a>
-            <a href="#">Créer un événement</a>
-        </nav>
-    </header>
-    
-    <main class="main-content">
-        <div class="profile-header">
-            <h1>Bienvenue Fatima,</h1>
-            <div class="profile-pic">
-                <img src="/api/placeholder/120/120" alt="Fatima" />
-            </div>
-        </div>
-        
-        <div class="profile-actions">
-            <div class="action-card">
-                <div class="action-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
+    <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        {{ utilisateur.prenom.0|upper }}{{ utilisateur.nom.0|upper }}
+                    </div>
+                    <div class="user-details">
+                        <h3>{{ utilisateur.prenom }} {{ utilisateur.nom }}</h3>
+                        <p>{{ utilisateur.email }}</p>
+                    </div>
                 </div>
-                <div class="action-title">Modifier profil</div>
             </div>
             
-            <div class="action-card">
-                <div class="action-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-                        <polyline points="17 6 23 6 23 12"></polyline>
-                    </svg>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active">
+                    <i class="fas fa-user"></i>
+                    Informations
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-history"></i>
+                    Historique Réservations
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-calendar-check"></i>
+                    Historique Événements
+                </a>
+                <a  class="nav-item logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Déconnexion
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+                <div class="welcome-content">
+                    <h1 class="welcome-title">Bienvenue, {{ utilisateur.prenom }}!</h1>
+                    <p class="welcome-subtitle">Voici un aperçu de votre activité sur la plateforme</p>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number">{{ events|length }}</div>
+                            <div class="stat-label">Événements créés</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">{{ reserved_events|length }}</div>
+                            <div class="stat-label">Réservations</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">
+                                {% now "Y-m-d" as today %}
+                                {% for event in reserved_events %}
+                                    {% if event.date >= today %}{{ forloop.counter }}{% endif %}
+                                {% empty %}0{% endfor %}
+                            </div>
+                            <div class="stat-label">À venir</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="action-title">Historique réservations</div>
-            </div>
-            
-            <div class="action-card">
-                <div class="action-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-                        <polyline points="17 6 23 6 23 12"></polyline>
-                    </svg>
+            </section>
+
+            <!-- Mes Événements Créés -->
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">Mes Événements Créés</h2>
                 </div>
-                <div class="action-title">Historique événements</div>
-            </div>
-            
-            <div class="action-card">
-                <div class="action-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="3"></circle>
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                    </svg>
+                
+                {% if events %}
+                <div class="carousel-navigation">
+                    <button class="carousel-btn prev-btn" id="createdPrevBtn">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    
+                    <div class="carousel-container">
+                        <div class="carousel-track" id="createdEventsCarousel">
+                            {% for event in events %}
+                            <article class="event-card">
+                                <div class="event-image">
+                                    {% if event.image %}
+                                        <img src="{{ event.image.url }}" alt="{{ event.title }}">
+                                    {% else %}
+                                        <i class="fas fa-calendar-alt"></i>
+                                    {% endif %}
+                                    <div class="event-status status-created">Créé</div>
+                                </div>
+                                <div class="event-content">
+                                    <div class="event-date-badge">
+                                        <span class="month">{{ event.date|date:"M"|upper }}</span>
+                                        <span class="day">{{ event.date|date:"d" }}</span>
+                                    </div>
+                                    <h3 class="event-title">{{ event.title }}</h3>
+                                    <div class="event-category">{{ event.category|default:"Événement" }}</div>
+                                    <div class="event-details">
+                                        <div class="event-detail">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            <span>{{ event.location|default:"Lieu non spécifié" }}</span>
+                                        </div>
+                                        <div class="event-detail">
+                                            <i class="far fa-clock"></i>
+                                            <span>{{ event.time|default:"Heure non spécifiée" }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="event-footer">
+                                        <div class="event-capacity">
+                                            <i class="fas fa-users"></i>
+                                            <span>{{ event.capacity|default:"0" }} places</span>
+                                        </div>
+                                        <a href="{% url 'edit_event' event.id %}" class="btn btn-primary">
+                                            <i class="fas fa-edit"></i> Modifier
+                                        </a>
+                                    </div>
+                                </div>
+                            </article>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <button class="carousel-btn next-btn" id="createdNextBtn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
                 </div>
-                <div class="action-title">Paramètres</div>
-            </div>
-        </div>
-    </main>
-    
-    <footer class="footer">
-        <div class="footer-logo">
-            <h2>Even<span>Tify</span></h2>
-        </div>
-        
-        <div class="footer-nav">
-            <a href="#">Home</a>
-            <a href="#">Profils</a>
-            <a href="#">Événements</a>
-            <a href="#">Contacts</a>
-            <a href="#">Réservations</a>
-        </div>
-        
-        <hr>
-        
-        <div class="footer-bottom">
-            <div class="language-selector">
-                <button class="language-btn">Français</button>
-                <button class="language-btn inactive">Anglais</button>
-            </div>
+                {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-calendar-plus"></i>
+                    <h3>Aucun événement créé</h3>
+                    <p>Vous n'avez pas encore créé d'événements. Commencez dès maintenant!</p>
+                </div>
+                {% endif %}
+            </section>
+
+            <!-- Mes Réservations -->
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">Mes Réservations</h2>
+                </div>
+                
+                {% if reserved_events %}
+                <div class="carousel-navigation">
+                    <button class="carousel-btn prev-btn" id="reservedPrevBtn">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    
+                    <div class="carousel-container">
+                        <div class="carousel-track" id="reservedEventsCarousel">
+                            {% for event in reserved_events %}
+                            <article class="event-card">
+                                <div class="event-image">
+                                    {% if event.image %}
+                                        <img src="{{ event.image.url }}" alt="{{ event.title }}">
+                                    {% else %}
+                                        <i class="fas fa-ticket-alt"></i>
+                                    {% endif %}
+                                    <div class="event-status status-reserved">Réservé</div>
+                                </div>
+                                <div class="event-content">
+                                    <div class="event-date-badge">
+                                        <span class="month">{{ event.date|date:"M"|upper }}</span>
+                                        <span class="day">{{ event.date|date:"d" }}</span>
+                                    </div>
+                                    <h3 class="event-title">{{ event.title }}</h3>
+                                    <div class="event-category">{{ event.category|default:"Événement" }}</div>
+                                    <div class="event-details">
+                                        <div class="event-detail">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            <span>{{ event.location|default:"Lieu non spécifié" }}</span>
+                                        </div>
+                                        <div class="event-detail">
+                                            <i class="far fa-clock"></i>
+                                            <span>{{ event.time|default:"Heure non spécifiée" }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="event-footer">
+                                        <div class="event-capacity">
+                                            <i class="fas fa-ticket-alt"></i>
+                                            <span>Places réservées</span>
+                                        </div>
+                                        <a href="{% url 'event_detail' event.id %}" class="btn btn-outline">
+                                            <i class="fas fa-eye"></i> Voir
+                                        </a>
+                                    </div>
+                                </div>
+                            </article>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <button class="carousel-btn next-btn" id="reservedNextBtn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-calendar-times"></i>
+                    <h3>Aucune réservation</h3>
+                    <p>Vous n'avez pas encore réservé d'événements. Explorez nos événements!</p>
+                </div>
+                {% endif %}
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Fonction pour basculer la sidebar mobile
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        }
+
+        // Classe pour gérer les carrousels
+        class Carousel {
+            constructor(trackId, prevBtnId, nextBtnId) {
+                this.track = document.getElementById(trackId);
+                this.prevBtn = document.getElementById(prevBtnId);
+                this.nextBtn = document.getElementById(nextBtnId);
+                this.currentIndex = 0;
+                this.itemsPerPage = 3;
+                
+                if (this.track) {
+                    this.items = this.track.children;
+                    this.totalItems = this.items.length;
+                    this.maxIndex = Math.max(0, this.totalItems - this.itemsPerPage);
+                    
+                    this.init();
+                }
+            }
             
-            <div class="copyright">© 2025 Uploaded by Eventify</div>
-        </div>
-    </footer>
+            init() {
+                if (this.prevBtn) {
+                    this.prevBtn.addEventListener('click', () => this.prev());
+                }
+                if (this.nextBtn) {
+                    this.nextBtn.addEventListener('click', () => this.next());
+                }
+                this.updateButtons();
+                this.updateResponsive();
+                
+                window.addEventListener('resize', () => this.updateResponsive());
+            }
+            
+            updateResponsive() {
+                const width = window.innerWidth;
+                if (width <= 768) {
+                    this.itemsPerPage = 1;
+                } else if (width <= 1024) {
+                    this.itemsPerPage = 2;
+                } else {
+                    this.itemsPerPage = 3;
+                }
+                this.maxIndex = Math.max(0, this.totalItems - this.itemsPerPage);
+                this.currentIndex = Math.min(this.currentIndex, this.maxIndex);
+                this.updateTransform();
+                this.updateButtons();
+            }
+            
+            prev() {
+                if (this.currentIndex > 0) {
+                    this.currentIndex--;
+                    this.updateTransform();
+                    this.updateButtons();
+                }
+            }
+            
+            next() {
+                if (this.currentIndex < this.maxIndex) {
+                    this.currentIndex++;
+                    this.updateTransform();
+                    this.updateButtons();
+                }
+            }
+            
+            updateTransform() {
+                if (this.track && this.items.length > 0) {
+                    const itemWidth = this.items[0].offsetWidth;
+                    const gap = 24; // 1.5rem en pixels
+                    const translateX = -(this.currentIndex * (itemWidth + gap));
+                    this.track.style.transform = `translateX(${translateX}px)`;
+                }
+            }
+            
+            updateButtons() {
+                if (this.prevBtn) {
+                    this.prevBtn.disabled = this.currentIndex === 0;
+                }
+                if (this.nextBtn) {
+                    this.nextBtn.disabled = this.currentIndex >= this.maxIndex;
+                }
+            }
+        }
+
+        // Initialisation des carrousels
+        document.addEventListener('DOMContentLoaded', function() {
+            const createdCarousel = new Carousel('createdEventsCarousel', 'createdPrevBtn', 'createdNextBtn');
+            const reservedCarousel = new Carousel('reservedEventsCarousel', 'reservedPrevBtn', 'reservedNextBtn');
+    </script>
 </body>
 </html>
+
+    

@@ -80,8 +80,18 @@ def connexion(request):
     else:
         return render(request, 'connexion.html')
 
+def deconnexion(request):
+    try:
+        del request.session['email']
+    except KeyError:
+        pass
+    messages.success(request, "Vous avez été déconnecté.")
+    return redirect('connexion')
+
+
 def accueil(request):
-    return render(request, 'accueil.html')
+    events = list[db.events.find({})]
+    return render(request, 'accueil.html', {'events': events})
 
 
 

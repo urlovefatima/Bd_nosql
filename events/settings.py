@@ -39,8 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
+    'authenticate',
+    'historique',
     'Event',
-    'admin_app'
+    'admin_app',
+    'Profil'
 ]
 
 MIDDLEWARE = [
@@ -66,6 +69,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'authenticate.context_processors.utilisateur_connecte',
             ],
         },
     },
