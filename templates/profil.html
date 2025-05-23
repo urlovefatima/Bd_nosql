@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Profil | Dashboard Utilisateur</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<style>
         :root {
             --primary: #453994;
             --primary-light: #8939b4;
@@ -606,9 +603,7 @@
                 display: block;
             }
         }
-    </style>
-</head>
-<body>
+</style>
     <button class="mobile-menu-toggle" onclick="toggleSidebar()">
         <i class="fas fa-bars"></i>
     </button>
@@ -629,19 +624,19 @@
             </div>
             
             <nav class="sidebar-nav">
-                <a href="#" class="nav-item active">
+                <a href="{% url 'infos-user' %}" class="nav-item active">
                     <i class="fas fa-user"></i>
                     Informations
                 </a>
-                <a href="#" class="nav-item">
+                <a href="{% url 'get_historique_event_reserved' utilisateur.email %}" class="nav-item">
                     <i class="fas fa-history"></i>
                     Historique Réservations
                 </a>
-                <a href="#" class="nav-item">
+                <a href="{% url 'get_historique_event' utilisateur.email  %}" class="nav-item">
                     <i class="fas fa-calendar-check"></i>
                     Historique Événements
                 </a>
-                <a  class="nav-item logout">
+                <a href="{% url 'deconnexion' %}" class="nav-item logout">
                     <i class="fas fa-sign-out-alt"></i>
                     Déconnexion
                 </a>
@@ -911,7 +906,5 @@
             const createdCarousel = new Carousel('createdEventsCarousel', 'createdPrevBtn', 'createdNextBtn');
             const reservedCarousel = new Carousel('reservedEventsCarousel', 'reservedPrevBtn', 'reservedNextBtn');
     </script>
-</body>
-</html>
 
-    
+{% endblock content %}

@@ -61,4 +61,3 @@ def infos_utilisateur(request):
     utilisateur = db.users.find_one({'email': email})
 
     return render(request, 'infos-user.html', {'utilisateur': utilisateur})
-    return render(request, 'profil.html', {'utilisateur': utilisateur, 'events': events})

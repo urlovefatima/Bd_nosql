@@ -371,7 +371,20 @@
                     <p>Ce match de gala exceptionnel rassemblera les meilleurs talents sportifs de la région pour une compétition amicale mais intense. Venez encourager vos athlètes préférés et profiter d'une journée remplie d'action et de divertissement!</p>
                     
                     <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-4">
-                        <button class="btn btn-primary me-md-2">Réserver maintenant</button>
+                        {% if proprity %}
+                        <a href="{% url 'delete_event' event.id %}" style = "text-decoration: none; color: inherit">
+                            <button class="btn btn-primary me-md-2">Supprimer l'evenement</button>
+                        </a>
+                        {% elif not proprity and reserved %}
+                        <a href="{% url 'EventDetail:annuler_reserve_evenement' event.id %}" style = "text-decoration: none; color: inherit">
+                            <button class="btn btn-primary me-md-2">Supprimer votre reservation</button>
+                        </a>
+                        {% else %}
+                        <a href="{% url 'EventDetail:reserve_evenement' event.id %}" style = "text-decoration: none; color: inherit">
+                            <button class="btn btn-primary me-md-2">Réserver maintenant</button>
+                        </a>
+                        {% endif %}
+                        
                         <button class="btn btn-outline-primary">Partager <i class="fas fa-share-alt ms-2"></i></button>
                     </div>
                 </div>
