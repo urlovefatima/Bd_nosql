@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Utilisateur</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --card-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            --hover-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+
+        .profile-header {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .cover-photo {
+            height: 300px;
+            background: var(--primary-gradient);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+
+        .cover-photo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(102,126,234,0.8), rgba(118,75,162,0.8));
+            backdrop-filter: blur(10px);
+        }
+
+        .profile-picture {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 6px solid white;
+            box-shadow: var(--card-shadow);
+            background: white;
+            overflow: hidden;
+        }
+
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-info {
+            text-align: center;
+            margin-top: 70px;
+            padding: 2rem;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .user-name {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .user-title {
+            color: #666;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255,255,255,0.7);
+            border-radius: 15px;
+            min-width: 120px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 3rem 0 2rem 0;
+            background: var(--secondary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+        }
+
+        .event-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            margin: 1rem;
+            height: 450px;
+        }
+
+        .event-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .event-image {
+            height: 200px;
+            background: var(--primary-gradient);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .event-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .event-card:hover .event-image img {
+            transform: scale(1.05);
+        }
+
+        .event-content {
+            padding: 1.5rem;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .event-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .event-info {
+            color: #666;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .event-info i {
+            color: #667eea;
+            width: 16px;
+        }
+
+        .event-creator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .creator-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: 50px;
+            height: 50px;
+            background: rgba(102,126,234,0.1);
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .carousel-control-prev {
+            left: -25px;
+        }
+
+        .carousel-control-next {
+            right: -25px;
+        }
+
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-color: #667eea;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+        }
+
+        .carousel-indicators {
+            bottom: -50px;
+        }
+
+        .carousel-indicators button {
+            background-color: #667eea;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin: 0 5px;
+        }
+
+        @media (max-width: 768px) {
+            .user-name {
+                font-size: 2rem;
+            }
+            
+            .stats-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .cover-photo {
+                height: 200px;
+            }
+            
+            .profile-picture {
+                width: 120px;
+                height: 120px;
+                bottom: -40px;
+            }
+            
+            .user-info {
+                margin-top: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    {%include "shared_component/navbar.html" %}
+    <div class="container-fluid px-4 py-4">
+        <!-- En-tête du profil -->
+        <div class="profile-header">
+            <div class="cover-photo">
+                <div class="profile-picture">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" alt="Photo de profil" id="profileImg">
+                </div>
+            </div>
+            
+            <div class="user-info">
+                <h1 class="user-name" id="userName">Alexandre Dubois</h1>
+                <p class="user-title">Organisateur d'événements passionné</p>
+                
+                <div class="stats-container">
+                    <div class="stat-item">
+                        <div class="stat-number" id="eventsCreated">12</div>
+                        <div class="stat-label">Événements créés</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="eventsBooked">8</div>
+                        <div class="stat-label">Événements réservés</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">350</div>
+                        <div class="stat-label">Participants totaux</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Événements créés -->
+        <div class="row">
+            <div class="col-12">
+                <h2 class="section-title">
+                    <i class="fas fa-calendar-plus me-2"></i>
+                    Mes Événements Créés
+                </h2>
+                
+                <div id="createdEventsCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner" id="createdEventsContainer">
+                        <!-- Les événements créés seront générés par JavaScript -->
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#createdEventsCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#createdEventsCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                    <div class="carousel-indicators" id="createdIndicators"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Événements réservés -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <h2 class="section-title">
+                    <i class="fas fa-ticket-alt me-2"></i>
+                    Mes Réservations
+                </h2>
+                
+                <div id="bookedEventsCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner" id="bookedEventsContainer">
+                        <!-- Les événements réservés seront générés par JavaScript -->
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#bookedEventsCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#bookedEventsCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                    <div class="carousel-indicators" id="bookedIndicators"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {%include "shared_component/footer.html" %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Données d'exemple pour les événements créés
+        const createdEvents = [
+            {
+                titre: "Concert Jazz sous les Étoiles",
+                localisation: "Parc Central, Paris",
+                date_heure: "2025-06-15 20:00",
+                capacite: 150,
+                photo_couverture: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=250&fit=crop",
+                createur: "Alexandre Dubois"
+            },
+            {
+                titre: "Atelier Cuisine Méditerranéenne",
+                localisation: "École Culinaire Lyon",
+                date_heure: "2025-06-22 14:00",
+                capacite: 20,
+                photo_couverture: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=250&fit=crop",
+                createur: "Alexandre Dubois"
+            },
+            {
+                titre: "Marathon de Danse Salsa",
+                localisation: "Salle Pleyel, Paris",
+                date_heure: "2025-07-05 19:30",
+                capacite: 200,
+                photo_couverture: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=400&h=250&fit=crop",
+                createur: "Alexandre Dubois"
+            },
+            {
+                titre: "Exposition Art Moderne",
+                localisation: "Galerie Moderne, Marseille",
+                date_heure: "2025-07-10 10:00",
+                capacite: 80,
+                photo_couverture: "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=400&h=250&fit=crop",
+                createur: "Alexandre Dubois"
+            }
+        ];
+
+        // Données d'exemple pour les événements réservés
+        const bookedEvents = [
+            {
+                titre: "Festival de Musique Électronique",
+                localisation: "Plage du Mourillon, Toulon",
+                date_heure: "2025-06-28 22:00",
+                capacite: 5000,
+                photo_couverture: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&h=250&fit=crop",
+                createur: "EventPro"
+            },
+            {
+                titre: "Conférence Tech Innovation",
+                localisation: "Palais des Congrès, Nice",
+                date_heure: "2025-07-12 09:00",
+                capacite: 300,
+                photo_couverture: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=400&h=250&fit=crop",
+                createur: "TechEvents"
+            },
+            {
+                titre: "Tournoi de Tennis Amateur",
+                localisation: "Club Tennis Elite, Cannes",
+                date_heure: "2025-07-20 08:00",
+                capacite: 64,
+                photo_couverture: "https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=400&h=250&fit=crop",
+                createur: "SportClub"
+            }
+        ];
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            return date.toLocaleDateString('fr-FR', options);
+        }
+
+        function getCreatorInitials(name) {
+            return name.split(' ').map(n => n[0]).join('').toUpperCase();
+        }
+
+        function createEventCard(event) {
+            return `
+                <div class="event-card">
+                    <div class="event-image">
+                        <img src="${event.photo_couverture}" alt="${event.titre}">
+                    </div>
+                    <div class="event-content">
+                        <div>
+                            <h3 class="event-title">${event.titre}</h3>
+                            <div class="event-info">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>${event.localisation}</span>
+                            </div>
+                            <div class="event-info">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>${formatDate(event.date_heure)}</span>
+                            </div>
+                            <div class="event-info">
+                                <i class="fas fa-users"></i>
+                                <span>${event.capacite} participants max</span>
+                            </div>
+                        </div>
+                        <div class="event-creator">
+                            <div class="creator-avatar">
+                                ${getCreatorInitials(event.createur)}
+                            </div>
+                            <span>Organisé par <strong>${event.createur}</strong></span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createCarouselSlide(events, startIndex) {
+            const eventsPerSlide = window.innerWidth >= 768 ? 3 : 1;
+            const slideEvents = events.slice(startIndex, startIndex + eventsPerSlide);
+            
+            return `
+                <div class="carousel-item ${startIndex === 0 ? 'active' : ''}">
+                    <div class="row justify-content-center">
+                        ${slideEvents.map(event => `
+                            <div class="col-lg-4 col-md-6 col-12">
+                                ${createEventCard(event)}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function createCarouselIndicators(totalSlides, targetId) {
+            let indicators = '';
+            for (let i = 0; i < totalSlides; i++) {
+                indicators += `
+                    <button type="button" data-bs-target="#${targetId}" data-bs-slide-to="${i}" 
+                    ${i === 0 ? 'class="active"' : ''}></button>
+                `;
+            }
+            return indicators;
+        }
+
+        function generateCarousel(events, containerId, indicatorsId, carouselId) {
+            const container = document.getElementById(containerId);
+            const indicators = document.getElementById(indicatorsId);
+            const eventsPerSlide = window.innerWidth >= 768 ? 3 : 1;
+            const totalSlides = Math.ceil(events.length / eventsPerSlide);
+            
+            let slides = '';
+            for (let i = 0; i < events.length; i += eventsPerSlide) {
+                slides += createCarouselSlide(events, i);
+            }
+            
+            container.innerHTML = slides;
+            indicators.innerHTML = createCarouselIndicators(totalSlides, carouselId);
+        }
+
+        // Initialiser les carousels
+        function initCarousels() {
+            generateCarousel(createdEvents, 'createdEventsContainer', 'createdIndicators', 'createdEventsCarousel');
+            generateCarousel(bookedEvents, 'bookedEventsContainer', 'bookedIndicators', 'bookedEventsCarousel');
+        }
+
+        // Fonction pour changer les informations du profil
+        function updateProfile(userData) {
+            document.getElementById('userName').textContent = userData.nom || 'Alexandre Dubois';
+            document.getElementById('profileImg').src = userData.photo_profil || 
+                'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face';
+            document.getElementById('eventsCreated').textContent = userData.events_crees?.length || createdEvents.length;
+            document.getElementById('eventsBooked').textContent = userData.events_reserves?.length || bookedEvents.length;
+        }
+
+        // Initialiser la page
+        document.addEventListener('DOMContentLoaded', function() {
+            initCarousels();
+            
+            // Réinitialiser les carousels lors du redimensionnement
+            window.addEventListener('resize', function() {
+                setTimeout(initCarousels, 100);
+            });
+        });
+
+        // Animation de chargement progressive
+        setTimeout(() => {
+            document.querySelectorAll('.event-card').forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        }, 100);
+    </script>
+</body>
+</html>

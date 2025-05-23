@@ -24,6 +24,7 @@ urlpatterns = [
     path('events/', include('app.urls')),
     path('admin_page/', include('admin_app.urls')),
     path('event/', include('Event.urls')),
+    path('profile/', include('Profile.urls')),
     path('', include('authenticate.urls'))
 ]
 if settings.DEBUG:

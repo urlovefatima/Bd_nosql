@@ -12,6 +12,7 @@ from datetime import datetime, timedelta
 def get_events(request):
     if db is not None :
         events = list(db.events.find())
+        print(events)
         for ev in events:
             ev['id'] = str(ev['_id'])
         return render(request, 'test.html', {'events': events})
