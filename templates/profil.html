@@ -629,19 +629,19 @@
             </div>
             
             <nav class="sidebar-nav">
-                <a href="#" class="nav-item active">
+                <a href="{% url 'infos-user' %}" class="nav-item active">
                     <i class="fas fa-user"></i>
                     Informations
                 </a>
-                <a href="#" class="nav-item">
+                <a href="{% url 'get_historique_event_reserved' utilisateur.email %}" class="nav-item">
                     <i class="fas fa-history"></i>
                     Historique Réservations
                 </a>
-                <a href="#" class="nav-item">
+                <a href="{% url 'get_historique_event' utilisateur.email  %}" class="nav-item">
                     <i class="fas fa-calendar-check"></i>
                     Historique Événements
                 </a>
-                <a  class="nav-item logout">
+                <a href="{% url 'deconnexion' %}" class="nav-item logout">
                     <i class="fas fa-sign-out-alt"></i>
                     Déconnexion
                 </a>
