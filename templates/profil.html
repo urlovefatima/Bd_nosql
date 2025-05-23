@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventify - Profil</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background-color: #0a0a8f;
+            color: white;
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            width: 30px;
+            margin-right: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            color: #ffd700;
+            font-weight: bold;
+        }
+        
+        .nav {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .main-content {
+            padding: 40px 50px;
+            flex: 1;
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+        
+        .profile-header h1 {
+            font-size: 36px;
+            color: #333;
+            margin-right: 50px;
+        }
+        
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+        
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .profile-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .action-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 160px;
+            text-align: center;
+        }
+        
+        .action-icon {
+            width: 80px;
+            height: 80px;
+            background-color: #9b59ff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .action-icon svg {
+            width: 30px;
+            height: 30px;
+        }
+        
+        .action-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #0a0a8f;
+        }
+        
+        .footer {
+            background-color: #0a0a8f;
+            color: white;
+            padding: 40px 50px;
+            margin-top: auto;
+        }
+        
+        .footer-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .footer-logo h2 {
+            font-size: 32px;
+            font-weight: bold;
+        }
+        
+        .footer-logo span {
+            color: #9b59ff;
+        }
+        
+        .footer-nav {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        
+        .footer hr {
+            border: none;
+            height: 1px;
+            background-color: rgba(255, 255, 255, 0.2);
+            margin: 20px 0;
+        }
+        
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .language-selector {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .language-btn {
+            background-color: #9b59ff;
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .language-btn.inactive {
+            background-color: transparent;
+            border: 1px solid #9b59ff;
+        }
+        
+        .copyright {
+            color: white;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            .nav {
+                margin-top: 15px;
+                gap: 15px;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-header h1 {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            
+            .profile-actions {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .footer {
+                padding: 20px;
+            }
+            
+            .footer-nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="30" height="20" rx="2" fill="#ffd700"/>
+                <path d="M5 5H25M5 10H25M5 15H15" stroke="#0a0a8f" stroke-width="2"/>
+            </svg>
+            <h1>Eventify</h1>
+        </div>
+        
+        <nav class="nav">
+            <a href="#">Home</a>
+            <a href="#">Événements</a>
+            <a href="#">Categorie</a>
+            <a href="#">Créer un événement</a>
+        </nav>
+    </header>
+    
+    <main class="main-content">
+        <div class="profile-header">
+            <h1>Bienvenue Fatima,</h1>
+            <div class="profile-pic">
+                <img src="/api/placeholder/120/120" alt="Fatima" />
+            </div>
+        </div>
+        
+        <div class="profile-actions">
+            <div class="action-card">
+                <div class="action-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+                <div class="action-title">Modifier profil</div>
+            </div>
+            
+            <div class="action-card">
+                <div class="action-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                        <polyline points="17 6 23 6 23 12"></polyline>
+                    </svg>
+                </div>
+                <div class="action-title">Historique réservations</div>
+            </div>
+            
+            <div class="action-card">
+                <div class="action-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                        <polyline points="17 6 23 6 23 12"></polyline>
+                    </svg>
+                </div>
+                <div class="action-title">Historique événements</div>
+            </div>
+            
+            <div class="action-card">
+                <div class="action-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                </div>
+                <div class="action-title">Paramètres</div>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="footer">
+        <div class="footer-logo">
+            <h2>Even<span>Tify</span></h2>
+        </div>
+        
+        <div class="footer-nav">
+            <a href="#">Home</a>
+            <a href="#">Profils</a>
+            <a href="#">Événements</a>
+            <a href="#">Contacts</a>
+            <a href="#">Réservations</a>
+        </div>
+        
+        <hr>
+        
+        <div class="footer-bottom">
+            <div class="language-selector">
+                <button class="language-btn">Français</button>
+                <button class="language-btn inactive">Anglais</button>
+            </div>
+            
+            <div class="copyright">© 2025 Uploaded by Eventify</div>
+        </div>
+    </footer>
+</body>
+</html>

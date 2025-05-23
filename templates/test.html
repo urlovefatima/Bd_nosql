@@ -3455,8 +3455,8 @@
                 {% for event in events %}
                     <article class="event-card">
                         <div class="event-image">
-                            {% if event.image_url or event.photo_couverture %}
-                                <img src="{{ event.photo_couverture }}" alt="{{ event.titre }}">
+                            {% if event.image_url %}
+                                <img src="{{ event.image_url }}" alt="{{ event.titre }}">
                             {% else %}
                                 <img src="{% static 'img/event-placeholder.jpg' %}" alt="{{ event.titre }}">
                             {% endif %}
