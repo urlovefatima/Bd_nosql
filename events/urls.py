@@ -27,6 +27,8 @@ urlpatterns = [
     path('event/', include('Event.urls')),
     path('', include('authenticate.urls')),
     path('profil/', include('Profil.urls')),
+    path('historique/', include('historique.urls')),
+    path('profile/', include('Profile.urls')),
     path('', include('authenticate.urls'))
 ]
 if settings.DEBUG:

@@ -1,8 +1,11 @@
-{% extends "base.html" %}
 {% load static %}
-
-{% block content %}
-
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Événements | Découvrez notre agenda</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary: #453994;
@@ -117,8 +120,8 @@
         }
         
         .events-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            display: flex;
+            flex-direction: column;
             gap: 1.5rem;
             margin-bottom: 3rem;
             position: relative;
@@ -131,9 +134,9 @@
             overflow: hidden;
             box-shadow: var(--shadow);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            height: 100%;
+            width: 100%;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             border: 1px solid rgba(0,0,0,0.05);
         }
         
@@ -144,7 +147,7 @@
         }
         
         .event-image {
-            height: 200px;
+            width: 35%;
             position: relative;
             overflow: hidden;
         }
@@ -181,7 +184,7 @@
         .featured-badge {
             position: absolute;
             top: 1rem;
-            right: 1rem;
+            left: 1rem;
             background-color: var(--accent);
             color: var(--text-dark);
             font-size: 0.75rem;
@@ -193,18 +196,19 @@
         }
         
         .event-content {
-            padding: 1.25rem;
+            padding: 1.5rem;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
             font-size: 1rem;
             position: relative;
+            width: 65%;
         }
         
         .event-date-badge {
             position: absolute;
-            top: -35px; /* Position au-dessus de la carte */
-            right: 20px;
+            top: 1.5rem;
+            right: 1.5rem;
             width: 60px;
             height: 60px;
             background-color: var(--primary);
@@ -216,8 +220,7 @@
             justify-content: center;
             font-weight: bold;
             box-shadow: 0 4px 10px rgba(69, 57, 148, 0.3);
-            z-index: 20; /* Z-index très élevé */
-            border: 3px solid white;
+            z-index: 20;
         }
         
         .event-date-badge .month {
@@ -234,12 +237,12 @@
         }
         
         .event-title {
-            font-size: 1.35rem;
+            font-size: 1.5rem;
             font-weight: 700;
             line-height: 1.4;
             color: var(--text-dark);
             margin-bottom: 0.75rem;
-            margin-top: 0.5rem;
+            padding-right: 70px;
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
@@ -270,6 +273,19 @@
         
         .event-detail.location {
             grid-column: span 2;
+        }
+        
+        .event-description {
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
         }
         
         .event-footer {
@@ -328,12 +344,12 @@
         }
         
         .empty-state {
-            grid-column: 1 / -1;
             text-align: center;
             padding: 4rem 2rem;
             background-color: white;
             border-radius: 1rem;
             box-shadow: var(--shadow);
+            width: 100%;
         }
         
         .empty-state i {
@@ -353,10 +369,23 @@
             max-width: 500px;
             margin: 0 auto;
         }
+
+        .img-grise{
+            filter: grayscale(50%);
+        }
         
         @media (max-width: 1024px) {
-            .events-grid {
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            .event-card {
+                flex-direction: column;
+            }
+            
+            .event-image {
+                width: 100%;
+                height: 200px;
+            }
+            
+            .event-content {
+                width: 100%;
             }
         }
         
@@ -373,11 +402,8 @@
                 grid-template-columns: 1fr;
             }
             
-            .event-date-badge {
-                top: -25px;
-                right: 15px;
-                width: 50px;
-                height: 50px;
+            .event-description {
+                -webkit-line-clamp: 4;
             }
         }
         
@@ -396,61 +422,50 @@
             }
             
             .event-date-badge {
-                top: -20px;
-                right: 10px;
-                width: 45px;
-                height: 45px;
+                width: 50px;
+                height: 50px;
+                top: 1rem;
+                right: 1rem;
             }
             
             .event-date-badge .day {
                 font-size: 1.25rem;
             }
+            
+            .event-title {
+                font-size: 1.25rem;
+                padding-right: 60px;
+            }
         }
     </style>
+</head>
+<body>
     <div class="container">
         <header>
-            <h1 class="my-5">Événements à découvrir</h1>
+            <h1>Événements à découvrir</h1>
             <p>Les rendez-vous culturels, artistiques et festifs à ne pas manquer</p>
         </header>
         
-        <section class="filter-section my-5">
+        <section class="filter-section">
             <div class="filters">
-                <a href="{% url "events" %}">
                 <button class="filter-btn active">Tous</button>
-                </a>
-                <a href="{% url "categories" %}">
                 <button class="filter-btn">Catégorie</button>
-                </a>
-                <a href="{% url "gratuits" %}">
                 <button class="filter-btn">Gratuit</button>
-                </a>
-                <a href="{% url "payants" %}">
                 <button class="filter-btn">Payant</button>
-                </a>
-                <a href="{% url "aujourdhui" %}">
                 <button class="filter-btn">Aujourd'hui</button>
-                </a>
-                <a href="{% url "semaine" %}">
                 <button class="filter-btn">Dans la semaine</button>
-                </a>
-                <a href="{% url "mois" %}">
                 <button class="filter-btn">Dans le mois</button>
-                </a>
             </div>
         </section>
 
         <div class="events-grid">
-            {% if events %}
-                {% for event in events %}
+            {% if events_created %}
+                {% for event in events_created %}
                     <article class="event-card">
                         <div class="event-image">
                             {% if event.image_url %}
-                                <img src="{{ event.image_url }}" alt="{{ event.titre }}">
-                            {% else %}
-                                <img src="{% static 'img/event-placeholder.jpg' %}" alt="{{ event.titre }}">
-                            {% endif %}
-                            {% if event.is_featured %}
-                                <div class="featured-badge">À ne pas manquer</div>
+                                <img src="{% static 'img/events.jpg' %}" alt="{{ event.titre }}" class='img-grise'>
+                            
                             {% endif %}
                         </div>
                         <div class="event-content">
@@ -474,13 +489,16 @@
                                     <span>{{ event.statut }}</span>
                                 </div>
                             </div>
+                            <div class="event-description">
+                                {{ event.description|default:"Description non disponible. Cet événement promet d'être une expérience unique. Venez nombreux pour participer à ce moment de partage et de découverte." }}
+                            </div>
                             <div class="event-footer">
                                 <div class="event-capacity">
                                     <i class="fas fa-users"></i>
                                     <span>{{ event.capacite|default:"200" }} places</span>
                                 </div>
                                 <div class="event-action">
-                                    <a class="btn btn-primary" href="{% url 'EventDetail:event_detail' event.id %}">
+                                    <a class="btn btn-primary">
                                         <i class="fas fa-arrow-right"></i> Détails
                                     </a>
                                 </div>
@@ -497,6 +515,7 @@
             {% endif %}
         </div>
     </div>
+
     <script>
         document.querySelectorAll('.filter-btn').forEach(button => {
             button.addEventListener('click', function() {
@@ -530,4 +549,5 @@
             }
         });
     </script>
-{% endblock %}
+</body>
+</html>
