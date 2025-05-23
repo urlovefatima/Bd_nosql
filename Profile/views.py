@@ -2,6 +2,7 @@ from django.shortcuts import render
 from mongo import db
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from datetime import datetime
 
 def profil_utilisateur(request):
     email = request.session.get('email')
@@ -15,8 +16,22 @@ def profil_utilisateur(request):
     if not utilisateur:
         messages.error(request, "Utilisateur introuvable.")
         return redirect('connexion')
-    events = list[db.events.find({'createur': utilisateur['_id']})]
-    reserved_events = list[db.reservations.find({'utilisateur':utilisateur['_id']})]
+    from datetime import datetime
+
+    events = []
+    reserved_events = []
+
+    for event in list(db.events.find({'createur': utilisateur['_id']})):
+        if event['date_heure'] > datetime.now():
+            events.append(event)
+
+    for reserve in list(db.reservations.find({'utilisateur': utilisateur['_id']})):
+        event_reserved = db.events.find_one({'_id': reserve['evenement']})
+        if event_reserved and event_reserved['date_heure'] > datetime.now():
+            reserved_events.append(event_reserved)
+
+    events = sorted(events, key=lambda e: e['date_heure'])
+    reserved_events = sorted(reserved_events, key=lambda e: e['date_heure'])
 
     return render(request, 'profil.html', {'utilisateur': utilisateur, 'events': events, 'reserved_events': reserved_events})
 def consulted_profil(request, email):
@@ -25,10 +40,12 @@ def consulted_profil(request, email):
         if not utilisateur:
             messages.error(request, "Utilisateur introuvable.")
             return redirect('accueil')
-        events = list[db.events.find({'createur': utilisateur['_id']})]
-        reserved_events = list[db.reservations.find({'utilisateur':utilisateur['_id']})]
-    
+        events = []
+        for event in list(db.events.find({'createur': utilisateur['_id']})):
+            if event['date_heure'] > datetime.now():
+                events.append(event)
+        events = sorted(events, key=lambda e: e['date_heure'])
     else:
         return render(request, 'profil.html')
 
-    return render(request, 'profil.html', {'utilisateur': utilisateur, 'events': events, 'reserved_events': reserved_events})
+    return render(request, 'profil.html', {'utilisateur': utilisateur, 'events': events})

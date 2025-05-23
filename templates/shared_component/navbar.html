@@ -153,14 +153,14 @@
                 <a class="nav-link active" href="#">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Événements</a>
+                <a class="nav-link" href="{% url "events" %}">Événements</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Catégories</a>
+                <a class="nav-link" href="{% url "categories" %}">Catégories</a>
               </li>
               {% if utilisateur_connecte %}
               <li class="nav-item">
-                <a class="nav-link" href="#">Créer un événement</a>
+                <a class="nav-link" href="{% url "create_event" %}">Créer un événement</a>
               </li>
               <li class="nav-item ms-3">
                 <a href="{% url "profil_utilisateur" %}" class="btn">
