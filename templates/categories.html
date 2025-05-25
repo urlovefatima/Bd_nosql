@@ -1,7 +1,7 @@
-{% extends "base.html" %}
+{% extends "test.html" %}
 {% load static %}
 
-{% block content %}
+{% block event %}
 
     <style>
         :root {
@@ -24,18 +24,6 @@
             box-sizing: border-box;
         }
         
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--bg-light);
-            color: var(--text-dark);
-            line-height: 1.5;
-        }
-        
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 1.5rem;
-        }
         
         header {
             margin-bottom: 2.5rem;
@@ -231,11 +219,11 @@
         }
         
         .prev-btn {
-            left: -20px;
+            left: -50px;
         }
         
         .next-btn {
-            right: -20px;
+            right: -50px;
         }
         
         .carousel-btn:hover {
@@ -539,24 +527,6 @@
         }
     </style>
     <div class="container">
-        <header>
-            <h1>Événements à découvrir</h1>
-            <p>Les rendez-vous culturels, artistiques et festifs à ne pas manquer</p>
-        </header>
-        
-        <section class="filter-section">
-            <div class="filters">
-                <button class="filter-btn active">Tous</button>
-                {% for c in categories %}
-                <button class="filter-btn">{{ c }}</button>
-                {% endfor %}
-                <button class="filter-btn">Gratuit</button>
-                <button class="filter-btn">Payant</button>
-                <button class="filter-btn">Aujourd'hui</button>
-                <button class="filter-btn">Dans la semaine</button>
-                <button class="filter-btn">Dans le mois</button>
-            </div>
-        </section>
 
         {% for c in categories %}
         <section class="category-section" id="category-{{ c|slugify }}">
@@ -649,23 +619,6 @@
     </div>
 
     <script>
-        // Gestion des filtres
-        document.querySelectorAll('.filter-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                document.querySelectorAll('.filter-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                
-                this.classList.add('active');
-                
-                const category = this.textContent;
-                if (category !== 'Tous') {
-                    window.location.href = `?category=${encodeURIComponent(category)}`;
-                } else {
-                    window.location.href = '?';
-                }
-            });
-        });
 
         // Gestion des carrousels
         document.addEventListener('DOMContentLoaded', () => {
@@ -698,22 +651,6 @@
                 // Effacer les indicateurs existants
                 indicators.innerHTML = '';
                 
-                // Créer les indicateurs
-                for (let i = 0; i < totalIndicators; i++) {
-                    const dot = document.createElement('div');
-                    dot.classList.add('carousel-indicator');
-                    if (i === 0) dot.classList.add('active');
-                    dot.dataset.index = i;
-                    indicators.appendChild(dot);
-                    
-                    // Ajouter un événement de clic à l'indicateur
-                    dot.addEventListener('click', function() {
-                        const index = parseInt(this.dataset.index);
-                        currentIndex = index;
-                        slideCarousel(categoryId, index);
-                        updateIndicators(categoryId, index);
-                    });
-                }
                 
                 // Gérer les clics sur prev/next
                 if (prevBtn && nextBtn) {
@@ -796,17 +733,6 @@
             }
         }
         
-        // Fonction pour mettre à jour les indicateurs
-        function updateIndicators(categoryId, activeIndex) {
-            const indicators = document.querySelectorAll(`#indicators-${categoryId} .carousel-indicator`);
-            indicators.forEach((indicator, index) => {
-                if (index === activeIndex) {
-                    indicator.classList.add('active');
-                } else {
-                    indicator.classList.remove('active');
-                }
-            });
-        }
         
         // Ajuster les carrousels lors du redimensionnement de la fenêtre
         window.addEventListener('resize', function() {

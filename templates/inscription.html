@@ -1,86 +1,9 @@
+{% extends "auth_base.html" %}
+
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Inscription</title>
-    <link rel="stylesheet" href=" {% static 'css/bootstrap.min.css' %} ">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
-</head>
+
+{% block content %}
 <style>
-     * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Montserrat';
-        }
-        
-        body {
-            background-color: #1a0740;
-            display: flex;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        
-        .left-panel {
-            width: 50%;
-            padding: 40px;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            position: relative;
-            background-image: url("{% static 'img/vezealone.jpg' %}");
-            background-size: cover;
-            background-position: center;
-            background-blend-mode: overlay;
-            background-color: rgba(49, 19, 109, 0.7);
-        }
-        
-        .logo {
-            position: absolute;
-            top: 40px;
-            left: 40px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .logo img {
-            width: 30px;
-            margin-right: 10px;
-        }
-        
-        .logo h1 {
-            font-size: 24px;
-            color: #ffd700;
-            font-weight: bold;
-        }
-        
-        .left-content {
-            margin-bottom: 30px;
-        }
-        
-        .left-content h2 {
-            font-size: 48px;
-            width: 619px;
-            overflow-wrap: normal; 
-            margin-bottom: 20px;
-            line-height: 1.2;
-            font-weight: bold;
-        }
-        
-        .right-panel {
-            width: 50%;
-            background-color: white;
-            border-radius: 30px 0 0 30px;
-            padding: 40px 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            position: relative;
-        }
         
         .close-btn {
             position: absolute;
@@ -184,21 +107,6 @@
 
 </style>
 
-<body>
-        <div class="left-panel">
-        <div class="logo">
-            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="30" height="20" rx="2" fill="#ffd700"/>
-                <path d="M5 5H25M5 10H25M5 15H15" stroke="#1a0740" stroke-width="2"/>
-            </svg>
-            <h1>Eventify</h1>
-        </div>
-        <div class="left-content">
-            <h2>Découvrez des événements sur mesure.<br>Inscrivez-vous dès aujourd'hui !</h2>
-        </div>
-    </div>
-    
-    <div class="right-panel">
         
         <div class="form-header">
             <h2>Inscrivez-vous !</h2>
@@ -273,22 +181,5 @@
                 {% endfor %}
             </ul>
         {% endif %} 
-    </div>
-
-
-   
-
-
-
-
-
-
-       
-
-
-
-    
-   
-
-</body>
 </html>
+{% endblock content %}

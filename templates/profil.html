@@ -58,9 +58,9 @@
             gap: 1rem;
         }
         
-        .user-avatar {
-            width: 60px;
-            height: 60px;
+        .user-avatar, .user-profile {
+            width: 80px;
+            height: 80px;
             background: linear-gradient(135deg, var(--primary), var(--primary-light));
             border-radius: 50%;
             display: flex;
@@ -70,7 +70,10 @@
             font-size: 1.5rem;
             font-weight: 700;
         }
-        
+        .user-profile > img{
+            width: 100%;
+            border-radius: 50%;
+        }
         .user-details h3 {
             font-size: 1.1rem;
             font-weight: 600;
@@ -244,8 +247,9 @@
         .carousel-container {
             position: relative;
             width: 100%;
-            overflow: hidden;
+            overflow-y: scroll;
             border-radius: 0.75rem;
+            scrollbar-width: none; /* Hide scrollbar for Firefox */
         }
         
         .carousel-track {
@@ -613,9 +617,15 @@
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="user-info">
+                    {% if utilisateur.photo_profil %}
+                    <div class="user-profile">
+                            <img src="{{ utilisateur.photo_profil }}" alt="{{ tilisateur.prenom }}">
+                    </div>
+                    {% else %}
                     <div class="user-avatar">
                         {{ utilisateur.prenom.0|upper }}{{ utilisateur.nom.0|upper }}
                     </div>
+                    {% endif %}
                     <div class="user-details">
                         <h3>{{ utilisateur.prenom }} {{ utilisateur.nom }}</h3>
                         <p>{{ utilisateur.email }}</p>
@@ -699,27 +709,27 @@
                                 </div>
                                 <div class="event-content">
                                     <div class="event-date-badge">
-                                        <span class="month">{{ event.date|date:"M"|upper }}</span>
-                                        <span class="day">{{ event.date|date:"d" }}</span>
+                                        <span class="month">{{ event.date_heure|date:"M"|upper }}</span>
+                                        <span class="day">{{ event.date_heure|date:"d" }}</span>
                                     </div>
-                                    <h3 class="event-title">{{ event.title }}</h3>
-                                    <div class="event-category">{{ event.category|default:"Événement" }}</div>
+                                    <h3 class="event-title">{{ event.titre }}</h3>
+                                    <div class="event-category">{{ event.categorie|default:"Événement" }}</div>
                                     <div class="event-details">
                                         <div class="event-detail">
                                             <i class="fas fa-map-marker-alt"></i>
-                                            <span>{{ event.location|default:"Lieu non spécifié" }}</span>
+                                            <span>{{ event.localisation|default:"Lieu non spécifié" }}</span>
                                         </div>
                                         <div class="event-detail">
                                             <i class="far fa-clock"></i>
-                                            <span>{{ event.time|default:"Heure non spécifiée" }}</span>
+                                            <span>{{ event.date_heure|date:'H'|default:"Heure non spécifiée" }}</span>
                                         </div>
                                     </div>
                                     <div class="event-footer">
                                         <div class="event-capacity">
                                             <i class="fas fa-users"></i>
-                                            <span>{{ event.capacity|default:"0" }} places</span>
+                                            <span>{{ event.capacite|default:"0" }} places</span>
                                         </div>
-                                        <a href="{% url 'edit_event' event.id %}" class="btn btn-primary">
+                                        <a href="#" class="btn btn-primary">
                                             <i class="fas fa-edit"></i> Modifier
                                         </a>
                                     </div>
@@ -768,19 +778,19 @@
                                 </div>
                                 <div class="event-content">
                                     <div class="event-date-badge">
-                                        <span class="month">{{ event.date|date:"M"|upper }}</span>
-                                        <span class="day">{{ event.date|date:"d" }}</span>
+                                        <span class="month">{{ event.date_heure|date:"M"|upper }}</span>
+                                        <span class="day">{{ event.date_heure|date:"d" }}</span>
                                     </div>
-                                    <h3 class="event-title">{{ event.title }}</h3>
-                                    <div class="event-category">{{ event.category|default:"Événement" }}</div>
+                                    <h3 class="event-title">{{ event.titre }}</h3>
+                                    <div class="event-category">{{ event.categorie|default:"Événement" }}</div>
                                     <div class="event-details">
                                         <div class="event-detail">
                                             <i class="fas fa-map-marker-alt"></i>
-                                            <span>{{ event.location|default:"Lieu non spécifié" }}</span>
+                                            <span>{{ event.localisation|default:"Lieu non spécifié" }}</span>
                                         </div>
                                         <div class="event-detail">
                                             <i class="far fa-clock"></i>
-                                            <span>{{ event.time|default:"Heure non spécifiée" }}</span>
+                                            <span>{{ event.date_heure|date:"H"|default:"Heure non spécifiée" }}</span>
                                         </div>
                                     </div>
                                     <div class="event-footer">
@@ -788,8 +798,8 @@
                                             <i class="fas fa-ticket-alt"></i>
                                             <span>Places réservées</span>
                                         </div>
-                                        <a href="{% url 'event_detail' event.id %}" class="btn btn-outline">
-                                            <i class="fas fa-eye"></i> Voir
+                                        <a href="{% url 'EventDetail:event_detail' event.id %}" class="btn btn-outline">
+                                            <i class="fas fa-eye"></i> Voir plus
                                         </a>
                                     </div>
                                 </div>

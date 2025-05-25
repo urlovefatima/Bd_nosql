@@ -78,6 +78,127 @@
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
       }
+      .search-container {
+  margin: 0 20px;
+}
+
+.search-form {
+  position: relative;
+}
+
+.search-input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 25px;
+  padding: 4px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  min-width: 280px;
+}
+
+.search-input-group:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.search-input-group:focus-within {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.search-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  padding: 8px 15px;
+  flex-grow: 1;
+  font-size: 14px;
+  border-radius: 20px;
+}
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+  font-style: italic;
+}
+
+.search-btn {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-right: 2px;
+}
+
+.search-btn:hover {
+  background: linear-gradient(135deg, #0056b3, #004085);
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+}
+
+.search-btn:active {
+  transform: scale(0.95);
+}
+
+.search-btn i {
+  font-size: 14px;
+}
+
+/* Animation au focus */
+@keyframes searchPulse {
+  0% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.4); }
+  70% { box-shadow: 0 0 0 8px rgba(0, 123, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0); }
+}
+
+.search-input:focus + .search-btn {
+  animation: searchPulse 1.5s infinite;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .search-container {
+    margin: 10px 0;
+    order: -1;
+  }
+  
+  .search-input-group {
+    min-width: 250px;
+  }
+  
+  .search-input {
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+  
+  .search-btn {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media (max-width: 576px) {
+  .search-input-group {
+    min-width: 200px;
+  }
+  
+  .search-input::placeholder {
+    font-size: 12px;
+  }
+}
 
       
     </style>
@@ -150,14 +271,31 @@
           >
             <ul class="navbar-nav align-items-center">
               <li class="nav-item">
-                <a class="nav-link active" href="#">Home</a>
+                <a class="nav-link active" href="{% url "accueil" %}">Home</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{% url "events" %}">Événements</a>
-              </li>
+              </li>  
               <li class="nav-item">
                 <a class="nav-link" href="{% url "categories" %}">Catégories</a>
               </li>
+              
+              <!-- Barre de recherche stylée -->
+              <li class="nav-item search-container">
+                <form class="search-form" method="GET" action="{% url "events" %}">
+                  <div class="search-input-group">
+                    <input type="text" 
+                          name="search" 
+                          class="search-input" 
+                          placeholder="Rechercher un événement..."
+                          value="{{ request.GET.search }}">
+                    <button type="submit" class="search-btn">
+                      <i class="bi bi-search"></i>
+                    </button>
+                  </div>
+                </form>
+              </li>
+              
               {% if utilisateur_connecte %}
               <li class="nav-item">
                 <a class="nav-link" href="{% url "create_event" %}">Créer un événement</a>
@@ -169,8 +307,8 @@
               </li>
               {% else %}
               <li class="nav-item ms-3">
-                <a href="{% url "connexion" %}" style = "text-decoration: none; color: inherit;">
-                <button class="btn btn-connexion">Se Connecter</button>
+                <a href="{% url "connexion" %}" style="text-decoration: none; color: inherit;">
+                  <button class="btn btn-connexion">Se Connecter</button>
                 </a>
               </li>
               {% endif %}

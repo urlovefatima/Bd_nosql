@@ -3,15 +3,13 @@
 
 {% block event %}
 
-    <div class="container">
-
         <div class="events-grid">
             {% if events %}
                 {% for event in events %}
                     <article class="event-card">
                         <div class="event-image">
                             {% if event.image_url %}
-                                <img src="{% static 'img/events.jpg' %}" alt="{{ event.titre }}">
+                                <img src="{{ event.image_url }}" alt="{{ event.titre }}">
                             {% else %}
                                 <img src="{% static 'img/event-placeholder.jpg' %}" alt="{{ event.titre }}">
                             {% endif %}
@@ -46,7 +44,7 @@
                                     <span>{{ event.capacite|default:"200" }} places</span>
                                 </div>
                                 <div class="event-action">
-                                    <a class="btn btn-primary">
+                                    <a class="btn btn-primary" href="{% url 'EventDetail:event_detail' event.id %}">
                                         <i class="fas fa-arrow-right"></i> Détails
                                     </a>
                                 </div>
@@ -62,6 +60,4 @@
                 </div>
             {% endif %}
         </div>
-    </div>
-
 {% endblock %}

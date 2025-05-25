@@ -24,18 +24,7 @@
             box-sizing: border-box;
         }
         
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--bg-light);
-            color: var(--text-dark);
-            line-height: 1.5;
-        }
         
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 1.5rem;
-        }
         
         header {
             margin-bottom: 2.5rem;
@@ -416,118 +405,66 @@
         <section class="filter-section my-5">
             <div class="filters">
                 <a href="{% url "events" %}">
-                <button class="filter-btn active">Tous</button>
+                    <button class="filter-btn active" data-filter="tous">Tous</button>
                 </a>
                 <a href="{% url "categories" %}">
-                <button class="filter-btn">Catégorie</button>
+                    <button class="filter-btn" data-filter="categories">Catégorie</button>
                 </a>
                 <a href="{% url "gratuits" %}">
-                <button class="filter-btn">Gratuit</button>
+                    <button class="filter-btn" data-filter="gratuits">Gratuit</button>
                 </a>
                 <a href="{% url "payants" %}">
-                <button class="filter-btn">Payant</button>
+                    <button class="filter-btn" data-filter="payants">Payant</button>
                 </a>
                 <a href="{% url "aujourdhui" %}">
-                <button class="filter-btn">Aujourd'hui</button>
+                    <button class="filter-btn" data-filter="aujourdhui">Aujourd'hui</button>
                 </a>
                 <a href="{% url "semaine" %}">
-                <button class="filter-btn">Dans la semaine</button>
+                    <button class="filter-btn" data-filter="semaine">Dans la semaine</button>
                 </a>
                 <a href="{% url "mois" %}">
-                <button class="filter-btn">Dans le mois</button>
+                    <button class="filter-btn" data-filter="mois">Dans le mois</button>
                 </a>
             </div>
         </section>
 
-        <div class="events-grid">
-            {% if events %}
-                {% for event in events %}
-                    <article class="event-card">
-                        <div class="event-image">
-                            {% if event.image_url %}
-                                <img src="{{ event.image_url }}" alt="{{ event.titre }}">
-                            {% else %}
-                                <img src="{% static 'img/event-placeholder.jpg' %}" alt="{{ event.titre }}">
-                            {% endif %}
-                            {% if event.is_featured %}
-                                <div class="featured-badge">À ne pas manquer</div>
-                            {% endif %}
-                        </div>
-                        <div class="event-content">
-                            <div class="event-date-badge">
-                                <span class="month">{{ event.date_heure|date:"M"|upper }}</span>
-                                <span class="day">{{ event.date_heure|date:"d" }}</span>
-                            </div>
-                            <h2 class="event-title">{{ event.titre }}</h2>
-                            <div class="event-category">{{ event.categorie }}</div>
-                            <div class="event-details">
-                                <div class="event-detail location">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <span>{{ event.localisation }}</span>
-                                </div>
-                                <div class="event-detail">
-                                    <i class="far fa-clock"></i>
-                                    <span>{{ event.date_heure|time:"H:i" }}</span>
-                                </div>
-                                <div class="event-detail">
-                                    <i class="fas fa-tag"></i>
-                                    <span>{{ event.statut }}</span>
-                                </div>
-                            </div>
-                            <div class="event-footer">
-                                <div class="event-capacity">
-                                    <i class="fas fa-users"></i>
-                                    <span>{{ event.capacite|default:"200" }} places</span>
-                                </div>
-                                <div class="event-action">
-                                    <a class="btn btn-primary" href="{% url 'EventDetail:event_detail' event.id %}">
-                                        <i class="fas fa-arrow-right"></i> Détails
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-                {% endfor %}
-            {% else %}
-                <div class="empty-state">
-                    <i class="far fa-calendar-times"></i>
-                    <h3>Aucun événement disponible</h3>
-                    <p>Il n'y a actuellement aucun événement prévu. Revenez bientôt pour découvrir notre programmation.</p>
-                </div>
-            {% endif %}
-        </div>
-    </div>
-    <script>
-        document.querySelectorAll('.filter-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                document.querySelectorAll('.filter-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                
-                this.classList.add('active');
-                
-                const category = this.textContent;
-                if (category !== 'Tous') {
-                    window.location.href = `?category=${encodeURIComponent(category)}`;
-                } else {
-                    window.location.href = '?';
-                }
-            });
-        });
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const category = urlParams.get('category');
-            
-            if (category) {
-                const filterButtons = document.querySelectorAll('.filter-btn');
-                filterButtons.forEach(btn => {
-                    if (btn.textContent === category) {
-                        btn.classList.add('active');
-                        document.querySelector('.filter-btn.active').classList.remove('active');
-                    }
-                });
-            }
+
+        {% block event %}{% endblock event%}
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const currentPath = window.location.pathname;
+        console.log('Chemin actuel:', currentPath);
+        
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active');
         });
-    </script>
+        
+        const pathToFilter = {
+            'gratuits': 'gratuits',
+            'all': 'tous',
+            'payants': 'payants', 
+            'categories': 'categories',
+            'aujourdhui': 'aujourdhui',
+            'semaine': 'semaine',
+            'mois': 'mois'
+        };
+        
+        let activeFilter = ''; 
+        
+        for (const [pathPart, filterName] of Object.entries(pathToFilter)) {
+            if (currentPath.includes(pathPart)) {
+                activeFilter = filterName;
+                break;
+            }
+        }
+        
+        const targetBtn = document.querySelector(`[data-filter="${activeFilter}"]`);
+        if (targetBtn) {
+            targetBtn.classList.add('active');
+            console.log(`Bouton activé: ${activeFilter}`);
+        }
+    });
+</script>
 {% endblock %}

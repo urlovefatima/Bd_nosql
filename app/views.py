@@ -14,16 +14,10 @@ def get_events(request):
         events = list(db.events.find())
         for ev in events:
             ev['id'] = str(ev['_id'])
-        return render(request, 'test.html', {'events': events})
+        return render(request, 'events.html', {'events': events})
     else:
-        return render(request, 'test.html', {'events': []})
+        return render(request, 'events.html', {'events': []})
     
-def get_historique(request):
-    if db is not None :
-        events = list(db.events.find({}, {"_id": 0}))
-        return render(request, 'historique.html', {'events': events})
-    else:
-        return render(request, 'historique.html', {'events': []})
 
 def get_events_categories(request):
     if db is not None :

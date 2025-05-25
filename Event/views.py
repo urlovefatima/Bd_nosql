@@ -4,7 +4,6 @@ from django.contrib import messages
 from bson import ObjectId
 from datetime import datetime
 from mongo import db
-# Create your views here.
 def post_event(request, id):
     email = request.session['email']
     events = list(db.events.find())
@@ -13,10 +12,9 @@ def post_event(request, id):
     
     event = db.events.find_one({"_id": ObjectId(id)})
     if event:
-        # Add this line:
         event['id'] = str(event['_id'])
         user = db.users.find_one({"_id": event['createur']})
-        if user == db.users.find_one({"email":email}):
+        if user == db.users.find_one({"email": email}):
             proprity = True
         else:
             proprity = False
@@ -35,7 +33,6 @@ def reserve_evenement(request, id):
     reserved = False
     event = db.events.find_one({"_id": ObjectId(id)})
     if event:
-        # Add this line:
         event['id'] = str(event['_id'])
     user = db.users.find_one({"email":email})
     createur = db.users.find_one({"_id": event['createur']})
@@ -87,7 +84,6 @@ def annuler_reserve_evenement(request, id):
     reserved = False
     event = db.events.find_one({"_id": ObjectId(id)})
     if event:
-        # Add this line:
         event['id'] = str(event['_id'])
     user = db.users.find_one({"email":email})
     createur = db.users.find_one({"_id": event['createur']})
@@ -107,13 +103,11 @@ def annuler_reserve_evenement(request, id):
         
         delete_result = db.reservations.delete_one({"_id": main_reservation['_id']})
         
-        # Retirer la réservation de la liste des réservations de l'utilisateur
         db.users.update_one(
             {"_id": main_reservation['utilisateur']},
             {"$pull": {"reservations": main_reservation['_id']}}
         )
         
-        # Retirer la réservation de la liste des réservations de l'événement
         db.events.update_one(
             {"_id": main_reservation['evenement']},
             {"$pull": {"reservations": main_reservation['_id']}}

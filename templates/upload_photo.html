@@ -1,0 +1,297 @@
+{% extends "auth_base.html" %}
+
+{% load static %}
+
+{% block content %}
+{% load static %}
+<style>
+        
+        .close-btn {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            font-size: 24px;
+            color: #333;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .form-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .form-header h2 {
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: #1a0740;
+            font-weight: bold;
+        }
+        
+        .form-header p {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+        
+        .photo-upload-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        
+        .preview-container {
+            width: 200px;
+            height: 200px;
+            border: 3px dashed #ccc;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .preview-container:hover {
+            border-color: #0a0a8f;
+            background-color: #f0f0ff;
+        }
+        
+        .preview-container.has-image {
+            border: 3px solid #0a0a8f;
+        }
+        
+        .preview-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+        
+        .preview-placeholder {
+            text-align: center;
+            color: #999;
+        }
+        
+        .preview-placeholder svg {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 10px;
+            opacity: 0.5;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .upload-btn {
+            background-color: #0a0a8f;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-bottom: 15px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .upload-btn:hover {
+            background-color: #080870;
+        }
+        
+        .file-info {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        
+        .submit-btn {
+            background-color: #0a0a8f;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 60%;
+            margin: 20px auto;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            background-color: #080870;
+        }
+        
+        .submit-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .skip-btn {
+            background-color: transparent;
+            color: #666;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 60%;
+            margin: 10px auto;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        
+        .skip-btn:hover {
+            border-color: #0a0a8f;
+            color: #0a0a8f;
+        }
+        
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .success-message {
+            color: #28a745;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            
+            .left-panel, .right-panel {
+                width: 100%;
+            }
+            
+            .right-panel {
+                border-radius: 30px 30px 0 0;
+                padding: 30px;
+            }
+            
+            .left-content h2 {
+                font-size: 36px;
+                width: 100%;
+            }
+            
+            .preview-container {
+                width: 150px;
+                height: 150px;
+            }
+        }
+</style>
+
+        <div class="form-header">
+            <h2>Photo de Profil</h2>
+            <p>Ajoutez une photo pour personnaliser votre profil</p>
+        </div>
+        
+        <form method="POST" action="{% url 'upload_photo' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="photo-upload-container">
+                <div class="preview-container" onclick="document.getElementById('photo-input').click()">
+                    <div class="preview-placeholder">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 13L13.5 11.5C13.1 11.1 12.6 11.1 12.2 11.5L10 14L3 7V9C3 10.1 3.9 11 5 11V12C5 12.6 5.4 13 6 13S7 12.6 7 13V17C7 18.1 7.9 19 9 19H15C16.1 19 17 18.1 17 17V13C17 12.4 17.4 12 18 12S19 12.4 19 12V11C20.1 11 21 10.1 21 9Z"/>
+                        </svg>
+                        <p>Cliquez pour ajouter une photo</p>
+                    </div>
+                    <img class="preview-image" id="preview-img" alt="Aperçu">
+                </div>
+                
+                <input type="file" id="photo-input" name="photo_profil" class="file-input" accept="image/*" onchange="previewImage(this)">
+                
+                <button type="button" class="upload-btn" onclick="document.getElementById('photo-input').click()">
+                    Choisir une photo
+                </button>
+                
+                <div class="file-info">
+                    <small>Formats acceptés: JPG, PNG, GIF (Max: 5MB)</small>
+                </div>
+            </div>
+            
+            <button type="submit" class="submit-btn" id="submit-btn">
+                Enregistrer la photo
+            </button>
+            
+            <button type="button" class="skip-btn" onclick="window.location.href='{% url 'accueil' %}'">
+                Passer cette étape
+            </button>
+        </form>
+        
+        {% if erreurs %}
+            <div class="error-message">
+                {% for erreur in erreurs %}
+                    <p>{{ erreur }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        {% if success %}
+            <div class="success-message">
+                <p>{{ success }}</p>
+            </div>
+        {% endif %}
+
+    <script>
+        function previewImage(input) {
+            const file = input.files[0];
+            const preview = document.getElementById('preview-img');
+            const placeholder = document.querySelector('.preview-placeholder');
+            const container = document.querySelector('.preview-container');
+            const submitBtn = document.getElementById('submit-btn');
+            
+            if (file) {
+                // Vérifier la taille du fichier (5MB max)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('Le fichier est trop volumineux. Taille maximum: 5MB');
+                    input.value = '';
+                    return;
+                }
+                
+                // Vérifier le type de fichier
+                if (!file.type.startsWith('image/')) {
+                    alert('Veuillez sélectionner un fichier image valide');
+                    input.value = '';
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    placeholder.style.display = 'none';
+                    container.classList.add('has-image');
+                    submitBtn.disabled = false;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
+                placeholder.style.display = 'block';
+                container.classList.remove('has-image');
+                submitBtn.disabled = true;
+            }
+        }
+        
+        // Désactiver le bouton submit par défaut
+        document.getElementById('submit-btn').disabled = true;
+    </script>
+{% endblock content %}
