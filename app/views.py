@@ -191,3 +191,34 @@ def create_event(request):
     
     return render(request, 'create_event.html', {'form': form})
             
+
+def search_accueil_events(request):
+    keyword = request.GET.get('search', '').strip()
+    
+    if not keyword:
+        return redirect('get_events')
+    
+    try:
+        # Créer une requête de recherche avec regex pour une recherche insensible à la casse
+        search_query = {"$or": [
+            {"titre": {"$regex": keyword, "$options": "i"}},
+            {"description": {"$regex": keyword, "$options": "i"}},
+            {"localisation": {"$regex": keyword, "$options": "i"}},
+            {"categorie": {"$regex": keyword, "$options": "i"}}
+        ]}
+        
+        # Rechercher les événements correspondant au mot-clé
+        events = list(db.events.find(search_query))
+        for ev in events:
+            ev['id'] = str(ev['_id'])
+        
+        nomber_of_events = len(events)
+        
+        return render(request, 'events.html', {
+            'nomber_of_events': nomber_of_events,
+            'events': events,
+            'search_keyword': keyword
+        })
+    
+    except Exception as e:
+        return redirect('get_events')
