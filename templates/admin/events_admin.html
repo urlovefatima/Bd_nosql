@@ -133,9 +133,9 @@
                             <div class="mt-3">
                                 <p class="mb-0 text-secondary">Start from</p>
                                 <div class="price-container">
-                                    
-                                    <a href="{% url 'delete_event_2' event.id %}"><button type="button" class="btn btn-danger">Supprimer</button>
-                                    </a>
+                                    <button type="button" class="btn btn-danger" onclick="event.preventDefault(); document.getElementById('delete-event-{{ event.id }}').submit();">Supprimer</button>
+                                    <form id="delete-event-{{ event.id }}" method="POST" action="{% url 'delete_event' event.id %}" style="display: none;">
+                                            {% csrf_token %}
                                     </form>
                                     <a href="{% url 'event_detail' event.id %}"><button class="btn btn-infoo">Voir plus +</button></a>
                                     

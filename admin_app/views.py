@@ -432,7 +432,9 @@ def delete_user(request, email):
         else:
             error = f"L'utilisateur avec l'email {email} n'existe pas."
             return render(request, 'admin/users.html', {'error': error})
-def delete_event_2(request, id):
+def delete_event(request, id):
+    if request.method == 'POST':
+        
         event = db.events.find_one({"_id": ObjectId(id)})
         if event:
             deletion_time = datetime.now()

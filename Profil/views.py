@@ -51,7 +51,7 @@ def consulted_profil(request, email):
     else:
         return render(request, 'profil.html')
 
-    return render(request, 'profil.html', {'utilisateur': utilisateur, 'events': events, 'reserved_events': reserved_events})
+    return render(request, 'profil.html', {'utilisateur': utilisateur, 'events': events})
 
 
 def infos_utilisateur(request):

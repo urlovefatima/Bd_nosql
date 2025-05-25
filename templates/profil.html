@@ -328,14 +328,16 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
+            font-size: 1rem;
+            position: relative;
         }
         
         .event-date-badge {
             position: absolute;
-            top: -25px;
+            top: -35px; /* Position au-dessus de la carte */
             right: 20px;
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             background-color: var(--primary);
             color: white;
             border-radius: 50%;
@@ -345,8 +347,8 @@
             justify-content: center;
             font-weight: bold;
             box-shadow: 0 4px 10px rgba(69, 57, 148, 0.3);
+            z-index: 20; /* Z-index très élevé */
             border: 3px solid white;
-            z-index: 10;
         }
         
         .event-date-badge .month {
@@ -387,21 +389,28 @@
         }
         
         .event-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
             margin-bottom: 1rem;
         }
         
         .event-detail {
             display: flex;
             align-items: center;
-            font-size: 0.875rem;
+            font-size: 0.95rem;
             color: var(--text-light);
-            margin-bottom: 0.5rem;
         }
         
         .event-detail i {
-            width: 20px;
+            width: 24px;
             color: var(--primary);
             margin-right: 0.5rem;
+            font-size: 1.05rem;
+        }
+        
+        .event-detail.location {
+            grid-column: span 2;
         }
         
         .event-footer {
@@ -411,6 +420,11 @@
             margin-top: auto;
             padding-top: 1rem;
             border-top: 1px solid #F3F4F6;
+        }
+        .event-action {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
         
         .event-capacity {
@@ -701,7 +715,7 @@
                             <article class="event-card">
                                 <div class="event-image">
                                     {% if event.image %}
-                                        <img src="{{ event.image.url }}" alt="{{ event.title }}">
+                                        <img src="{{ event.image_url }}" alt="{{ event.title }}">
                                     {% else %}
                                         <i class="fas fa-calendar-alt"></i>
                                     {% endif %}
@@ -721,7 +735,11 @@
                                         </div>
                                         <div class="event-detail">
                                             <i class="far fa-clock"></i>
-                                            <span>{{ event.date_heure|date:'H'|default:"Heure non spécifiée" }}</span>
+                                            <span>{{ event.date_heure|time:"H:i" }}</span>
+                                        </div>
+                                        <div class="event-detail">
+                                            <i class="fas fa-tag"></i>
+                                            <span>{{ event.statut }}</span>
                                         </div>
                                     </div>
                                     <div class="event-footer">
@@ -729,9 +747,11 @@
                                             <i class="fas fa-users"></i>
                                             <span>{{ event.capacite|default:"0" }} places</span>
                                         </div>
-                                        <a href="#" class="btn btn-primary">
-                                            <i class="fas fa-edit"></i> Modifier
-                                        </a>
+                                        <div class="event-action">
+                                            <a class="btn btn-primary" href="{% url 'EventDetail:event_detail' event.id %}">
+                                                <i class="fas fa-arrow-right"></i> Détails
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </article>
@@ -798,8 +818,8 @@
                                             <i class="fas fa-ticket-alt"></i>
                                             <span>Places réservées</span>
                                         </div>
-                                        <a href="{% url 'EventDetail:event_detail' event.id %}" class="btn btn-outline">
-                                            <i class="fas fa-eye"></i> Voir plus
+                                        <a class="btn btn-primary" href="{% url 'EventDetail:event_detail' event.id %}">
+                                                <i class="fas fa-arrow-right"></i> Détails
                                         </a>
                                     </div>
                                 </div>

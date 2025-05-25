@@ -302,8 +302,7 @@
               </li>
               <li class="nav-item ms-3">
                 <a href="{% url "profil_utilisateur" %}" class="btn">
-                  <i class="bi bi-person" style="color: white"></i>
-                </a>
+                  <img src="{{ utilisateur_connecte.photo_profil }}" alt="Photo de Profil" class="rounded-circle" style="width: 30px; height: 30px;">
               </li>
               {% else %}
               <li class="nav-item ms-3">

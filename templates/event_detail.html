@@ -279,7 +279,7 @@
                     
                     <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-4">
                         {% if proprity %}
-                        <a href="{% url 'delete_event' event.id %}" style = "text-decoration: none; color: inherit">
+                        <a href="{% url 'EventDetail:delete_event' event.id %}" style = "text-decoration: none; color: inherit">
                             <button class="btn btn-primary me-md-2">Supprimer l'evenement</button>
                         </a>
                         {% elif not proprity and reserved %}
