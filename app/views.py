@@ -7,6 +7,7 @@ import os
 from django.conf import settings
 from PIL import Image
 from datetime import datetime, timedelta
+from django.http import JsonResponse
 
 
 def get_events(request):
@@ -14,7 +15,7 @@ def get_events(request):
         list_events = list(db.events.find())
         events =[]
         for event in list_events:
-            if event['date_heure'] < datetime.now():
+            if event['date_heure'] > datetime.now():
                 events.append(event)
                 event['id'] = str(event['_id'])
         return render(request, 'test.html', {'events': events})
@@ -28,7 +29,7 @@ def get_events_categories(request):
         list_events = list(db.events.find())
         events =[]
         for event in list_events:
-            if event['date_heure'] < datetime.now():
+            if event['date_heure'] > datetime.now():
                 events.append(event)
                 event['id'] = str(event['_id'])
         return render(request, 'categories.html', {'categories': categories, 'events': events})
@@ -40,7 +41,7 @@ def get_events_gratuits(request):
         list_events = list(db.events.find({"statut":"Gratuit"}))
         events =[]
         for event in list_events:
-            if event['date_heure'] < datetime.now():
+            if event['date_heure'] > datetime.now():
                 events.append(event)
                 event['id'] = str(event['_id'])
         return render(request, 'events_gratuits.html', {'events': events})
@@ -52,7 +53,7 @@ def get_events_payants(request):
         list_events = list(db.events.find({"statut":"Payant"}))
         events =[]
         for event in list_events:
-            if event['date_heure'] < datetime.now():
+            if event['date_heure'] > datetime.now():
                 events.append(event)
                 event['id'] = str(event['_id'])
         return render(request, 'events_payants.html', {'events': events})
@@ -124,6 +125,11 @@ def delete_event(request):
     return render(request, "delete_event.html", {"events": events})
 
 def create_event(request):
+    email= request.session.get('email')
+    user = db.users.find_one({"email":email})
+    if not user :
+        return redirect('connexion')
+    reservations=[]
     if request.method == 'POST':
         form = EventForm(request.POST, request.FILES)
         if form.is_valid():
@@ -134,7 +140,14 @@ def create_event(request):
             capacite = form.cleaned_data['capacite']
             statut = form.cleaned_data['statut']
             prix = form.cleaned_data['prix']
+            if statut == 'payant' and (prix is None):
+                return JsonResponse({'success': False, 'error': 'Le prix est obligatoire pour un événement payant.'})
+            elif statut == 'gratuit':
+                prix = 0 
+            print(statut)
+            
             description = form.cleaned_data['description']
+
 
 
             image = form.cleaned_data['image']
@@ -166,6 +179,9 @@ def create_event(request):
                 'prix' : prix,
                 'description': description,
                 'image_url': image_url,
+                'createur': user['_id'], 
+                'reservations':reservations
+
                 
             })
             

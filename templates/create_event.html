@@ -1,33 +1,7 @@
-{% comment %} <!DOCTYPE html>
+{% extends "base.html" %}
 {% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Liste des événements</title>
-</head>
-<body>
-    <h2>Créer une événement</h2>
 
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-                {{ form.as_p }}
-
-            <button type="submit">Créer l'événement</button>
-        </form>
-
-</body>
-</html>
- {% endcomment %}
-
-
-
- <!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créer un Événement</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+{% block content %}
     <style>
         :root {
             --primary: #453994;
@@ -66,17 +40,17 @@
             text-align: center;
             margin-bottom: 30px;
             padding: 40px 20px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            border-radius: 20px;
-            color: white;
-            box-shadow: var(--shadow);
+            /*background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 20px;*/
+            color: var(--primary);
+            /*box-shadow: var(--shadow);*/
         }
 
         .header h1 {
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 10px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            /*text-shadow: 0 2px 10px rgba(0,0,0,0.1);*/
         }
 
         .header p {
@@ -84,14 +58,14 @@
             opacity: 0.9;
         }
 
-        .form-container {
+        /*.form-container {
             background: var(--white);
             border-radius: 20px;
             padding: 40px;
             box-shadow: 0 4px 30px rgba(69, 57, 148, 0.15);
             border: 1px solid rgba(69, 57, 148, 0.1);
             animation: slideUp 0.6s ease-out;
-        }
+        }*/
 
         @keyframes slideUp {
             from {
@@ -381,8 +355,7 @@
             }
         }
     </style>
-</head>
-<body>
+
     <div class="container">
         <div class="header">
             <h1><i class="fas fa-calendar-plus"></i> Créer un Événement</h1>
@@ -390,7 +363,8 @@
         </div>
 
         <div class="form-container">
-            <form id="eventForm">
+            <form id="eventForm" method='post' enctype="multipart/form-data">
+                {% csrf_token %}
                 <div class="form-grid">
                     <div class="form-group">
                         <label class="form-label">
@@ -439,7 +413,7 @@
                         </label>
                         <div class="radio-group">
                             <div class="radio-option" data-value="gratuit">
-                                <input type="radio" name="statut" value="gratuit" id="gratuit" checked>
+                                <input type="radio" name="statut" value="gratuit" id="gratuit">
                                 <label for="gratuit">Gratuit</label>
                             </div>
                             <div class="radio-option selected" data-value="payant">
@@ -630,7 +604,7 @@
         document.getElementById('eventForm').addEventListener('change', updatePreview);
 
         // Soumission du formulaire
-        document.getElementById('eventForm').addEventListener('submit', function(e) {
+        /*document.getElementById('eventForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             // Animation de succès
@@ -646,12 +620,11 @@
                 // Ici vous pouvez ajouter la logique pour envoyer les données au serveur
                 alert('Événement créé avec succès ! (Dans une vraie application, les données seraient envoyées au serveur Django)');
             }, 2000);
-        });
+        });*/
 
         // Initialiser l'aperçu
         updatePreview();
     </script>
-</body>
-</html>
+{% endblock content %}
 
 

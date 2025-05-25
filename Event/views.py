@@ -34,7 +34,6 @@ def reserve_evenement(request, id):
     reserved = False
     event = db.events.find_one({"_id": ObjectId(id)})
     if event:
-        # Add this line:
         event['id'] = str(event['_id'])
     user = db.users.find_one({"email":email})
     createur = db.users.find_one({"_id": event['createur']})

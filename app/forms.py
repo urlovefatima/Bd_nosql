@@ -3,14 +3,12 @@ from django import forms
 class EventForm(forms.Form):
     titre = forms.CharField(max_length=100)
     categorie = forms.CharField(max_length=100)
-    prix = forms.DecimalField(
-        max_digits=12,
-        decimal_places=2,
+    prix = forms.IntegerField(
+        required=False, 
         label="Prix (FCFA)",
         widget=forms.TextInput(attrs={
-            'placeholder': '0.00',
-            'class': 'form-control',
-            'inputmode': 'decimal',
+            'placeholder': '0',
+            'class': 'form-control'
         })
     )
     STATUT_CHOICES = [
