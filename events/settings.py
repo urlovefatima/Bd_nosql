@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'authenticate',
     'historique',
     'Event',
-    'adwmin_app',
+    'admin_app',
     'Profil'
 ]
 
@@ -81,8 +81,7 @@ WSGI_APPLICATION = 'events.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-}
+DATABASES = {}
 
 
 # Password validation
@@ -131,3 +130,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_CACHE_ALIAS = 'default'

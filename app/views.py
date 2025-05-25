@@ -11,38 +11,50 @@ from datetime import datetime, timedelta
 
 def get_events(request):
     if db is not None :
-        events = list(db.events.find())
-        for ev in events:
-            ev['id'] = str(ev['_id'])
+        list_events = list(db.events.find())
+        events =[]
+        for event in list_events:
+            if event['date_heure'] < datetime.now():
+                events.append(event)
+                event['id'] = str(event['_id'])
         return render(request, 'test.html', {'events': events})
     else:
         return render(request, 'test.html', {'events': []})
-    
-def get_historique(request):
-    if db is not None :
-        events = list(db.events.find({}, {"_id": 0}))
-        return render(request, 'historique.html', {'events': events})
-    else:
-        return render(request, 'historique.html', {'events': []})
+
 
 def get_events_categories(request):
     if db is not None :
         categories = list(db.events.distinct("categorie"))
-        events = list(db.events.find({}, {"_id": 0}))
+        list_events = list(db.events.find())
+        events =[]
+        for event in list_events:
+            if event['date_heure'] < datetime.now():
+                events.append(event)
+                event['id'] = str(event['_id'])
         return render(request, 'categories.html', {'categories': categories, 'events': events})
     else:
         return render(request, 'categories.html', {'categories': [], 'events': []})
     
 def get_events_gratuits(request):
     if db is not None :
-        events = list(db.events.find({"statut":"Gratuit"}, {"_id": 0}))
+        list_events = list(db.events.find({"statut":"Gratuit"}))
+        events =[]
+        for event in list_events:
+            if event['date_heure'] < datetime.now():
+                events.append(event)
+                event['id'] = str(event['_id'])
         return render(request, 'events_gratuits.html', {'events': events})
     else:
         return render(request, 'events_gratuits.html', { 'events': []})
 
 def get_events_payants(request):
     if db is not None :
-        events = list(db.events.find({"statut":"Payant"}, {"_id": 0}))
+        list_events = list(db.events.find({"statut":"Payant"}))
+        events =[]
+        for event in list_events:
+            if event['date_heure'] < datetime.now():
+                events.append(event)
+                event['id'] = str(event['_id'])
         return render(request, 'events_payants.html', {'events': events})
     else:
         return render(request, 'events_payants.html', { 'events': []})
@@ -120,8 +132,9 @@ def create_event(request):
             localisation = form.cleaned_data['localisation']
             date_heure = form.cleaned_data['date_heure']
             capacite = form.cleaned_data['capacite']
+            statut = form.cleaned_data['statut']
+            prix = form.cleaned_data['prix']
             description = form.cleaned_data['description']
-            image = form.cleaned_data['image']
 
 
             image = form.cleaned_data['image']
@@ -149,8 +162,11 @@ def create_event(request):
                 'localisation': localisation,
                 'date_heure': date_heure,
                 'capacite': capacite,
+                'statut': statut,
+                'prix' : prix,
                 'description': description,
                 'image_url': image_url,
+                
             })
             
             return redirect('events')
