@@ -32,6 +32,10 @@ def profil_utilisateur(request):
 
     events = sorted(events, key=lambda e: e['date_heure'])
     reserved_events = sorted(reserved_events, key=lambda e: e['date_heure'])
+    for ev in events:
+        ev['id'] = str(ev['_id'])
+    for ev in reserved_events:
+        ev['id'] = str(ev['_id'])
 
     return render(request, 'profil.html', {'utilisateur': utilisateur, 'events': events, 'reserved_events': reserved_events})
 def consulted_profil(request, email):
