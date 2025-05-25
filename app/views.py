@@ -20,7 +20,7 @@ def get_events(request):
                 event['id'] = str(event['_id'])
         return render(request, 'events.html', {'events': events})
     else:
-        return render(request, 'test.html', {'events': []})
+        return render(request, 'events.html', {'events': []})
 
 
 def get_events_categories(request):
