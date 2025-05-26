@@ -6,7 +6,6 @@ from datetime import datetime
 from bson.objectid import ObjectId
 from django.conf import settings
 from PIL import Image
-from django.core.files.storage import FileSystemStorage
 import os
 
 def profil_utilisateur(request):
