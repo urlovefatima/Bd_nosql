@@ -3,6 +3,7 @@ from mongo import db
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from datetime import datetime
+from bson.objectid import ObjectId
 
 def profil_utilisateur(request):
     email = request.session.get('email')
@@ -60,7 +61,31 @@ def infos_utilisateur(request):
     if not email:
         messages.error(request, "Vous devez être connecté pour accéder à votre profil.")
         return redirect('connexion')
-
+    
     utilisateur = db.users.find_one({'email': email})
+    id = utilisateur['_id']
+    
+    if request.method == 'POST':
+        nom = request.POST.get('nom')
+        prenom = request.POST.get('prenom')
+        username = request.POST.get('username')
+        email= request.POST.get('email')
+        tel = request.POST.get('tel')
+        date_de_naissance= request.POST.get('date_de_naissance')
+
+        db.users.update_one(
+            {'_id': ObjectId(id)},
+            {'$set': {
+            'nom': nom,
+            'prenom': prenom,
+            'username':username,
+            'email': email,
+            'tel': tel,
+            'date_de_naissance': date_de_naissance,
+            }}
+        )
+                
+        return redirect('infos-user')
 
     return render(request, 'infos-user.html', {'utilisateur': utilisateur})
+    

@@ -11,11 +11,7 @@
                 {% for event in events %}
                     <article class="event-card">
                         <div class="event-image">
-                            {% if event.image_url %}
-                                <img src="{% static 'img/events.jpg' %}" alt="{{ event.titre }}">
-                            {% else %}
-                                <img src="{% static 'img/event-placeholder.jpg' %}" alt="{{ event.titre }}">
-                            {% endif %}
+                            <img src="{{ event.image_url }}"  alt="{{ event.titre }}">
                             {% if event.is_featured %}
                                 <div class="featured-badge">À ne pas manquer</div>
                             {% endif %}
