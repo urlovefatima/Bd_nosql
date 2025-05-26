@@ -1,30 +1,38 @@
-{% extends "base.html" %}
 {% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventify - Plateforme de réservation d'événements</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome pour les icônes -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
 
-
-{% block content %}
+</head>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-        }
 
-        body {
-            background-color: #3a2573;
+        .hero {
+            min-height: 110vh;
+            background-image: url("{% static 'img/vezee.jpg'%}");
+            background-size: cover;
+            background-position: center;
             color: white;
-            overflow-x: hidden;
+            position: relative;
+            overflow: hidden;
         }
-        .header-wrapper {
-        background-color: #2d0a45;
-        position: relative;
-        min-height: 100vh;
-        top: 0;
-        color: white;
-        overflow: hidden;
-      }
-      .header-wrapper::before {
+        
+      .hero::before {
         content: "";
         position: absolute;
         top: 0;
@@ -37,17 +45,6 @@
           rgba(75, 0, 130, 0.6)
         );
         z-index: 1;
-      }
-
-      .header-bg {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: url("{% static 'img/vezee.jpg'%}");
-          center/cover no-repeat;
-        filter: brightness(0.9);
       }
       .header-content {
         position: relative;
@@ -141,351 +138,650 @@
           margin-right: 0;
         }
       }
-
-
-         /* About Section */
-         .about-section {
-            background-color: white;
-            color: #000;
-            padding: 5% 0;
-            width: 100%;
-        }
-
-        .about-container {
-            width: 90%;
-            max-width: 1400px;
-            height: 880px;
-            margin: 0 auto;
-            display: flex;
-            gap: 40px;
-        }
-
-        .about-text {
-            flex: 0 0 40%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .about-title {
-            font-size: 3.5rem;
-            font-weight: bold;
-            margin-bottom: 2rem;
-            line-height: 1.1;
-        }
-
-        .about-description {
-            font-size: 1.2rem;
-            line-height: 1.6;
-            margin-bottom: 2rem;
-        }
-
-        .about-button {
-            display: inline-block;
-            background-color: #080041;
-            color: white;
-            text-decoration: none;
-            padding: 1rem 2rem;
-            border-radius: 5px;
-            font-weight: bold;
-            max-width: fit-content;
+        /* Navigation Header */
+        .navbar {
+            background: rgba(17, 17, 17, 0.3);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px 0;
             transition: all 0.3s ease;
         }
-
-        .about-button:hover {
-            background-color: #0d0066;
+        
+        .navbar.scrolled {
+            background: rgba(17, 17, 17, 0.9);
+            backdrop-filter: blur(20px);
         }
+        
+        .logo-container {
+        display: flex;
+        align-items: center;
+      }
 
-        .event-cards {
-            flex: 1;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
+      .logo-text {
+        color: rgb(255, 248, 185);
+        font-size: 28px;
+        font-weight: bold;
+        margin-left: 5px;
+      }
+
+      .logo-img {
+        width: 40px;
+        height: 40px;
+      }
+        
+        .navbar-nav .nav-link {
+            color: white !important;
+            font-weight: 500;
+            margin: 0 15px;
+            font-size: 16px;
+            transition: all 0.3s ease;
             position: relative;
         }
-
-        .concert-card {
-            background-color: #cd8b65;
-            color: white;
-            width: 45%;
-            height: 500px;
-            border-radius: 20px;
-            padding: 20px;
-            position: relative;
-            overflow: hidden;
-            background-image: url("{% static 'img/massmonchouchou.jpg' %}");
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        
+        .navbar-nav .nav-link:hover {
+            color: #a855f7 !important;
+            transform: translateY(-2px);
         }
-    
-
-        .concert-location {
-            font-size: 0.7rem;
-            line-height: 1.4;
-        }
-
-        .movie-card {
-            background-color: #000;
-            color: white;
-            width: 47%;
-            height: 500px;
-            border-radius: 20px;
-            padding: 20px;
+        
+        .navbar-nav .nav-link::after {
+            content: '';
             position: absolute;
-            right: 0;
-            bottom: 0;
-            overflow: hidden;
-            background-image: url("{% static 'img/sinners-poster-1-819x1024.webp' %}");
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background-color: #a855f7;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
         }
-
-        .movie-title {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #f5d547;
-            margin-bottom: 5px;
-        }
-
-        .movie-tagline, .movie-release, .movie-format {
-            font-size: 0.8rem;
-            margin-bottom: 3px;
-        }
-
-        .stats-card {
-            background-color: rgb(252, 252, 252);
-            color: #000;
-            position: absolute;
-            right: 130px;
-            top: 120px;
-            width: 200px;
-            height: 150px;
-            border-radius: 15px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            z-index: 10;
-        }
-
-        .stats-number {
-            font-size: 3.5rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .stats-text {
-            font-size: 1rem;
-            text-align: center;
-        }
-
-        @media (max-width: 1200px) {
-            .about-container {
-                flex-direction: column;
-            }
-            
-            .event-cards {
-                height: 700px;
-                position: relative;
-            }
-            
-            .concert-card {
-                width: 70%;
-                margin: 0 auto;
-            }
-            
-            .movie-card {
-                width: 60%;
-                position: relative;
-                margin-left: auto;
-                margin-top: 20px;
-            }
-            
-            .stats-card {
-                position: absolute;
-                right: 50px;
-                top: 200px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .about-title {
-                font-size: 2.5rem;
-            }
-            
-            .event-cards {
-                height: auto;
-            }
-            
-            .concert-card, .movie-card {
-                width: 100%;
-                height: 400px;
-                position: relative;
-                margin: 10px 0;
-            }
-            
-            .stats-card {
-                position: relative;
-                width: 100%;
-                right: 0;
-                top: 0;
-                margin: 10px 0;
-                box-shadow: 10px -10px 10px 10px rgba(0, 0, 0, 0.1) !important;
-            }
-        }
-
-
-
-          /* Discover Venues Section */
-          .discover-section {
-            background: linear-gradient(to right, #c5b4e3, #e6c2ef);
-            padding: 5% 0;
+        
+        .navbar-nav .nav-link:hover::after {
             width: 100%;
-            height: 1339px;
         }
-
-        .discover-container {
-            width: 90%;
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            gap: 40px;
-        }
-
-        .discover-text {
-            flex: 0 0 30%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .discover-title {
-            font-size: 4rem;
-            font-weight: bold;
-            color: #000;
-            line-height: 1.1;
-        }
-
-        .venue-cards {
-            flex: 1;
-            display: flex;
-            gap: 30px;
-            position: relative;
-        }
-
-        .venue-card {
+        
+        .btn-connexion {
+            background: linear-gradient(45deg, #a855f7, #8b5cf6);
+            border: none;
             border-radius: 25px;
-            overflow: hidden;
+            padding: 10px 25px;
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+        }
+        
+        .btn-connexion:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.5);
+            color: white;
+            text-decoration: none;
+        }
+        
+        /* Hero Content */
+        .hero-content {
             position: relative;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-            width: 45%;
+            z-index: 2;
+            min-height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
         }
-
-        .venue-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
+        
+        .welcome-text {
+            font-size: 18px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0.9;
         }
-
-        .venue-info {
+        
+        .chef-icon {
+            font-size: 24px;
+        }
+        
+        .main-title {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .highlight-text {
+            color: #fbbf24;
+            position: relative;
+        }
+        
+        .left-section {
+            position: relative;
+        }
+        
+        .dox-text {
+            font-size: 8rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.15);
             position: absolute;
-            bottom: 0;
+            top: -100px;
+            left: -50px;
+            z-index: 1;
+            transform: rotate(-5deg);
+            text-shadow: 0 0 30px rgba(168, 85, 247, 0.3);
+        }
+        
+        .dajje-text {
+            font-size: 6rem;
+            font-weight: 900;
+            color: #fbbf24;
+            position: absolute;
+            bottom: -50px;
+            left: 50px;
+            z-index: 1;
+            transform: rotate(3deg);
+            text-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+        }
+        
+        .description-text {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            opacity: 0.95;
+            max-width: 600px;
+        }
+        
+        .floating-elements {
+            position: absolute;
+            top: 0;
             left: 0;
             right: 0;
-            background: white;
-            padding: 20px;
-            border-radius: 20px 20px 0 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 1;
         }
-
-        .venue-label {
-            font-size: 0.9rem;
-            color: #777;
-            margin-bottom: 8px;
+        
+        .floating-note {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 2rem;
+            animation: float 6s ease-in-out infinite;
         }
-
-        .venue-name {
-            font-size: 1.4rem;
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: #000;
+        
+        .floating-note:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
         }
-
-        .venue-location {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.9rem;
-            color: #666;
+        
+        .floating-note:nth-child(2) {
+            top: 40%;
+            right: 15%;
+            animation-delay: 2s;
         }
-
-        .play-button {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background-color: #0e0049;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: none;
-            cursor: pointer;
+        
+        .floating-note:nth-child(3) {
+            bottom: 30%;
+            left: 20%;
+            animation-delay: 4s;
         }
-
-        .play-icon {
-            color: white;
-            font-size: 12px;
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
         }
-
-        .basketball-card {
-            transform: translateY(30px);
-        }
-
-        .art-card {
-            margin-top: -30px;
-        }
-
-        @media (max-width: 1024px) {
-            .discover-container {
-                flex-direction: column;
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .main-title {
+                font-size: 3.5rem;
             }
             
-            .venue-cards {
-                flex-direction: column;
-                align-items: center;
+            .dox-text {
+                font-size: 6rem;
+                top: -80px;
             }
             
-            .venue-card {
-                width: 80%;
-                max-width: 400px;
-                margin: 20px 0;
-            }
-            
-            .basketball-card, .art-card {
-                transform: none;
-                margin-top: 0;
+            .dajje-text {
+                font-size: 4.5rem;
+                bottom: -40px;
             }
         }
-
-        @media (max-width: 768px) {
-            .discover-title {
+        
+        @media (max-width: 992px) {
+            .hero-content {
+                text-align: center;
+            }
+            
+            .main-title {
                 font-size: 3rem;
             }
             
-            .venue-card {
-                width: 100%;
+            .dox-text {
+                font-size: 4rem;
+                top: -60px;
+                left: -20px;
+            }
+            
+            .dajje-text {
+                font-size: 3rem;
+                bottom: -30px;
+                left: 20px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+            
+            .description-text {
+                font-size: 16px;
+            }
+            
+            .navbar-nav {
+                text-align: center;
+                margin-top: 20px;
+            }
+            
+            .navbar-nav .nav-link {
+                margin: 10px 0;
+            }
+            
+            .dox-text, .dajje-text {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .main-title {
+                font-size: 2rem;
+            }
+            
+            .welcome-text {
+                font-size: 16px;
+            }
+            
+            .description-text {
+                font-size: 15px;
             }
         }
 
+
+        /*nouveau */
+
+        *{
+            margin: 0;
+            padding: 0;
+        }
+         /* FIX: Navbar sticky corrigé */
+      .search-container {
+        margin: 0 20px;
+      }
+
+      .search-form {
+        position: relative;
+      }
+
+      .search-input-group {
+        position: relative;
+        display: flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 25px;
+        padding: 4px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+        min-width: 280px;
+      }
+
+      .search-input-group:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.3);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .search-input-group:focus-within {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+      }
+
+      .search-input {
+        background: transparent;
+        border: none;
+        outline: none;
+        color: white;
+        padding: 8px 15px;
+        flex-grow: 1;
+        font-size: 14px;
+        border-radius: 20px;
+      }
+
+      .search-input::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+        font-style: italic;
+      }
+
+      .search-btn {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        border: none;
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-right: 2px;
+      }
+
+      .search-btn:hover {
+        background: linear-gradient(135deg, #0056b3, #004085);
+        transform: scale(1.05);
+        box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+      }
+
+      .search-btn:active {
+        transform: scale(0.95);
+      }
+
+      .search-btn i {
+        font-size: 14px;
+      }
+
+      /* Animation au focus */
+      @keyframes searchPulse {
+        0% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.4); }
+        70% { box-shadow: 0 0 0 8px rgba(0, 123, 255, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0); }
+      }
+
+      .search-input:focus + .search-btn {
+        animation: searchPulse 1.5s infinite;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .search-container {
+          margin: 10px 0;
+          order: -1;
+        }
+        
+        .search-input-group {
+          min-width: 250px;
+        }
+        
+        .search-input {
+          font-size: 13px;
+          padding: 6px 12px;
+        }
+        
+        .search-btn {
+          width: 30px;
+          height: 30px;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .search-input-group {
+          min-width: 200px;
+        }
+        
+        .search-input::placeholder {
+          font-size: 12px;
+        }
+      } 
+
+       /* Section 1 - À propos de Eventify */
+        .section-eventify {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section-eventify::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background: url('img/Screenshot 2025-05-14 111143.png') no-repeat center center;
+            background-size: contain;
+            opacity: 0.1;
+            z-index: 1;
+        }
+        
+        .eventify-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .eventify-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 2rem;
+        }
+        
+        .eventify-description {
+            font-size: 1.1rem;
+            color: #6c757d;
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+        }
+        
+        .btn-eventify {
+            background-color: #2c3e50;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-eventify:hover {
+            background-color: #34495e;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.3);
+        }
+        
+        .eventify-cards {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .event-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .event-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .event-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .event-card-content {
+            padding: 20px;
+        }
+        
+        .event-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .event-date {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .events-count {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .count-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        
+        .count-text {
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+        
+        /* Section 2 - Découvrez de superbes lieux */
+        .section-discover {
+            background: linear-gradient(135deg, #8B5A96 0%, #B869C7 100%);
+            padding: 80px 0;
+            color: white;
+        }
+        
+        .discover-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .discover-content {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+        
+        .discover-left {
+            flex: 1;
+        }
+        
+        .discover-right {
+            flex: 1;
+            position: relative;
+        }
+        
+        .discover-description {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+        
+        .place-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .place-card:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateX(10px);
+        }
+        
+        .place-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .place-subtitle {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
+        .place-image {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .place-image:hover {
+            transform: scale(1.05);
+        }
+        
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .floating-element {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .floating-element:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 0s;
+        }
+        
+        .floating-element:nth-child(2) {
+            top: 60%;
+            right: 20%;
+            width: 15px;
+            height: 15px;
+            animation-delay: 2s;
+        }
+        
+        .floating-element:nth-child(3) {
+            bottom: 30%;
+            left: 5%;
+            width: 25px;
+            height: 25px;
+            animation-delay: 4s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @media (max-width: 768px) {
+            .eventify-title, .discover-title {
+                font-size: 2rem;
+            }
+            
+            .discover-content {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .section-eventify::before {
+                display: none;
+            }
+        }
 
           .organisateurs{
             margin: 0;
@@ -563,154 +859,749 @@
                 width: 100%;
             }
         }
-
-
-    </style>
-    <div class="header-wrapper">
-      <div class="header-bg"></div>
-      <!-- Header Content -->
-      <div class="header-content">
-        <div class="welcome-text">
-          <h5>
-            Bienvenue dans notre site de réservation d'événements !
-            <span class="ticket-icon">🎟️</span>
-          </h5>
-        </div>
-
-        <div class="hero-section">
-          <div class="hero-left">
-            <div class="dox">Dox</div>
-            <div class="dajje">Dajje</div>
-          </div>
-
-          <div class="hero-right">
-            <h1 class="hero-title">
-              Là où vos <span class="evenements">événements</span> de rêve
-              prennent vie!
-            </h1>
-
-            <div class="hero-description">
-              <p>
-                Non seulement vous pouvez acheter des billets pour les
-                événements les plus tendance en ville, mais vous pouvez aussi
-                créer les vôtres !
-              </p>
-              <p>
-                Grâce à notre plateforme simple et intuitive, concevez
-                facilement des billets personnalisés qui reflètent l'esprit de
-                votre événement. Fini les billets génériques : place à des
-                créations uniques, professionnelles et mémorables qui feront
-                toute la différence.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-     <!-- About Section -->
-    <div class="about-section">
-        <div class="about-container">
-            <div class="about-text">
-                <h2 class="about-title">A propos de Eventify</h2>
-                <p class="about-description">
-                    Eventify, c'est l'expertise en gestion d'événements qui accompagne et facilite 
-                    le travail des organisateurs pour les aider à atteindre leur objectif : réussir chaque 
-                    événement.
-                </p>
-                <a href="#" class="about-button">à propos de nous</a>
-            </div>
-            <div class="event-cards">
-                <div class="concert-card"></div>
-                <div class="movie-card"></div>
-                <div class="stats-card">
-                    <div class="stats-number">46+</div>
-                    <div class="stats-text">Événements l'an dernier</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-     <!-- Discover Venues Section -->
-    <div class="discover-section">
-        <div class="discover-container">
-            <div class="discover-text">
-                <h2 class="discover-title">Découvrez<br>de superbes<br>lieux !</h2>
-            </div>
-            <div class="venue-cards">
-                <div class="venue-card basketball-card">
-                    <img src="{% static 'img/Screenshot 2025-05-14 111143.png' %}" alt="Basket Ball Match" class="venue-image">
-                    <div class="venue-info">
-                        <div class="venue-label">Lieu: 2</div>
-                        <h3 class="venue-name">THEBAL:<br>Match incontournable</h3>
-                        <div class="venue-location">
-                            Dakar Arena, Diamniadio
-                            <button class="play-button">
-                                <span class="play-icon">▶</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="venue-card art-card">
-                    <img src="{% static 'img/IMG-20250514-WA0049.jpg' %}" alt="Biennale de Dakar" class="venue-image">
-                    <div class="venue-info">
-                        <div class="venue-label">LIEU : 1</div>
-                        <h3 class="venue-name">Biennale de Dakar<br>Mai 2025</h3>
-                        <div class="venue-location">
-                            Grand Théâtre National
-                            <button class="play-button">
-                                <span class="play-icon">▶</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-         <div class="discover-text">
-                <h2 class="discover-title2">Explorez de nouvelles idées dans des lieux d’une beauté saisissante. Participez à des matchs pleins d’adrénalines, conférences sur les startups tech, expositions d’art et rencontrez des esprits brillants venus du monde entier.</h2>
-        </div>
-    </div>
-
-    <div class="organisateurs">
-    <div class="container container2">
-        <h1 class="section-title">Des Organisateurs Compétents</h1>
+         
         
-        <div class="organizers-grid">
-            <!-- Organisateur 1 -->
-            <div class="organizer-card">
-                <div class="organizer-image">
-                    <img src="{% static 'img/IMG-20250514-WA0031.jpg' %}" alt="Khadijah Yussuf">
-                </div>
-                <h2 class="organizer-name">Khadijah Yussuf</h2>
-            </div>
+        /* Section titre */
+        .section-title {
+            font-size: 42px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+        }
+        
+        /* Grille d'événements */
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        /* Carte d'événement */
+        .event-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .event-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .event-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .event-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+        }
+        
+        .event-date {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-right: 15px;
+        }
+        
+        .event-month {
+            font-size: 12px;
+            color: #5661F9;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        
+        .event-day {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .event-details {
+            flex-grow: 1;
+        }
+        
+        .event-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .event-location {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .event-description {
+            font-size: 14px;
+            color: #777;
+            line-height: 1.5;
+        }
+        
+        /* Bouton explorer */
+        .explore-button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .explore-button {
+            background-color: #10104b;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            font-size: 20px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+        
+        .explore-button:hover {
+            background-color: #080832;
+        }
+
+        .footer-section {
+            background: linear-gradient(135deg, #1a1a5c 0%, #2d1b69 50%, #4a148c 100%);
+            color: white;
+            padding: 40px 0;
+        }
+        
+        .brand-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+        
+        .brand-title .even {
+            color: white;
+        }
+        
+        .brand-title .tify {
+            color: #9c27b0;
+        }
+        
+        .newsletter-section {
+            margin-bottom: 40px;
+        }
+        
+        .email-input {
+            border: none;
+            border-radius: 25px;
+            padding: 12px 20px;
+            font-size: 16px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333;
+            width: 300px;
+            margin-right: 15px;
+        }
+        
+        .email-input:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(156, 39, 176, 0.5);
+        }
+        
+        .subscribe-btn {
+            background: linear-gradient(45deg, #9c27b0, #673ab7);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .subscribe-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(156, 39, 176, 0.4);
+            background: linear-gradient(45deg, #8e24aa, #5e35b1);
+        }
+        
+        footer .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+        
+        footer .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        footer .nav-links a:hover {
+            color: #9c27b0;
+            transform: translateY(-2px);
+        }
+        
+        footer .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background-color: #9c27b0;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        footer .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .language-selector {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 8px 16px;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .lang-btn.active {
+            background: #9c27b0;
+            border-color: #9c27b0;
+        }
+        
+        .lang-btn:hover {
+            background: rgba(156, 39, 176, 0.8);
+            color: white;
+            text-decoration: none;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 24px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .social-links a:hover {
+            color: #9c27b0;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .brand-title {
+                font-size: 2rem;
+            }
             
-            <!-- Organisateur 2 -->
-            <div class="organizer-card">
-                <div class="organizer-image">
-                    <img src="{% static 'img/IMG-20250514-WA0032.jpg' %}" alt="Maguette Gueye">
-                </div>
-                <h2 class="organizer-name">Maguette Gueye</h2>
-            </div>
+            .email-input {
+                width: 250px;
+                margin-bottom: 15px;
+                margin-right: 0;
+            }
             
-            <!-- Organisateur 3 -->
-            <div class="organizer-card">
-                <div class="organizer-image">
-                    <img src="{% static 'img/IMG-20250514-WA0028.jpg' %}" alt="Awa Marie Fall">
-                </div>
-                <h2 class="organizer-name">Awa Marie Fall</h2>
-            </div>
+            footer .nav-links {
+                gap: 20px;
+            }
             
-            <!-- Organisateur 4 -->
-            <div class="organizer-card">
-                <div class="organizer-image">
-                    <img src="{% static 'img/IMG-20250514-WA0007.jpg' %}" alt="Yaye Fatou Diallo">
+            footer .nav-links a {
+                font-size: 16px;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .email-input {
+                width: 100%;
+            }
+            
+            footer .nav-links {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+    </style>
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <div class="logo-container">
+                <svg
+                    class="logo-img"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 100 100"
+                >
+                    <rect
+                    x="15"
+                    y="20"
+                    width="70"
+                    height="55"
+                    rx="5"
+                    ry="5"
+                    fill="none"
+                    stroke="#fffacd"
+                    stroke-width="4"
+                    />
+                    <line
+                    x1="15"
+                    y1="40"
+                    x2="85"
+                    y2="40"
+                    stroke="#fffacd"
+                    stroke-width="4"
+                    />
+                    <line
+                    x1="30"
+                    y1="20"
+                    x2="30"
+                    y2="30"
+                    stroke="#fffacd"
+                    stroke-width="4"
+                    />
+                    <line
+                    x1="70"
+                    y1="20"
+                    x2="70"
+                    y2="30"
+                    stroke="#fffacd"
+                    stroke-width="4"
+                    />
+                    <path d="M25,50 L35,50 L35,60 L25,60 Z" fill="#fffacd" />
+                    <path d="M45,50 L55,50 L55,60 L45,60 Z" fill="#fffacd" />
+                    <path d="M65,50 L75,50 L75,60 L65,60 Z" fill="#fffacd" />
+                    <path d="M25,70 L55,70 L55,80 L25,80 Z" fill="#fffacd" />
+                </svg>
+                <span class="logo-text">Eventify</span>
                 </div>
-                <h2 class="organizer-name">Yaye Fatou Diallo</h2>
+            </a>
+            
+            <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+            
+            <div
+            class="collapse navbar-collapse justify-content-end"
+            id="navbarNav"
+          >
+            <ul class="navbar-nav align-items-center">
+              <li class="nav-item">
+                <a class="nav-link active" href="{% url "accueil" %}">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url "events" %}">Événements</a>
+              </li>  
+              <li class="nav-item">
+                <a class="nav-link" href="{% url "categories" %}">Catégories</a>
+              </li>
+              
+              <!-- Barre de recherche stylée -->
+              <li class="nav-item search-container">
+                <form class="search-form" method="GET" action="{% url "search_accueil_events" %}">
+                  <div class="search-input-group">
+                    <input type="text" 
+                          name="search" 
+                          class="search-input" 
+                          placeholder="Rechercher un événement..."
+                          value="{{ request.GET.search }}">
+                    <button type="submit" class="search-btn">
+                      <i class="bi bi-search"></i>
+                    </button>
+                  </div>
+                </form>
+              </li>
+              
+              {% if utilisateur_connecte %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url "create_event" %}">Créer un événement</a>
+              </li>
+              <li class="nav-item ms-3">
+                <a href="{% url "profil_utilisateur" %}" class="btn">
+                  <img src="/media/profils/profile_default.jpeg" alt="Photo de Profil" class="rounded-circle" style="width: 30px; height: 30px;">
+                </a>
+              </li>
+              {% else %}
+              <li class="nav-item ms-3">
+                <a href="{% url "connexion" %}" style="text-decoration: none; color: inherit;">
+                  <button class="btn btn-connexion">Se Connecter</button>
+                </a>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <!-- Floating Musical Elements -->
+        <div class="floating-elements">
+            <div class="floating-note">♪</div>
+            <div class="floating-note">♫</div>
+            <div class="floating-note">♪</div>
+        </div>
+        
+        <div class="hero-content">
+           
+            <!-- Header Content -->
+            <div class="header-content container">
+                <div class="welcome-text">
+                    <h5>
+                        Bienvenue dans notre site de réservation d'événements !
+                        <span class="ticket-icon">🎟️</span>
+                    </h5>
+                </div>
+
+                <div class="hero-section">
+                    <div class="hero-left">
+                        <div class="dox">Dox</div>
+                        <div class="dajje">Dajje</div>
+                    </div>
+
+                    <div class="hero-right">
+                        <h1 class="hero-title">
+                        Là où vos <span class="evenements">événements</span> de rêve
+                        prennent vie!
+                        </h1>
+
+                        <div class="hero-description">
+                        <p>
+                            Non seulement vous pouvez acheter des billets pour les
+                            événements les plus tendance en ville, mais vous pouvez aussi
+                            créer les vôtres !
+                        </p>
+                        <p>
+                            Grâce à notre plateforme simple et intuitive, concevez
+                            facilement des billets personnalisés qui reflètent l'esprit de
+                            votre événement. Fini les billets génériques : place à des
+                            créations uniques, professionnelles et mémorables qui feront
+                            toute la différence.
+                        </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Section 1: À propos de Eventify -->
+    <section class="section-eventify">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 eventify-content">
+                    <h2 class="eventify-title">À propos de Eventify</h2>
+                    <p class="eventify-description">
+                        Eventify, c'est l'expertise en gestion d'événements qui accompagne et facilite le travail des organisateurs pour les aider à atteindre leur objectif : réussir chaque événement.
+                    </p>
+                    <a href="#" class="btn-eventify">
+                        <i class="fas fa-info-circle me-2"></i>
+                        À propos de nous
+                    </a>
+                </div>
+                <div class="col-lg-6 eventify-cards">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="event-card">
+                                <img src="{% static 'img/Screenshot 2025-05-14 111143.png' %}" alt="Amadeu Event">
+                                <div class="event-card-content">
+                                    <h5 class="event-title">AMADEU</h5>
+                                    <p class="event-date">Concert musical</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="event-card">
+                                <img src="{% static 'img/Screenshot 2025-05-14 111143.png' %}"  alt="Sinners Event">
+                                <div class="event-card-content">
+                                    <h5 class="event-title">SINNERS</h5>
+                                    <p class="event-date">Événement spécial</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="events-count">
+                        <div class="count-number">46+</div>
+                        <div class="count-text">Événements par semaine</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Découvrez de superbes lieux -->
+    <section class="section-discover">
+        <div class="container">
+            <h2 class="discover-title">Découvrez<br>de superbes<br>lieux !</h2>
+            
+            <div class="discover-content">
+                <div class="discover-left">
+                    <div class="place-card">
+                        <div class="place-title">LIEU - 1</div>
+                        <div class="place-subtitle">Biennale de Dakar<br>Mai 2025</div>
+                    </div>
+                    
+                    <div class="place-card">
+                        <div class="place-title">LIEU - 2</div>
+                        <div class="place-subtitle">THEBAL<br>Match incontournable</div>
+                    </div>
+                    
+                    <p class="discover-description">
+                        Explorez de nouvelles idées dans des lieux d'une beauté saisissante. Participez à des matchs pleins d'adrénaline, conférences sur les startups tech, expositions d'art et rencontrez des esprits brillants venus du monde entier.
+                    </p>
+                </div>
+                
+                <div class="discover-right">
+                    <img src= "{% static 'img/IMG-20250514-WA0049.jpg' %}" alt="Lieu découverte" class="place-image">
+                    <div class="floating-elements">
+                        <div class="floating-element"></div>
+                        <div class="floating-element"></div>
+                        <div class="floating-element"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    
+    <div class="organisateurs">
+        <div class="container container2">
+            <h1 class="section-title">Des Organisateurs Compétents</h1>
+            
+            <div class="organizers-grid">
+                <!-- Organisateur 1 -->
+                <div class="organizer-card">
+                    <div class="organizer-image">
+                        <img src="{% static 'img/IMG-20250514-WA0031.jpg' %}" alt="Khadijah Yussuf">
+                    </div>
+                    <h2 class="organizer-name">Khadijah Yussuf</h2>
+                </div>
+                
+                <!-- Organisateur 2 -->
+                <div class="organizer-card">
+                    <div class="organizer-image">
+                        <img src="{% static 'img/IMG-20250514-WA0032.jpg' %}" alt="Maguette Gueye">
+                    </div>
+                    <h2 class="organizer-name">Maguette Gueye</h2>
+                </div>
+                
+                <!-- Organisateur 3 -->
+                <div class="organizer-card">
+                    <div class="organizer-image">
+                        <img src="{% static 'img/IMG-20250514-WA0028.jpg' %}" alt="Awa Marie Fall">
+                    </div>
+                    <h2 class="organizer-name">Awa Marie Fall</h2>
+                </div>
+                
+                <!-- Organisateur 4 -->
+                <div class="organizer-card">
+                    <div class="organizer-image">
+                        <img src="{% static 'img/IMG-20250514-WA0007.jpg' %}" alt="Yaye Fatou Diallo">
+                    </div>
+                    <h2 class="organizer-name">Yaye Fatou Diallo</h2>
+                </div>
             </div>
         </div>
     </div>
-</div>
+    
+    <div class="container">
+        <h1 class="section-title">Prochains Événements</h1>
+        
+        <div class="events-grid">
+            <!-- Événement 1 -->
+            {% for event in events_semaine|slice:":6" %}
+            <div class="event-card">
+                <div class="event-image">
+                    <img src="{{ event.image_url }}" alt="{{ event.titre }}">
+                </div>
+                <div class="event-content">
+                    <div class="event-date">
+                        <div class="event-month">{{ event.date_heure|date:"M"|upper }}</div>
+                        <div class="event-day">{{event.date_heure|date:"d" }}</div>
+                    </div>
+                    <div class="event-details">
+                        <h2 class="event-title">{{ event.titre }}</h2>
+                        <p class="event-location">{{ event.localisation }}</p>
+                        <p class="event-description">{{event.description }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="explore-button-container my-5">
+            <a href="{% url "events" %}" class="explore-button">Explorer événements</a>
+        </div>
+    </div>
 
-    <!-- Script personnalisé -->
+    <footer class="footer-section">
+        <div class="container">
+            <!-- Brand -->
+            <div class="text-center">
+                <h1 class="brand-title">
+                    <span class="even">Even</span><span class="tify">Tify</span>
+                </h1>
+            </div>
+            
+            
+            <!-- Navigation Links -->
+            <nav class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#profils">Profils</a>
+                <a href="#evenements">Événements</a>
+                <a href="#contacts">Contacts</a>
+                <a href="#reservations">Réservations</a>
+            </nav>
+            
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <!-- Language Selector -->
+                <div class="language-selector">
+                    <a href="#" class="lang-btn active">Français</a>
+                    <a href="#" class="lang-btn">Anglais</a>
+                </div>
+                
+                <!-- Social Links -->
+                <div class="social-links">
+                    <a href="#" aria-label="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="#" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" aria-label="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                </div>
+                
+                <!-- Copyright -->
+                <div class="copyright">
+                    © 2025 Uploaded by Eventify
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Animation du header au défilement
+      window.addEventListener("scroll", function () {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > window.innerHeight) {
+            navbar.style.backgroundColor = "rgba(45, 10, 69, 0.95)";
+            navbar.style.boxShadow = "0 5px 15px rgba(0, 0, 0, 0.3)";
+        } else {
+          navbar.style.background = "transparent";
+          navbar.style.boxShadow = "none";
+          
+        }
+      });
 
-{% endblock %}
+      // Animation des éléments au chargement
+      document.addEventListener("DOMContentLoaded", function () {
+        const heroLeft = document.querySelector(".hero-left");
+        const heroRight = document.querySelector(".hero-right");
+
+        setTimeout(() => {
+          heroLeft.style.opacity = "1";
+          heroLeft.style.transform = "translateX(0)";
+        }, 300);
+
+        setTimeout(() => {
+          heroRight.style.opacity = "1";
+          heroRight.style.transform = "translateX(0)";
+        }, 600);
+        // Gestion du sélecteur de langue
+        const languageBtns = document.querySelectorAll(".language-btn");
+
+        languageBtns.forEach((btn) => {
+          btn.addEventListener("click", function () {
+            // Enlever la classe active de tous les boutons
+            languageBtns.forEach((b) => b.classList.remove("active"));
+
+            // Ajouter la classe active au bouton cliqué
+            this.classList.add("active");
+
+            // Changer la langue du site (simulation)
+            const lang = this.getAttribute("data-lang");
+            console.log(`Langue changée en: ${lang}`);
+
+            // Ici vous pourriez ajouter du code pour changer réellement la langue
+            // Par exemple, charger de nouveaux fichiers de traduction
+          });
+        });
+
+        // Animation pour les icônes sociales
+        const socialIcons = document.querySelectorAll(".social-icons a");
+
+        socialIcons.forEach((icon) => {
+          icon.addEventListener("mouseenter", function () {
+            this.style.transform = "translateY(-5px)";
+          });
+
+          icon.addEventListener("mouseleave", function () {
+            this.style.transform = "translateY(0)";
+          });
+        });
+      });
+    </script>
+</body>

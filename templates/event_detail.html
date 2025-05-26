@@ -12,79 +12,37 @@
             --text-dark: #333;
             --text-light: #fff;
             --gray-light: #f8f9fa;
+            --shadow-light: rgba(123, 16, 255, 0.1);
+    --shadow-medium: rgba(123, 16, 255, 0.2);
+    --shadow-strong: rgba(0, 0, 0, 0.15);
+    --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    --gradient-secondary: linear-gradient(135deg, var(--secondary) 0%, rgba(240, 230, 255, 0.8) 100%);
         }
         
-        body {
-            font-family: 'Poppins', sans-serif;
-            color: var(--text-dark);
-            background-color: #f9f7ff;
-
-        }.navbar {
-        background-color: #7b10ff ;
-        padding: 20px 0;
-        position: relative;
-        z-index: 20;
-      }
-
-      .logo-container {
-        display: flex;
-        align-items: center;
-      }
-
-      .logo-text {
-        color:rgb(255, 248, 185);
-        font-size: 28px;
-        font-weight: bold;
-        margin-left: 5px;
-      }
-
-      .logo-img {
-        width: 40px;
-        height: 40px;
-      }
-
-      .nav-link {
-        color: white !important;
-        font-size: 18px;
-        margin-left: 15px;
-        position: relative;
-        padding: 10px 5px !important;
-      }
-
-      .nav-link:hover::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background-color: #fffacd;
-      }
-
-      .btn-connexion {
-        background-color: #8a2be2 !important;
-        color: white !important;
-        border-radius: 25px;
-        padding: 10px 25px;
-        font-weight: 600;
-        border: none;
-        transition: all 0.3s ease;
-      }
-
-      .btn-connexion:hover {
-        background-color: #7823c7;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
-      }
 
       
         
         .banner {
-            height: 350px;
+            height: 100vh;
             background-size: cover;
+            margin-top: 80px;
             background-position: center;
             position: relative;
         }
+         .banner::before {
+        content: "";
+        position: absolute;
+        top: 50%%;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          to right,
+          rgba(45, 10, 69, 0.5),
+          rgba(75, 0, 130, 0.5)
+        );
+        z-index: 1;
+      }
         
         .banner-overlay {
             position: absolute;
@@ -97,127 +55,435 @@
             flex-direction: column;
             justify-content: flex-end;
             padding: 2rem;
+            z-index: 100;
             color: white;
         }
-        
-        .event-profile-img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid white;
-            position: absolute;
-            bottom: -50px;
-            left: 50px;
-        }
-        
-        .card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .btn-primary {
-            background-color: var(--primary);
-            border-color: var(--primary);
-            border-radius: 25px;
-            padding: 10px 30px;
-            font-weight: 600;
-        }
-        
-        .btn-primary:hover {
-            background-color: var(--primary-dark);
-            border-color: var(--primary-dark);
-        }
-        
-        .category-badge {
-            background-color: var(--secondary);
-            color: var(--primary);
-            font-weight: 600;
-            border-radius: 20px;
-            padding: 5px 15px;
-            text-transform: capitalize;
-        }
-        
-        .event-info-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .event-info-icon {
-            background-color: var(--secondary);
-            color: var(--primary);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-        }
-        
-        .countdown-container {
-            background: linear-gradient(45deg, var(--primary), var(--primary-light));
-            border-radius: 15px;
-            padding: 20px;
-            color: white !important;
-        }
-        
-        .countdown-item {
-            text-align: center;
-            padding: 10px;
-        }
-        
-        .countdown-number {
-            font-size: 2rem;
-            font-weight: 700;
-        }
-        
-        .countdown-label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .section-title {
-            position: relative;
-            padding-bottom: 10px;
-            margin-bottom: 25px;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 50px;
-            height: 3px;
-            background-color: var(--primary);
-        }
-        
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin: 0;
+}
+
+.col-lg-6 {
+    flex: 1;
+    min-width: 300px;
+}
+
+/* Cards Styling */
+.card {
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px var(--shadow-light);
+    backdrop-filter: blur(10px);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    overflow: hidden;
+    position: relative;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-primary);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 60px var(--shadow-medium);
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+.card.p-4 {
+    padding: 2.5rem !important;
+}
+
+/* Section Titles */
+.section-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 2rem;
+    position: relative;
+    display: inline-block;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: var(--gradient-primary);
+    border-radius: 2px;
+}
+
+/* Event Info Items */
+.event-info-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: var(--gradient-secondary);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    border-left: 4px solid var(--primary);
+}
+
+.event-info-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 20px var(--shadow-light);
+}
+
+.event-info-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1.5rem;
+    box-shadow: 0 5px 15px var(--shadow-medium);
+}
+
+.event-info-icon i {
+    font-size: 1.2rem;
+    color: var(--text-light);
+}
+
+.event-info-item p.fw-bold {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 0.25rem;
+}
+
+.event-info-item p:not(.fw-bold) {
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+/* Buttons */
+.btn {
+    padding: 0.875rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border: none;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn-primary {
+    background: var(--gradient-primary);
+    color: var(--text-light);
+    box-shadow: 0 5px 20px var(--shadow-medium);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px var(--shadow-medium);
+}
+
+.btn-outline-primary {
+    background: transparent;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary);
+    color: var(--text-light);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px var(--shadow-medium);
+}
+
+.d-grid.gap-2 {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* Countdown Section */
+.countdown-container {
+    background: var(--gradient-primary);
+    color: var(--text-light);
+    text-align: center;
+}
+
+.countdown-container h4 {
+    color: var(--text-light);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+}
+
+#countdown {
+    display: flex;
+    justify-content: space-around;
+    gap: 1rem;
+}
+
+.countdown-item {
+    flex: 1;
+    text-align: center;
+}
+
+.countdown-number {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--text-light);
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.countdown-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Category Badge */
+.category-badge {
+    background: var(--gradient-primary);
+    color: var(--text-light);
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 3px 10px var(--shadow-medium);
+}
+
+/* Organizer Section */
+.d-flex.align-items-center {
+    display: flex;
+    align-items: center;
+    background: var(--secondary);
+    padding: 1rem;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.d-flex.align-items-center:hover {
+    transform: scale(1.02);
+    box-shadow: 0 5px 15px var(--shadow-light);
+}
+
+.rounded-circle {
+    border-radius: 50%;
+    border: 3px solid var(--primary);
+    box-shadow: 0 3px 10px var(--shadow-light);
+}
+
+/* Progress Bar */
+.progress {
+    background-color: rgba(123, 16, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar {
+    background: var(--gradient-primary);
+    border-radius: 10px;
+    transition: width 0.6s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 25%, rgba(255, 255, 255, 0.3) 25%, rgba(255, 255, 255, 0.3) 50%, transparent 50%);
+    background-size: 20px 20px;
+    animation: progressShine 2s linear infinite;
+}
+
+@keyframes progressShine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* Additional Info Section */
+.mb-3 {
+    margin-bottom: 2rem !important;
+}
+
+.fw-bold.mb-1 {
+    font-size: 1.1rem;
+    color: var(--primary-dark);
+    margin-bottom: 0.75rem !important;
+}
+
+.text-muted {
+    color: #6c757d !important;
+    font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .row {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .col-lg-6 {
+        min-width: auto;
+    }
+    
+    .card.p-4 {
+        padding: 1.5rem !important;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .countdown-number {
+        font-size: 2rem;
+        padding: 0.75rem;
+    }
+    
+    .d-grid.gap-2 {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+        text-align: center;
+    }
+    
+    #countdown {
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .event-info-item {
+        flex-direction: column;
+        text-align: center;
+        padding: 1rem;
+    }
+    
+    .event-info-icon {
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+    
+    .countdown-number {
+        font-size: 1.5rem;
+        padding: 0.5rem;
+    }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.card:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+/* Hover Effects */
+.event-info-item,
+.category-badge,
+.d-flex.align-items-center {
+    cursor: pointer;
+}
+
+/* Focus States for Accessibility */
+.btn:focus,
+.card:focus {
+    outline: 3px solid var(--primary-light);
+    outline-offset: 3px;
+}
+
+/* Print Styles */
+@media print {
+    .card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+    
+    .btn {
+        display: none;
+    }
+}
         
         @media (max-width: 768px) {
             .banner {
                 height: 250px;
             }
             
-            .event-profile-img {
-                width: 80px;
-                height: 80px;
-                bottom: -40px;
-                left: 30px;
-            }
         }
     </style>
 
     <!-- Event Banner -->
-    <div class="banner" id="event-banner" style="background-image: url('{{ event.photo_couverture }}');">
+    <div class="banner" id="event-banner" style="background-image: url('{{ event.image_url }}');">
+        
         <div class="banner-overlay">
             <span class="category-badge my-5">{{event.categorie}}</span>
             <h1 class="display-4 fw-bold">{{event.titre}}</h1>
@@ -275,7 +541,7 @@
                 
                 <div class="card p-4">
                     <h2 class="section-title">Description</h2>
-                    <p>Ce match de gala exceptionnel rassemblera les meilleurs talents sportifs de la région pour une compétition amicale mais intense. Venez encourager vos athlètes préférés et profiter d'une journée remplie d'action et de divertissement!</p>
+                    <p>{{event.description}}</p>
                     
                     <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-4">
                         {% if proprity %}

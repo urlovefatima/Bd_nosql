@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from mongo import db
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib import messages
-from datetime import datetime
+from datetime import datetime, timedelta
 from bson import ObjectId
 import re
 import os
@@ -230,8 +230,16 @@ def deconnexion(request):
 
 
 def accueil(request):
-    events = list[db.events.find({})]
-    return render(request, 'accueil.html', {'events': events})
+    events = list(db.events.find())
+    events_semaine = list(db.events.find({
+            "date_heure": {
+                "$gte": datetime.now(),
+                "$lt": datetime.now() + timedelta(days=6-datetime.now().weekday())
+            }
+        }))
+    for event in events_semaine:
+        event['id'] = str(event['_id'])
+    return render(request, 'accueil.html', {'events': events, "events_semaine": events_semaine})
 
 
 
