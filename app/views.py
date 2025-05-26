@@ -18,6 +18,7 @@ def get_events(request):
             if event['date_heure'] > datetime.now():
                 events.append(event)
                 event['id'] = str(event['_id'])
+        
         return render(request, 'events.html', {'events': events})
     else:
         return render(request, 'events.html', {'events': []})

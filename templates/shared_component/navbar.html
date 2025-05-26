@@ -1,5 +1,5 @@
 {% load static %}
-    <style>
+<style>
       body {
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
@@ -9,25 +9,18 @@
 
      
 
-      /* FIX: Navbar sticky corrigé */
-      .navbar {
-        background-color: #2d0a45 !important;
-        backdrop-filter: blur(10px);
-        padding: 20px 0;
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        transition: all 0.3s ease;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      }
-
-      /* Effet de transparence quand au top */
-      .navbar.at-top {
-        background-color: transparent !important;
-        border-bottom: none;
-      }
-
-      .logo-container {
+      /* Navigation Header */
+        .navbar {
+            background-color: rgba(45, 10, 69, 0.95);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px 0;
+            transition: all 0.3s ease;
+        }
+        
+        
+        .logo-container {
         display: flex;
         align-items: center;
       }
@@ -43,218 +36,237 @@
         width: 40px;
         height: 40px;
       }
-
-      .nav-link {
-        color: white !important;
-        font-size: 18px;
-        margin-left: 15px;
-        position: relative;
-        padding: 10px 5px !important;
-        transition: all 0.3s ease;
-      }
-
-      .nav-link:hover::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background-color: #fffacd;
-      }
-
-      .btn-connexion {
-        background-color: #0b0b6e !important;
-        color: white !important;
-        border-radius: 25px;
-        padding: 10px 25px;
-        font-weight: 600;
-        border: none;
-        transition: all 0.3s ease;
-      }
-
-      .btn-connexion:hover {
-        background-color: #7823c7 !important;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
-      }
+        
+        .navbar-nav .nav-link {
+            color: white !important;
+            font-weight: 500;
+            margin: 0 15px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            color: #a855f7 !important;
+            transform: translateY(-2px);
+        }
+        
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background-color: #a855f7;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .navbar-nav .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .btn-connexion {
+            background: linear-gradient(45deg, #a855f7, #8b5cf6);
+            border: none;
+            border-radius: 25px;
+            padding: 10px 25px;
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+        }
+        
+        .btn-connexion:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.5);
+            color: white;
+            text-decoration: none;
+        }
+         /* FIX: Navbar sticky corrigé */
       .search-container {
-  margin: 0 20px;
-}
+        margin: 0 20px;
+      }
 
-.search-form {
-  position: relative;
-}
+      .search-form {
+        position: relative;
+      }
 
-.search-input-group {
-  position: relative;
-  display: flex;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 25px;
-  padding: 4px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.3s ease;
-  min-width: 280px;
-}
+      .search-input-group {
+        position: relative;
+        display: flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 25px;
+        padding: 4px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+        min-width: 280px;
+      }
 
-.search-input-group:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.3);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
+      .search-input-group:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.3);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
 
-.search-input-group:focus-within {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: #007bff;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
-}
+      .search-input-group:focus-within {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+      }
 
-.search-input {
-  background: transparent;
-  border: none;
-  outline: none;
-  color: white;
-  padding: 8px 15px;
-  flex-grow: 1;
-  font-size: 14px;
-  border-radius: 20px;
-}
+      .search-input {
+        background: transparent;
+        border: none;
+        outline: none;
+        color: white;
+        padding: 8px 15px;
+        flex-grow: 1;
+        font-size: 14px;
+        border-radius: 20px;
+      }
 
-.search-input::placeholder {
-  color: rgba(255, 255, 255, 0.7);
-  font-style: italic;
-}
+      .search-input::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+        font-style: italic;
+      }
 
-.search-btn {
-  background: linear-gradient(135deg, #007bff, #0056b3);
-  border: none;
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-right: 2px;
-}
+      .search-btn {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        border: none;
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-right: 2px;
+      }
 
-.search-btn:hover {
-  background: linear-gradient(135deg, #0056b3, #004085);
-  transform: scale(1.05);
-  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
-}
+      .search-btn:hover {
+        background: linear-gradient(135deg, #0056b3, #004085);
+        transform: scale(1.05);
+        box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+      }
 
-.search-btn:active {
-  transform: scale(0.95);
-}
+      .search-btn:active {
+        transform: scale(0.95);
+      }
 
-.search-btn i {
-  font-size: 14px;
-}
+      .search-btn i {
+        font-size: 14px;
+      }
 
-/* Animation au focus */
-@keyframes searchPulse {
-  0% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.4); }
-  70% { box-shadow: 0 0 0 8px rgba(0, 123, 255, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0); }
-}
+      /* Animation au focus */
+      @keyframes searchPulse {
+        0% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.4); }
+        70% { box-shadow: 0 0 0 8px rgba(0, 123, 255, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0); }
+      }
 
-.search-input:focus + .search-btn {
-  animation: searchPulse 1.5s infinite;
-}
+      .search-input:focus + .search-btn {
+        animation: searchPulse 1.5s infinite;
+      }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .search-container {
-    margin: 10px 0;
-    order: -1;
-  }
-  
-  .search-input-group {
-    min-width: 250px;
-  }
-  
-  .search-input {
-    font-size: 13px;
-    padding: 6px 12px;
-  }
-  
-  .search-btn {
-    width: 30px;
-    height: 30px;
-  }
-}
+      /* Responsive */
+      @media (max-width: 768px) {
+        .search-container {
+          margin: 10px 0;
+          order: -1;
+        }
+        
+        .search-input-group {
+          min-width: 250px;
+        }
+        
+        .search-input {
+          font-size: 13px;
+          padding: 6px 12px;
+        }
+        
+        .search-btn {
+          width: 30px;
+          height: 30px;
+        }
+      }
 
-@media (max-width: 576px) {
-  .search-input-group {
-    min-width: 200px;
-  }
-  
-  .search-input::placeholder {
-    font-size: 12px;
-  }
-}
+      @media (max-width: 576px) {
+        .search-input-group {
+          min-width: 200px;
+        }
+        
+        .search-input::placeholder {
+          font-size: 12px;
+        }
+      } 
+
+
+
 
       
-    </style>
-    <nav class="navbar navbar-expand-lg navbar-dark">
+</style>
+    <nav class="navbar navbar-expand-lg fixed-top mb-5">
         <div class="container">
-          <a class="navbar-brand" href="#">
-            <div class="logo-container">
-              <svg
-                class="logo-img"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 100 100"
-              >
-                <rect
-                  x="15"
-                  y="20"
-                  width="70"
-                  height="55"
-                  rx="5"
-                  ry="5"
-                  fill="none"
-                  stroke="#fffacd"
-                  stroke-width="4"
-                />
-                <line
-                  x1="15"
-                  y1="40"
-                  x2="85"
-                  y2="40"
-                  stroke="#fffacd"
-                  stroke-width="4"
-                />
-                <line
-                  x1="30"
-                  y1="20"
-                  x2="30"
-                  y2="30"
-                  stroke="#fffacd"
-                  stroke-width="4"
-                />
-                <line
-                  x1="70"
-                  y1="20"
-                  x2="70"
-                  y2="30"
-                  stroke="#fffacd"
-                  stroke-width="4"
-                />
-                <path d="M25,50 L35,50 L35,60 L25,60 Z" fill="#fffacd" />
-                <path d="M45,50 L55,50 L55,60 L45,60 Z" fill="#fffacd" />
-                <path d="M65,50 L75,50 L75,60 L65,60 Z" fill="#fffacd" />
-                <path d="M25,70 L55,70 L55,80 L25,80 Z" fill="#fffacd" />
-              </svg>
-              <span class="logo-text">Eventify</span>
-            </div>
-          </a>
-          <button
+            <a class="navbar-brand" href="#">
+                <div class="logo-container">
+                <svg
+                    class="logo-img"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 100 100"
+                >
+                    <rect
+                    x="15"
+                    y="20"
+                    width="70"
+                    height="55"
+                    rx="5"
+                    ry="5"
+                    fill="none"
+                    stroke="#fffacd"
+                    stroke-width="4"
+                    />
+                    <line
+                    x1="15"
+                    y1="40"
+                    x2="85"
+                    y2="40"
+                    stroke="#fffacd"
+                    stroke-width="4"
+                    />
+                    <line
+                    x1="30"
+                    y1="20"
+                    x2="30"
+                    y2="30"
+                    stroke="#fffacd"
+                    stroke-width="4"
+                    />
+                    <line
+                    x1="70"
+                    y1="20"
+                    x2="70"
+                    y2="30"
+                    stroke="#fffacd"
+                    stroke-width="4"
+                    />
+                    <path d="M25,50 L35,50 L35,60 L25,60 Z" fill="#fffacd" />
+                    <path d="M45,50 L55,50 L55,60 L45,60 Z" fill="#fffacd" />
+                    <path d="M65,50 L75,50 L75,60 L65,60 Z" fill="#fffacd" />
+                    <path d="M25,70 L55,70 L55,80 L25,80 Z" fill="#fffacd" />
+                </svg>
+                <span class="logo-text">Eventify</span>
+                </div>
+            </a>
+            
+            <button
             class="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
@@ -265,7 +277,8 @@
           >
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div
+            
+            <div
             class="collapse navbar-collapse justify-content-end"
             id="navbarNav"
           >
@@ -298,11 +311,12 @@
               
               {% if utilisateur_connecte %}
               <li class="nav-item">
-                <a class="nav-link" href="{% url "create_event" %}">Créer un événement</a>
+                <a class="nav-link" style="width: max-content" href="{% url "create_event" %}">Créer un événement</a>
               </li>
               <li class="nav-item ms-3">
                 <a href="{% url "profil_utilisateur" %}" class="btn">
-                  <img src="{{ utilisateur_connecte.photo_profil }}" alt="Photo de Profil" class="rounded-circle" style="width: 30px; height: 30px;">
+                  <img src="/media/profils/profile_default.jpeg" alt="Photo de Profil" class="rounded-circle" style="width: 30px; height: 30px;">
+                </a>
               </li>
               {% else %}
               <li class="nav-item ms-3">
@@ -314,24 +328,11 @@
             </ul>
           </div>
         </div>
-      </nav>
+    </nav>
    
 
     
     <script>
-      // Animation du header au défilement
-      window.addEventListener("scroll", function () {
-        const navbar = document.querySelector(".navbar");
-        if (window.scrollY > 50) {
-          navbar.style.background = "rgba(45, 10, 69, 0.95) !important";
-          navbar.style.boxShadow = "0 5px 15px rgba(0, 0, 0, 0.3)";
-        } else {
-          navbar.style.background = "transparent !important";
-          navbar.style.boxShadow = "none";
-        }
-      });
-
-      // Animation des éléments au chargement
       document.addEventListener("DOMContentLoaded", function () {
         const heroLeft = document.querySelector(".hero-left");
         const heroRight = document.querySelector(".hero-right");
@@ -347,3 +348,11 @@
         }, 600);
       });
     </script>
+
+
+
+
+
+
+
+
