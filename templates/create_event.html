@@ -1,69 +1,630 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
 {% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Liste des événements</title>
-</head>
-<body>
-    <h2>Créer une événement</h2>
 
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-                {{ form.as_p }}
-            {% comment %} {% csrf_token %}
+{% block content %}
+    <style>
+        :root {
+            --primary: #453994;
+            --primary-light: #8939b4;
+            --primary-dark: #2d2661;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+            --border: #e0e6ed;
+            --bg-light: #f8f9fa;
+            --white: #ffffff;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --shadow: 0 2px 20px rgba(69, 57, 148, 0.1);
+            --shadow-hover: 0 4px 30px rgba(69, 57, 148, 0.2);
+        }
 
-            <label for="name">Nom de l'événement</label>
-            <input name="titre" value="{{ titre }}" required><br><br>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-            <label for="name">Catégorie</label>
-            <input name="categorie" value="{{ categorie }}" required><br><br>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--white);
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-            <label for="name">Lieu</label>
-            <input name="localisation" value="{{ localisation }}" required><br><br>
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
 
-            <label for="name">Date et heure</label>
-            <input name="date_heure" value="{{ date_heure }}" required><br><br>
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 40px 20px;
+            /*background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 20px;*/
+            color: var(--primary);
+            /*box-shadow: var(--shadow);*/
+        }
 
-            <label for="name">Nombre de places</label>
-            <input name="capacite" value="{{ capacite }}" required><br><br>
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            /*text-shadow: 0 2px 10px rgba(0,0,0,0.1);*/
+        }
 
-            <label for="name">Description</label>
-            <input name="description" value="{{ description }}" required><br><br>
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
 
-            <label for="name">Affiche de l'événement</label>
-            <input type="file" name="image" required><br><br> {% endcomment %}
+        /*.form-container {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 4px 30px rgba(69, 57, 148, 0.15);
+            border: 1px solid rgba(69, 57, 148, 0.1);
+            animation: slideUp 0.6s ease-out;
+        }*/
 
-            <button type="submit">Créer l'événement</button>
-        </form>
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-label i {
+            margin-right: 8px;
+            color: var(--primary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px 18px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--white);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(69, 57, 148, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .image-upload {
+            position: relative;
+            border: 3px dashed var(--border);
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            background: var(--bg-light);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .image-upload:hover {
+            border-color: var(--primary);
+            background: rgba(69, 57, 148, 0.05);
+        }
+
+        .image-upload.has-file {
+            border-color: var(--success);
+            background: rgba(39, 174, 96, 0.05);
+        }
+
+        .image-upload input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .upload-content {
+            pointer-events: none;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .upload-text {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .upload-subtext {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 20px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .radio-option:hover {
+            border-color: var(--primary);
+            background: rgba(69, 57, 148, 0.05);
+        }
+
+        .radio-option.selected {
+            border-color: var(--primary);
+            background: rgba(69, 57, 148, 0.1);
+        }
+
+        .radio-option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary);
+        }
+
+        .radio-option label {
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .price-group {
+            margin-top: 15px;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .price-group.visible {
+            opacity: 1;
+            max-height: 100px;
+        }
+
+        .price-input {
+            position: relative;
+        }
+
+        .price-input::before {
+            content: 'FCFA';
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-weight: 600;
+            pointer-events: none;
+        }
+
+        .price-input input {
+            padding-right: 70px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .preview-section {
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 2px solid rgba(69, 57, 148, 0.1);
+        }
+
+        .preview-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(69, 57, 148, 0.08);
+        }
+
+        .preview-image {
+            width: 100%;
+            height: 200px;
+            background: var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 3rem;
+        }
+
+        .preview-content {
+            padding: 25px;
+        }
+
+        .preview-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .preview-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .preview-detail {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-light);
+        }
+
+        .preview-detail i {
+            color: var(--primary);
+            width: 20px;
+        }
+
+        .preview-description {
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .form-container {
+                padding: 25px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .radio-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-calendar-plus"></i> Créer un Événement</h1>
+            <p>Partagez vos moments exceptionnels avec la communauté</p>
+        </div>
+
+        <div class="form-container">
+            <form id="eventForm" method='post' enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-heading"></i>
+                            Titre de l'événement
+                        </label>
+                        <input type="text" name="titre" class="form-input" placeholder="Nom de votre événement" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-tag"></i>
+                            Catégorie
+                        </label>
+                        <input type="text" name="categorie" class="form-input" placeholder="ex: Concert, Conférence, Sport..." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Localisation
+                        </label>
+                        <input type="text" name="localisation" class="form-input" placeholder="Adresse de l'événement" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-calendar-alt"></i>
+                            Date et heure
+                        </label>
+                        <input type="datetime-local" name="date_heure" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-users"></i>
+                            Capacité
+                        </label>
+                        <input type="number" name="capacite" class="form-input" placeholder="Nombre de participants" min="1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-ticket-alt"></i>
+                            Type de billet
+                        </label>
+                        <div class="radio-group">
+                            <div class="radio-option" data-value="gratuit">
+                                <input type="radio" name="statut" value="gratuit" id="gratuit">
+                                <label for="gratuit">Gratuit</label>
+                            </div>
+                            <div class="radio-option selected" data-value="payant">
+                                <input type="radio" name="statut" value="payant" id="payant">
+                                <label for="payant">Payant</label>
+                            </div>
+                        </div>
+                        <div class="price-group" id="priceGroup">
+                            <label class="form-label" style="margin-top: 15px;">
+                                <i class="fas fa-money-bill-wave"></i>
+                                Prix du billet
+                            </label>
+                            <div class="price-input">
+                                <input type="number" name="prix" class="form-input" placeholder="0.00" step="0.01" min="0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label class="form-label">
+                        <i class="fas fa-align-left"></i>
+                        Description de l'événement
+                    </label>
+                    <textarea name="description" class="form-input form-textarea" placeholder="Décrivez votre événement en détail..." required></textarea>
+                </div>
+
+                <div class="form-group full-width">
+                    <label class="form-label">
+                        <i class="fas fa-image"></i>
+                        Image de l'événement
+                    </label>
+                    <div class="image-upload" id="imageUpload">
+                        <input type="file" name="image" accept="image/*" id="imageInput" required>
+                        <div class="upload-content">
+                            <div class="upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <div class="upload-text">Cliquez pour télécharger une image</div>
+                            <div class="upload-subtext">PNG, JPG, GIF jusqu'à 10MB</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-plus-circle"></i>
+                    Créer l'événement
+                </button>
+            </form>
+
+            <div class="preview-section">
+                <h3 style="color: var(--text-dark); margin-bottom: 20px; font-size: 1.3rem;">
+                    <i class="fas fa-eye"></i> Aperçu de votre événement
+                </h3>
+                <div class="preview-card">
+                    <div class="preview-image" id="previewImage">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <div class="preview-content">
+                        <h2 class="preview-title" id="previewTitle">Titre de l'événement</h2>
+                        <div class="preview-details">
+                            <div class="preview-detail">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span id="previewDate">Date non définie</span>
+                            </div>
+                            <div class="preview-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span id="previewLocation">Localisation</span>
+                            </div>
+                            <div class="preview-detail">
+                                <i class="fas fa-tag"></i>
+                                <span id="previewCategory">Catégorie</span>
+                            </div>
+                            <div class="preview-detail">
+                                <i class="fas fa-users"></i>
+                                <span id="previewCapacity">0 participants</span>
+                            </div>
+                            <div class="preview-detail">
+                                <i class="fas fa-ticket-alt"></i>
+                                <span id="previewPrice">Gratuit</span>
+                            </div>
+                        </div>
+                        <p class="preview-description" id="previewDescription">
+                            Description de l'événement...
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Gestion des boutons radio pour le statut
+        const radioOptions = document.querySelectorAll('.radio-option');
+        const priceGroup = document.getElementById('priceGroup');
+        const priceInput = document.querySelector('input[name="prix"]');
+
+        // Initialiser l'état correct
+        const gratuitOption = document.querySelector('.radio-option[data-value="gratuit"]');
+        const payantOption = document.querySelector('.radio-option[data-value="payant"]');
+        
+        gratuitOption.classList.add('selected');
+        payantOption.classList.remove('selected');
+
+        radioOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const radioInput = this.querySelector('input[type="radio"]');
+                radioInput.checked = true;
+                
+                // Mettre à jour les styles
+                radioOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                // Gérer l'affichage du prix
+                if (radioInput.value === 'payant') {
+                    priceGroup.classList.add('visible');
+                    priceInput.required = true;
+                } else {
+                    priceGroup.classList.remove('visible');
+                    priceInput.required = false;
+                    priceInput.value = '';
+                }
+                
+                updatePreview();
+            });
+        });
+
+        // Gestion de l'upload d'image
+        const imageUpload = document.getElementById('imageUpload');
+        const imageInput = document.getElementById('imageInput');
+        const previewImage = document.getElementById('previewImage');
+
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                imageUpload.classList.add('has-file');
+                imageUpload.querySelector('.upload-text').textContent = file.name;
+                
+                // Créer un aperçu de l'image
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.innerHTML = `<img src="${e.target.result}" style="width: 100%; height: 100%; object-fit: cover;">`;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Fonction de mise à jour de l'aperçu
+        function updatePreview() {
+            const form = document.getElementById('eventForm');
+            const formData = new FormData(form);
+            
+            document.getElementById('previewTitle').textContent = formData.get('titre') || 'Titre de l\'événement';
+            document.getElementById('previewCategory').textContent = formData.get('categorie') || 'Catégorie';
+            document.getElementById('previewLocation').textContent = formData.get('localisation') || 'Localisation';
+            document.getElementById('previewCapacity').textContent = (formData.get('capacite') || '0') + ' participants';
+            document.getElementById('previewDescription').textContent = formData.get('description') || 'Description de l\'événement...';
+            
+            // Formatage de la date
+            const dateValue = formData.get('date_heure');
+            if (dateValue) {
+                const date = new Date(dateValue);
+                const options = { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                };
+                document.getElementById('previewDate').textContent = date.toLocaleDateString('fr-FR', options);
+            } else {
+                document.getElementById('previewDate').textContent = 'Date non définie';
+            }
+            
+            // Gestion du prix
+            const statut = formData.get('statut');
+            const prix = formData.get('prix');
+            if (statut === 'payant' && prix) {
+                document.getElementById('previewPrice').textContent = `${prix} FCFA`;
+            } else {
+                document.getElementById('previewPrice').textContent = 'Gratuit';
+            }
+        }
+
+        // Écouter les changements dans le formulaire
+        document.getElementById('eventForm').addEventListener('input', updatePreview);
+        document.getElementById('eventForm').addEventListener('change', updatePreview);
+
+        // Soumission du formulaire
+        /*document.getElementById('eventForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Animation de succès
+            const submitBtn = this.querySelector('.submit-btn');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = '<i class="fas fa-check"></i> Événement créé avec succès !';
+            submitBtn.style.background = 'var(--success)';
+            
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.style.background = '';
+                // Ici vous pouvez ajouter la logique pour envoyer les données au serveur
+                alert('Événement créé avec succès ! (Dans une vraie application, les données seraient envoyées au serveur Django)');
+            }, 2000);
+        });*/
+
+        // Initialiser l'aperçu
+        updatePreview();
+    </script>
+{% endblock content %}
 
 
-</body>
-</html>
-
-{% comment %} <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-
-    <label for="titre">Nom de l'événement</label>
-    <input type="text" name="titre" value="{{ request.POST.titre }}" required><br><br>
-
-    <label for="categorie">Catégorie</label>
-    <input type="text" name="categorie" value="{{ request.POST.categorie }}" required><br><br>
-
-    <label for="localisation">Lieu</label>
-    <input type="text" name="localisation" value="{{ request.POST.localisation }}" required><br><br>
-
-    <label for="date_heure">Date et heure</label>
-    <input type="datetime-local" name="date_heure" value="{{ request.POST.date_heure }}" required><br><br>
-
-    <label for="capacite">Nombre de places</label>
-    <input type="number" name="capacite" value="{{ request.POST.capacite }}" required><br><br>
-
-    <label for="description">Description</label>
-    <textarea name="description" required>{{ request.POST.description }}</textarea><br><br>
-
-    <label for="image">Affiche de l'événement</label>
-    <input type="file" name="image" accept="image/*" required><br><br>
-
-    <button type="submit">Créer l'événement</button>
-</form> {% endcomment %}

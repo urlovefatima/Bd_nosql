@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kleon - Admin Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --purple-primary: #7b10ff;
+            --sidebar-width: 220px;
+            --notification-width: 320px;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            overflow-x: hidden;
+        }
+        /* Sidebar styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            transition: all 0.3s;
+            overflow-y: auto;
+        }
+        .sidebar-logo {
+            background-color: var(--purple-primary);
+            color: white;
+            border-radius: 10px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .sidebar .nav-link {
+            color: #888;
+            padding: 12px 20px;
+            margin: 5px 0;
+            border-radius: 0;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        .sidebar .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        .sidebar .nav-link.active {
+            color: var(--purple-primary);
+            background-color: rgba(123, 16, 255, 0.05);
+            border-left: 3px solid var(--purple-primary);
+        }
+        .sidebar .nav-link:hover:not(.active) {
+            background-color: #f8f9fa;
+        }
+        /* Main content */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 20px;
+            transition: all 0.3s;
+        }
+        .card {
+            border-radius: 15px;
+            border: none;
+             box-shadow: 0 10px 15px rgba(10, 50, 230, 0.2);
+            margin-bottom: 20px;
+        }
+        .card-stats {
+            padding: 20px;
+            background-color:rgba(123, 16, 255, 0.05);
+            box-shadow: 20px 0 15px rgba(0, 0, 0, 0.05);
+        }
+        .categories{
+            width: 500px;
+        }
+        .stat-title {
+            color: #777;
+            font-size: 14px;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 5px 0;
+        }
+        .stat-change {
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 15px;
+        }
+        .stat-change.positive {
+            background-color: rgba(40, 199, 111, 0.1);
+            color: #28c76f;
+        }
+        .stat-change.negative {
+            background-color: rgba(234, 84, 85, 0.1);
+            color: #ea5455;
+        }
+        /* Header */
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+        .search-bar {
+            flex-grow: 1;
+            max-width: 500px;
+            margin: 0 20px;
+            
+        }
+
+
+        .search-bar input {
+            background-color:rgba(123, 16, 255, 0.2);
+            border-radius: 20px;
+            padding: 10px 15px;
+            border: 1px solid white;
+            border: none; 
+            outline: none;
+            width: 100%;
+        }
+        
+        .search-bar input::placeholder {
+        color: white;
+        opacity: 1;
+        }
+        .search-bar i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ffffff;
+        }
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        .notification-icon {
+            position: relative;
+            margin-right: 20px;
+            cursor: pointer;
+        }
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #ea5455;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-lang {
+            background-color: transparent;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 5px 10px;
+            margin-right: 20px;
+        }
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .chart-container {
+            height: 200px;
+            position: relative;
+        }
+        .tab-selector {
+            margin-bottom: 20px;
+        }
+        .tab-selector button {
+            background: none;
+            border: none;
+            padding: 5px 15px;
+            margin-right: 10px;
+            color: #888;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .tab-selector button.active {
+            color: #333;
+            font-weight: 600;
+            border-bottom: 2px solid var(--purple-primary);
+        }
+        /* Right sidebar notification panel */
+        .notification-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: var(--notification-width);
+            height: 100vh;
+            background-color: white;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            z-index: 1010;
+            transition: all 0.3s;
+            overflow-y: auto;
+        }
+        .notification-sidebar.show {
+            right: 0;
+        }
+        .notification-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .notification-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #f5f5f5;
+            display: flex;
+            align-items: center;
+        }
+        .notification-item:hover {
+            background-color: #f9f9f9;
+        }
+        .notification-icon-wrapper {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        .notification-content {
+            flex-grow: 1;
+        }
+        .notification-title {
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+        .notification-time {
+            font-size: 12px;
+            color: #888;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .website-traffic {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .website-name {
+            width: 100px;
+            font-size: 14px;
+        }
+        .website-bar {
+            height: 4px;
+            background-color: #eee;
+            flex-grow: 1;
+            border-radius: 2px;
+            position: relative;
+        }
+        .website-bar::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            border-radius: 2px;
+        }
+        .website-bar.google::before {
+            width: 75%;
+            background-color: #4285F4;
+        }
+        .website-bar.youtube::before {
+            width: 60%;
+            background-color: #FF0000;
+        }
+        .website-bar.instagram::before {
+            width: 45%;
+            background-color: #E1306C;
+        }
+        .website-bar.pinterest::before {
+            width: 30%;
+            background-color: #E60023;
+        }
+        .website-bar.facebook::before {
+            width: 25%;
+            background-color: #3b5998;
+        }
+        .website-bar.twitter::before {
+            width: 15%;
+            background-color: #1DA1F2;
+        }
+        .device-chart, .location-chart {
+            height: 300px;
+        }
+        /* Color badges */
+        .color-badge {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 500;
+            font-size: 12px;
+        }
+        .badge-purple {
+            background-color: #7b10ff;
+        }
+        .badge-red {
+            background-color: #ea5455;
+        }
+        .badge-blue {
+            background-color: #2196f3;
+        }
+        .badge-green {
+            background-color: #28c76f;
+        }
+        .badge-teal {
+            background-color: #20c997;
+        }
+        .badge-pink {
+            background-color: #e83e8c;
+        }
+        /* Contacts */
+        .contact-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+        }
+        .contact-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        /* Chart styles */
+        canvas.chart {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        
+        /* Activity section */
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+        }
+        
+        /* Media queries */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 70px;
+            }
+            .sidebar .nav-link span, .sidebar .brand-name {
+                display: none;
+            }
+            .main-content {
+                margin-left: 70px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+            }
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.show {
+                transform: translateX(0);
+            }
+        }
+        
+        /* Placeholder styling */
+        .placeholder {
+            background-color: #eee;
+            border-radius: 4px;
+        }
+        .placeholder-image {
+            background-color: #ddd;
+            border-radius: 50%;
+        }
+        
+        /* New badge */
+        .badge-new {
+            background-color: var(--purple-primary);
+            color: white;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 10px;
+        }
+        
+        /* Toggle sidebar button for mobile */
+        .menu-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+        }
+        
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1005;
+        }
+        
+        .dark-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            z-index: 1000;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        
+        .dark-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Add button style */
+        .btn-add {
+            background-color: var(--purple-primary);
+            color: white;
+            border-radius: 8px;
+            padding: 10px 20px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="p-3 d-flex align-items-center">
+            <a class="navbar-brand" href="#">
+            <div class="logo-container">
+              <svg
+                class="logo-img"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 100 100"
+              >
+                <rect
+                  x="15"
+                  y="20"
+                  width="70"
+                  height="55"
+                  rx="5"
+                  ry="5"
+                  fill="none"
+                  stroke="#7b10ff"
+                  stroke-width="4"
+                />
+                <line
+                  x1="15"
+                  y1="40"
+                  x2="85"
+                  y2="40"
+                  stroke="#7b10ff"
+                  stroke-width="4"
+                />
+                <line
+                  x1="30"
+                  y1="20"
+                  x2="30"
+                  y2="30"
+                  stroke="#7b10ff"
+                  stroke-width="4"
+                />
+                <line
+                  x1="70"
+                  y1="20"
+                  x2="70"
+                  y2="30"
+                  stroke="#7b10ff"
+                  stroke-width="4"
+                />
+                <path d="M25,50 L35,50 L35,60 L25,60 Z" fill="#7b10ff" />
+                <path d="M45,50 L55,50 L55,60 L45,60 Z" fill="#7b10ff" />
+                <path d="M65,50 L75,50 L75,60 L65,60 Z" fill="#7b10ff" />
+                <path d="M25,70 L55,70 L55,80 L25,80 Z" fill="#7b10ff" />
+              </svg>
+              <span class="logo-text">Eventify</span>
+            </div>
+          </a>
+        </div>
+        
+        <p class="text-muted small ms-3 mt-4 mb-2">MAIN MENU</p>
+        
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href="/admin_page/dashboard/" id="dashboard-link">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin_page/users/" id="users-link">
+                    <i class="fas fa-users"></i>
+                    <span>Users</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin_page/events/" id="events-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Events</span>
+                </a>
+            </li>
+            {% comment %} <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-bookmark"></i>
+                    <span>Reservation</span>
+                </a>
+            </li> {% endcomment %}
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Header -->
+        <div class="top-header mb-4">
+            <button class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="d-flex align-items-center">
+                <i class="fas fa-file-alt me-2"></i>
+                <span class="text-muted">Admin</span>
+                <span class="mx-2">/</span>
+                <span class= "actual_link">Dashboard</span>
+            </div>
+        
+            
+            <div class="user-menu">
+                <div class="notification-icon" id="notification-toggle">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">2</span>
+                </div>
+                
+                
+                <div class="d-flex align-items-center">
+                    <img src="{{admin.photo_profil}}" alt="User" class="user-avatar">
+                    <div>
+                        <p class="mb-0 fw-bold">{{admin.username}}</p>
+                        <p class="mb-0 small text-muted">Admin</p>
+                    </div>
+                    <i class="fas fa-chevron-down ms-2"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Dashboard Content -->
+        {% block Dashboard %}{% endblock %}
+        <!-- User Content -->
+        {% block User %}{% endblock %}
+        <!-- Event Content -->
+        {% block Event %}{% endblock %}
+        
+    </div>
+    
+<!-- Notification Sidebar -->
+    <div class="notification-sidebar" id="notification-sidebar">
+        <div class="notification-header">
+            <h5 class="mb-0">Notifications</h5>
+        </div>
+        
+        <div class="p-3">
+            <div class="notification-item">
+                <div class="notification-icon-wrapper">
+                    <i class="fas fa-bug text-danger"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-title">You fixed a bug.</div>
+                    <div class="notification-time">12 hours ago</div>
+                </div>
+            </div>
+            
+            <div class="notification-header mt-4">
+                <h5 class="mb-0">Activities</h5>
+            </div>
+            {% if formatted_messages %}
+                {% for msg in formatted_messages %}
+                <div class="activity-item">
+                    <div class="notification-icon-wrapper bg-light">
+                        <img src="/media/profile_default.jpeg" alt="User" class="rounded-circle" style="width: 25px; height: 25px;">
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-title">{{ msg.message }}</div>
+                        <div class="notification-time">{{ msg.elapsed_time }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
+            
+            
+            
+            <div class="notification-header mt-4">
+                <h5 class="mb-0">Contacts</h5>
+            </div>
+            
+            <div class="contact-item">
+                <img src="/media/profile_default.jpeg" alt="Contact" class="contact-avatar">
+                <div>Natali Craig</div>
+            </div>
+            
+            <div class="contact-item">
+                <img src="/media/profile_default.jpeg" alt="Contact" class="contact-avatar">
+                <div>Drew Cano</div>
+            </div>
+            
+            <div class="contact-item">
+                <img src="/media/profile_default.jpeg" alt="Contact" class="contact-avatar">
+                <div>Andi Lane</div>
+            </div>
+            
+            <div class="contact-item">
+                <img src="/media/profile_default.jpeg" alt="Contact" class="contact-avatar">
+                <div>Koray Okumus</div>
+            </div>
+            
+            <div class="contact-item">
+                <img src="/media/profile_default.jpeg" alt="Contact" class="contact-avatar">
+                <div>Kate Morrison</div>
+            </div>
+            
+            <div class="contact-item">
+                <img src="/media/profile_default.jpeg" alt="Contact" class="contact-avatar">
+                <div>Melody Macy</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Dark Overlay -->
+    <div class="dark-overlay" id="dark-overlay"></div>
+    
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script>
+        // Toggle notification sidebar
+        document.getElementById('notification-toggle').addEventListener('click', function() {
+            document.getElementById('notification-sidebar').classList.toggle('show');
+            document.getElementById('dark-overlay').classList.toggle('show');
+        });
+        
+        // Close notification sidebar when clicking overlay
+        document.getElementById('dark-overlay').addEventListener('click', function() {
+            document.getElementById('notification-sidebar').classList.remove('show');
+            document.getElementById('dark-overlay').classList.remove('show');
+        });
+        
+        {% comment %} // Toggle between dashboard and users views
+        document.getElementById('dashboard-link').addEventListener('click', function(e) {
+            document.querySelector('.actual_link').innerText = 'Dashboard';
+            
+            // Update active state
+            document.querySelector('.sidebar .nav-link.active').classList.remove('active');
+            this.classList.add('active');
+        });
+        
+        document.getElementById('users-link').addEventListener('click', function(e) {
+            document.querySelector('.actual_link').innerText = 'Users';
+            
+            // Update active state
+            document.querySelector('.sidebar .nav-link.active').classList.remove('active');
+            this.classList.add('active');
+        });
+         {% endcomment %}
+        
+
+
+        
+        
+        // Initialize charts
+    </script>
+</body>
+</html>

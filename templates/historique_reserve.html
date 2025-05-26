@@ -1,0 +1,553 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Événements | Découvrez notre agenda</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #453994;
+            --primary-light: #8939b4;
+            --accent: #fff384;
+            --accent-secondary: #a400ff;
+            --text-dark: #1F2937;
+            --text-light: #6B7280;
+            --text-lighter: #9CA3AF;
+            --bg-light: #F9FAFB;
+            --bg-white: #FFFFFF;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow: 0 2px 4px rgba(0,0,0,0.06);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+        
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        
+        header {
+            margin-bottom: 2.5rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background-color: var(--primary);
+            border-radius: 4px;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+            background: linear-gradient(to right, #8939b4, #453994);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+        
+        header p {
+            font-size: 1.125rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .filter-section {
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .filter-btn {
+            background-color: var(--bg-white);
+            border: 1px solid #E5E7EB;
+            padding: 0.6rem 1.2rem;
+            border-radius: 2rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .filter-btn:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+            background-color: rgba(69, 57, 148, 0.05);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+        
+        .filter-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 2px 6px rgba(69, 57, 148, 0.3);
+        }
+        
+        .events-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .event-card {
+            position: relative;
+            background: var(--bg-white);
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .event-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 8px rgba(69, 57, 148, 0.15);
+            border-color: rgba(69, 57, 148, 0.2);
+        }
+        
+        .event-image {
+            width: 35%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .event-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s;
+        }
+        
+        .event-card:hover .event-image img {
+            transform: scale(1.05);
+        }
+        
+        .event-category {
+            display: inline-flex;
+            align-items: center;
+            background-color: #a400ff;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.75rem;
+            max-width: fit-content;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .featured-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background-color: var(--accent);
+            color: var(--text-dark);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.3rem 0.8rem;
+            border-radius: 2rem;
+            z-index: 2;
+            box-shadow: 0 2px 6px rgba(255, 243, 132, 0.3);
+        }
+        
+        .event-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            font-size: 1rem;
+            position: relative;
+            width: 65%;
+        }
+        
+        .event-date-badge {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(69, 57, 148, 0.3);
+            z-index: 20;
+        }
+        
+        .event-date-badge .month {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            margin-bottom: -2px;
+            letter-spacing: 0.5px;
+        }
+        
+        .event-date-badge .day {
+            font-size: 1.5rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+        
+        .event-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1.4;
+            color: var(--text-dark);
+            margin-bottom: 0.75rem;
+            padding-right: 70px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        
+        .event-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .event-detail {
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
+        
+        .event-detail i {
+            width: 24px;
+            color: var(--primary);
+            margin-right: 0.5rem;
+            font-size: 1.05rem;
+        }
+        
+        .event-detail.location {
+            grid-column: span 2;
+        }
+        
+        .event-description {
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+        
+        .event-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid #F3F4F6;
+        }
+        
+        .event-capacity {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            color: var(--text-lighter);
+            font-weight: 500;
+        }
+        
+        .event-capacity i {
+            margin-right: 0.4rem;
+            color: var(--primary);
+            font-size: 0.95rem;
+        }
+        
+        .event-action {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: 0.4rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3a2f7d;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(69, 57, 148, 0.3);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: var(--shadow);
+            width: 100%;
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            color: #D1D5DB;
+            margin-bottom: 1.5rem;
+        }
+        
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+        
+        .empty-state p {
+            color: var(--text-light);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .img-grise{
+            filter: grayscale(50%);
+        }
+        
+        @media (max-width: 1024px) {
+            .event-card {
+                flex-direction: column;
+            }
+            
+            .event-image {
+                width: 100%;
+                height: 200px;
+            }
+            
+            .event-content {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .event-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .event-description {
+                -webkit-line-clamp: 4;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.75rem;
+            }
+            
+            .event-card {
+                border-radius: 0.5rem;
+            }
+            
+            .filter-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+            
+            .event-date-badge {
+                width: 50px;
+                height: 50px;
+                top: 1rem;
+                right: 1rem;
+            }
+            
+            .event-date-badge .day {
+                font-size: 1.25rem;
+            }
+            
+            .event-title {
+                font-size: 1.25rem;
+                padding-right: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Événements à découvrir</h1>
+            <p>Les rendez-vous culturels, artistiques et festifs à ne pas manquer</p>
+        </header>
+        
+        <section class="filter-section">
+            <div class="filters">
+                <button class="filter-btn active">Tous</button>
+                <button class="filter-btn">Catégorie</button>
+                <button class="filter-btn">Gratuit</button>
+                <button class="filter-btn">Payant</button>
+                <button class="filter-btn">Aujourd'hui</button>
+                <button class="filter-btn">Dans la semaine</button>
+                <button class="filter-btn">Dans le mois</button>
+            </div>
+        </section>
+
+        <div class="events-grid">
+            {% if events_reserve %}
+                {% for event in events_reserve %}
+                    <article class="event-card">
+                        <div class="event-image">
+                            {% if event.image_url %}
+                                <img src="{% static 'img/events.jpg' %}" alt="{{ event.titre }}" class='img-grise'>
+                            
+                            {% endif %}
+                        </div>
+                        <div class="event-content">
+                            <div class="event-date-badge">
+                                <span class="month">{{ event.date_heure|date:"M"|upper }}</span>
+                                <span class="day">{{ event.date_heure|date:"d" }}</span>
+                            </div>
+                            <h2 class="event-title">{{ event.titre }}</h2>
+                            <div class="event-category">{{ event.categorie }}</div>
+                            <div class="event-details">
+                                <div class="event-detail location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>{{ event.localisation }}</span>
+                                </div>
+                                <div class="event-detail">
+                                    <i class="far fa-clock"></i>
+                                    <span>{{ event.date_heure|time:"H:i" }}</span>
+                                </div>
+                                <div class="event-detail">
+                                    <i class="fas fa-tag"></i>
+                                    <span>{{ event.statut }}</span>
+                                </div>
+                            </div>
+                            <div class="event-description">
+                                {{ event.description|default:"Description non disponible. Cet événement promet d'être une expérience unique. Venez nombreux pour participer à ce moment de partage et de découverte." }}
+                            </div>
+                            <div class="event-footer">
+                                <div class="event-capacity">
+                                    <i class="fas fa-users"></i>
+                                    <span>{{ event.capacite|default:"200" }} places</span>
+                                </div>
+                                <div class="event-action">
+                                    <a class="btn btn-primary">
+                                        <i class="fas fa-arrow-right"></i> Détails
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <i class="far fa-calendar-times"></i>
+                    <h3>Aucun événement disponible</h3>
+                    <p>Il n'y a actuellement aucun événement prévu. Revenez bientôt pour découvrir notre programmation.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.filter-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                this.classList.add('active');
+                
+                const category = this.textContent;
+                if (category !== 'Tous') {
+                    window.location.href = `?category=${encodeURIComponent(category)}`;
+                } else {
+                    window.location.href = '?';
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const category = urlParams.get('category');
+            
+            if (category) {
+                const filterButtons = document.querySelectorAll('.filter-btn');
+                filterButtons.forEach(btn => {
+                    if (btn.textContent === category) {
+                        btn.classList.add('active');
+                        document.querySelector('.filter-btn.active').classList.remove('active');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

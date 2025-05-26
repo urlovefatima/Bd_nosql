@@ -1,25 +1,63 @@
-<!DOCTYPE html>
+{% extends "test.html" %}
 {% load static %}
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Liste des événements</title>
-  </head>
-  <body>
-    <h1>Liste des événements</h1>
-    {% for event in events %}
-        <img src="{% static 'img/events.jpg' %}">
-        <h2>{{ event.titre }}</h2>
-        <ul>
-            <li>{{ event.categorie }}</li>
-            <li>{{ event.localisation }}</li>
-            <li>{{ event.date_heure }}</li>
-            <li>{{ event.capacite }}</li>
-            <li>{{ event.description }}</li>
-        </ul>
-    {% endfor %}
-</body>
-</html>
 
-{% comment %} {% empty %}
-            <li>Aucun événement trouvé.</li> {% endcomment %}
+{% block event %}
+
+        <div class="events-grid">
+            {% if events %}
+                {% for event in events %}
+                    <article class="event-card">
+                        <div class="event-image">
+                            {% if event.image_url %}
+                                <img src="{{ event.image_url }}" alt="{{ event.titre }}">
+                            {% else %}
+                                <img src="{% static 'img/event-placeholder.jpg' %}" alt="{{ event.titre }}">
+                            {% endif %}
+                            {% if event.is_featured %}
+                                <div class="featured-badge">À ne pas manquer</div>
+                            {% endif %}
+                        </div>
+                        <div class="event-content">
+                            <div class="event-date-badge">
+                                <span class="month">{{ event.date_heure|date:"M"|upper }}</span>
+                                <span class="day">{{ event.date_heure|date:"d" }}</span>
+                            </div>
+                            <h2 class="event-title">{{ event.titre }}</h2>
+                            <div class="event-category">{{ event.categorie }}</div>
+                            <div class="event-details">
+                                <div class="event-detail location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>{{ event.localisation }}</span>
+                                </div>
+                                <div class="event-detail">
+                                    <i class="far fa-clock"></i>
+                                    <span>{{ event.date_heure|time:"H:i" }}</span>
+                                </div>
+                                <div class="event-detail">
+                                    <i class="fas fa-tag"></i>
+                                    <span>{{ event.statut }}</span>
+                                </div>
+                            </div>
+                            <div class="event-footer">
+                                <div class="event-capacity">
+                                    <i class="fas fa-users"></i>
+                                    <span>{{ event.capacite|default:"200" }} places</span>
+                                </div>
+                                <div class="event-action">
+                                    <a class="btn btn-primary" href="{% url 'EventDetail:event_detail' event.id %}">
+                                        <i class="fas fa-arrow-right"></i> Détails
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <i class="far fa-calendar-times"></i>
+                    <h3>Aucun événement disponible</h3>
+                    <p>Il n'y a actuellement aucun événement prévu. Revenez bientôt pour découvrir notre programmation.</p>
+                </div>
+            {% endif %}
+        </div>
+{% endblock %}

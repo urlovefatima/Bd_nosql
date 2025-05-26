@@ -7,40 +7,55 @@ import os
 from django.conf import settings
 from PIL import Image
 from datetime import datetime, timedelta
+from django.http import JsonResponse
 
 
 def get_events(request):
     if db is not None :
-        events = list(db.events.find({}, {"_id": 0}))
-        return render(request, 'test.html', {'events': events})
+        list_events = list(db.events.find())
+        events =[]
+        for event in list_events:
+            if event['date_heure'] > datetime.now():
+                events.append(event)
+                event['id'] = str(event['_id'])
+        return render(request, 'events.html', {'events': events})
     else:
         return render(request, 'test.html', {'events': []})
-    
-def get_historique(request):
-    if db is not None :
-        events = list(db.events.find({}, {"_id": 0}))
-        return render(request, 'historique.html', {'events': events})
-    else:
-        return render(request, 'historique.html', {'events': []})
+
 
 def get_events_categories(request):
     if db is not None :
         categories = list(db.events.distinct("categorie"))
-        events = list(db.events.find({}, {"_id": 0}))
+        list_events = list(db.events.find())
+        events =[]
+        for event in list_events:
+            if event['date_heure'] > datetime.now():
+                events.append(event)
+                event['id'] = str(event['_id'])
         return render(request, 'categories.html', {'categories': categories, 'events': events})
     else:
         return render(request, 'categories.html', {'categories': [], 'events': []})
     
 def get_events_gratuits(request):
     if db is not None :
-        events = list(db.events.find({"statut":"Gratuit"}, {"_id": 0}))
+        list_events = list(db.events.find({"statut":"Gratuit"}))
+        events =[]
+        for event in list_events:
+            if event['date_heure'] > datetime.now():
+                events.append(event)
+                event['id'] = str(event['_id'])
         return render(request, 'events_gratuits.html', {'events': events})
     else:
         return render(request, 'events_gratuits.html', { 'events': []})
 
 def get_events_payants(request):
     if db is not None :
-        events = list(db.events.find({"statut":"Payant"}, {"_id": 0}))
+        list_events = list(db.events.find({"statut":"Payant"}))
+        events =[]
+        for event in list_events:
+            if event['date_heure'] > datetime.now():
+                events.append(event)
+                event['id'] = str(event['_id'])
         return render(request, 'events_payants.html', {'events': events})
     else:
         return render(request, 'events_payants.html', { 'events': []})
@@ -110,6 +125,11 @@ def delete_event(request):
     return render(request, "delete_event.html", {"events": events})
 
 def create_event(request):
+    email= request.session.get('email')
+    user = db.users.find_one({"email":email})
+    if not user :
+        return redirect('connexion')
+    reservations=[]
     if request.method == 'POST':
         form = EventForm(request.POST, request.FILES)
         if form.is_valid():
@@ -118,8 +138,16 @@ def create_event(request):
             localisation = form.cleaned_data['localisation']
             date_heure = form.cleaned_data['date_heure']
             capacite = form.cleaned_data['capacite']
+            statut = form.cleaned_data['statut']
+            prix = form.cleaned_data['prix']
+            if statut == 'payant' and (prix is None):
+                return JsonResponse({'success': False, 'error': 'Le prix est obligatoire pour un événement payant.'})
+            elif statut == 'gratuit':
+                prix = 0 
+            print(statut)
+            
             description = form.cleaned_data['description']
-            image = form.cleaned_data['image']
+
 
 
             image = form.cleaned_data['image']
@@ -147,8 +175,14 @@ def create_event(request):
                 'localisation': localisation,
                 'date_heure': date_heure,
                 'capacite': capacite,
+                'statut': statut,
+                'prix' : prix,
                 'description': description,
                 'image_url': image_url,
+                'createur': user['_id'], 
+                'reservations':reservations
+
+                
             })
             
             return redirect('events')
@@ -157,3 +191,34 @@ def create_event(request):
     
     return render(request, 'create_event.html', {'form': form})
             
+
+def search_accueil_events(request):
+    keyword = request.GET.get('search', '').strip()
+    
+    if not keyword:
+        return redirect('get_events')
+    
+    try:
+        # Créer une requête de recherche avec regex pour une recherche insensible à la casse
+        search_query = {"$or": [
+            {"titre": {"$regex": keyword, "$options": "i"}},
+            {"description": {"$regex": keyword, "$options": "i"}},
+            {"localisation": {"$regex": keyword, "$options": "i"}},
+            {"categorie": {"$regex": keyword, "$options": "i"}}
+        ]}
+        
+        # Rechercher les événements correspondant au mot-clé
+        events = list(db.events.find(search_query))
+        for ev in events:
+            ev['id'] = str(ev['_id'])
+        
+        nomber_of_events = len(events)
+        
+        return render(request, 'events.html', {
+            'nomber_of_events': nomber_of_events,
+            'events': events,
+            'search_keyword': keyword
+        })
+    
+    except Exception as e:
+        return redirect('get_events')
