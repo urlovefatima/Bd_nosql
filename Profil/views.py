@@ -4,6 +4,10 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from datetime import datetime
 from bson.objectid import ObjectId
+from django.conf import settings
+from PIL import Image
+from django.core.files.storage import FileSystemStorage
+import os
 
 def profil_utilisateur(request):
     email = request.session.get('email')
@@ -72,20 +76,41 @@ def infos_utilisateur(request):
         email= request.POST.get('email')
         tel = request.POST.get('tel')
         date_de_naissance= request.POST.get('date_de_naissance')
+        photo_profil=request.FILES.get('image')
+        photo_profil_url = utilisateur.get('photo_profil')
 
-        db.users.update_one(
-            {'_id': ObjectId(id)},
-            {'$set': {
-            'nom': nom,
-            'prenom': prenom,
-            'username':username,
-            'email': email,
-            'tel': tel,
-            'date_de_naissance': date_de_naissance,
-            }}
-        )
-                
-        return redirect('infos-user')
+        if photo_profil:
+            try:
+                img = Image.open(photo_profil)
+                img.verify()
+
+                file_path = os.path.join(settings.MEDIA_ROOT, photo_profil.name)
+                with open(file_path, 'wb+') as destination:
+                    for chunk in photo_profil.chunks():
+                        destination.write(chunk)
+
+                photo_profil_url = f"/media/{photo_profil.name}"
+
+            except (IOError, SyntaxError):
+                return render(request, 'infos-user.html', {
+                    'utilisateur': utilisateur,
+                    'error': "Le fichier téléchargé n'est pas une image valide."
+                })
+
+            db.users.update_one(
+                {'_id': ObjectId(id)},
+                {'$set': {
+                'nom': nom,
+                'prenom': prenom,
+                'username':username,
+                'email': email,
+                'tel': tel,
+                'date_de_naissance': date_de_naissance,
+                'photo_profil': photo_profil_url
+                }}
+            )
+                    
+            return redirect('infos-user')
 
     return render(request, 'infos-user.html', {'utilisateur': utilisateur})
     
