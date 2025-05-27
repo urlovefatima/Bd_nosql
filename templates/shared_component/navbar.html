@@ -1,216 +1,211 @@
 {% load static %}
 <style>
-      body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        margin: 0;
-        padding: 0;
-        overflow-x: hidden;
-      }
-
-     
-
       /* Navigation Header */
-        .navbar {
-            background-color: rgba(45, 10, 69, 0.95);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 15px 0;
-            transition: all 0.3s ease;
-        }
-        
-        
-        .logo-container {
-        display: flex;
-        align-items: center;
-      }
+.navbar {
+    background: rgba(45, 10, 69, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 15px 0;
+    transition: all 0.3s ease;
+}
 
-      .logo-text {
-        color: rgb(255, 248, 185);
-        font-size: 28px;
-        font-weight: bold;
-        margin-left: 5px;
-      }
+.navbar.scrolled {
+    background: rgba(17, 17, 17, 0.9);
+    backdrop-filter: blur(20px);
+}
 
-      .logo-img {
-        width: 40px;
-        height: 40px;
-      }
-        
-        .navbar-nav .nav-link {
-            color: white !important;
-            font-weight: 500;
-            margin: 0 15px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        
-        .navbar-nav .nav-link:hover {
-            color: #a855f7 !important;
-            transform: translateY(-2px);
-        }
-        
-        .navbar-nav .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 50%;
-            background-color: #a855f7;
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-        }
-        
-        .navbar-nav .nav-link:hover::after {
-            width: 100%;
-        }
-        
-        .btn-connexion {
-            background: linear-gradient(45deg, #a855f7, #8b5cf6);
-            border: none;
-            border-radius: 25px;
-            padding: 10px 25px;
-            color: white;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
-        }
-        
-        .btn-connexion:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.5);
-            color: white;
-            text-decoration: none;
-        }
-         /* FIX: Navbar sticky corrigé */
-      .search-container {
-        margin: 0 20px;
-      }
+.logo-container {
+    display: flex;
+    align-items: center;
+}
 
-      .search-form {
-        position: relative;
-      }
+.logo-text {
+    color: rgb(255, 248, 185);
+    font-size: 28px;
+    font-weight: bold;
+    margin-left: 5px;
+}
 
-      .search-input-group {
-        position: relative;
-        display: flex;
-        align-items: center;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 25px;
-        padding: 4px;
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        transition: all 0.3s ease;
-        min-width: 280px;
-      }
+.logo-img {
+    width: 40px;
+    height: 40px;
+}
 
-      .search-input-group:hover {
-        background: rgba(255, 255, 255, 0.15);
-        border-color: rgba(255, 255, 255, 0.3);
-        transform: translateY(-1px);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      }
+.navbar-nav .nav-link {
+    color: white !important;
+    font-weight: 500;
+    margin: 0 15px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    position: relative;
+}
 
-      .search-input-group:focus-within {
-        background: rgba(255, 255, 255, 0.2);
-        border-color: #007bff;
-        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
-      }
+.navbar-nav .nav-link:hover {
+    color: #a855f7 !important;
+    transform: translateY(-2px);
+}
 
-      .search-input {
-        background: transparent;
-        border: none;
-        outline: none;
-        color: white;
-        padding: 8px 15px;
-        flex-grow: 1;
-        font-size: 14px;
-        border-radius: 20px;
-      }
+.navbar-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 50%;
+    background-color: #a855f7;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
 
-      .search-input::placeholder {
-        color: rgba(255, 255, 255, 0.7);
-        font-style: italic;
-      }
+.navbar-nav .nav-link:hover::after {
+    width: 100%;
+}
 
-      .search-btn {
-        background: linear-gradient(135deg, #007bff, #0056b3);
-        border: none;
-        border-radius: 50%;
-        width: 35px;
-        height: 35px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        margin-right: 2px;
-      }
+.btn-connexion {
+    background: linear-gradient(45deg, #a855f7, #8b5cf6);
+    border: none;
+    border-radius: 25px;
+    padding: 10px 25px;
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+}
 
-      .search-btn:hover {
-        background: linear-gradient(135deg, #0056b3, #004085);
-        transform: scale(1.05);
-        box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
-      }
+.btn-connexion:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(168, 85, 247, 0.5);
+    color: white;
+    text-decoration: none;
+}
 
-      .search-btn:active {
-        transform: scale(0.95);
-      }
+/* Search Container */
+.search-container {
+    margin: 0 20px;
+}
 
-      .search-btn i {
-        font-size: 14px;
-      }
+.search-form {
+    position: relative;
+}
 
-      /* Animation au focus */
-      @keyframes searchPulse {
-        0% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.4); }
-        70% { box-shadow: 0 0 0 8px rgba(0, 123, 255, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0); }
-      }
+.search-input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    padding: 4px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    min-width: 280px;
+}
 
-      .search-input:focus + .search-btn {
-        animation: searchPulse 1.5s infinite;
-      }
+.search-input-group:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
 
-      /* Responsive */
-      @media (max-width: 768px) {
-        .search-container {
-          margin: 10px 0;
-          order: -1;
-        }
-        
-        .search-input-group {
-          min-width: 250px;
-        }
-        
-        .search-input {
-          font-size: 13px;
-          padding: 6px 12px;
-        }
-        
-        .search-btn {
-          width: 30px;
-          height: 30px;
-        }
-      }
+.search-input-group:focus-within {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
 
-      @media (max-width: 576px) {
-        .search-input-group {
-          min-width: 200px;
-        }
-        
-        .search-input::placeholder {
-          font-size: 12px;
-        }
-      } 
+.search-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    padding: 8px 15px;
+    flex-grow: 1;
+    font-size: 14px;
+    border-radius: 20px;
+}
 
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+    font-style: italic;
+}
 
+.search-btn {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-right: 2px;
+}
 
+.search-btn:hover {
+    background: linear-gradient(135deg, #0056b3, #004085);
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+}
 
+.search-btn:active {
+    transform: scale(0.95);
+}
+
+.search-btn i {
+    font-size: 14px;
+}
+
+/* Animation au focus */
+@keyframes searchPulse {
+    0% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.4); }
+    70% { box-shadow: 0 0 0 8px rgba(0, 123, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 123, 255, 0); }
+}
+
+.search-input:focus + .search-btn {
+    animation: searchPulse 1.5s infinite;
+}
+.rounded-circle {
+    border-radius: 50%;
+    border: 3px solid #7b10ff;
+    box-shadow: 0 3px 10px rgba(123, 16, 255, 0.1);
+}
+/* Responsive */
+@media (max-width: 768px) {
+    .search-container {
+        margin: 10px 0;
+        order: -1;
+    }
+    
+    .search-input-group {
+        min-width: 250px;
+    }
+    
+    .search-input {
+        font-size: 13px;
+        padding: 6px 12px;
+    }
+    
+    .search-btn {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+@media (max-width: 576px) {
+    .search-input-group {
+        min-width: 200px;
+    }
+    
+    .search-input::placeholder {
+        font-size: 12px;
+    }
+}
       
 </style>
     <nav class="navbar navbar-expand-lg fixed-top mb-5">
@@ -315,7 +310,7 @@
               </li>
               <li class="nav-item ms-3">
                 <a href="{% url 'profil_utilisateur' %}" class="btn">
-                  <img src="/media/profils/profile_default.jpeg" alt="Photo de Profil" class="rounded-circle" style="width: 30px; height: 30px;">
+                  <img src="{{ photo_profil }}" alt="Photo de Profil" class="rounded-circle" style="width: 60px; height: 60px;">
                 </a>
               </li>
               {% else %}
@@ -330,7 +325,7 @@
         </div>
     </nav>
    
-
+    
     
     <script>
       document.addEventListener("DOMContentLoaded", function () {

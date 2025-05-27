@@ -1,23 +1,28 @@
 from bson import ObjectId
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from datetime import datetime
 from mongo import db  
 def get_historique_event(request, email):
+    email_verifie = request.session.get('email')
     if db is not None:
         try:
             user = db.users.find_one({"email": email})
         except Exception as e:
             return render(request, 'profil.html', {'error': f"email invalide: {e}"})
 
-        if not user:
-            return render(request, 'profil.html', {'error': "Utilisateur non trouvé."})
+        if not user or (email_verifie != email):
+            return redirect("connexion")
+        
         user_id = user['_id']
         events_created = []
-        list_events = list(db.events.find({"creator": user_id}))
+        list_events = db.events.find({"createur": user_id})
         for event in list_events:
             if event['date_heure'] < datetime.now():
                 events_created.append(event)
         events_created = sorted(events_created, key=lambda e: e['date_heure'], reverse=True)
+        for event in events_created:
+            event['id'] = str(event['_id'])
+        print(events_created)
         return render(request, 'historique_events.html', {
             'events_created': events_created
         })

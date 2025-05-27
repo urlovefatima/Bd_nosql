@@ -176,7 +176,7 @@ def create_event(request):
             image_url = fs.url(image_name)  
 
             
-            db.events.insert_one({
+            event_result = db.events.insert_one({
                 'titre': titre,
                 'categorie': categorie,
                 'localisation': localisation,
@@ -188,9 +188,15 @@ def create_event(request):
                 'image_url': image_url,
                 'createur': user['_id'], 
                 'reservations':reservations
-
+            
                 
             })
+            event_id = event_result.inserted_id
+            
+            db.users.update_one(
+            {"_id": user['_id']},
+            {"$push": {"evenements_crees": event_id}}
+        )
             
             return redirect('events')
     else:
