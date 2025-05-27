@@ -6,7 +6,6 @@ from datetime import datetime
 from bson.objectid import ObjectId
 from django.conf import settings
 from PIL import Image
-from django.core.files.storage import FileSystemStorage
 import os
 
 def profil_utilisateur(request):
@@ -97,20 +96,20 @@ def infos_utilisateur(request):
                     'error': "Le fichier téléchargé n'est pas une image valide."
                 })
 
-            db.users.update_one(
-                {'_id': ObjectId(id)},
-                {'$set': {
-                'nom': nom,
-                'prenom': prenom,
-                'username':username,
-                'email': email,
-                'tel': tel,
-                'date_de_naissance': date_de_naissance,
-                'photo_profil': photo_profil_url
-                }}
-            )
+        db.users.update_one(
+            {'_id': ObjectId(id)},
+            {'$set': {
+            'nom': nom,
+            'prenom': prenom,
+            'username':username,
+            'email': email,
+            'tel': tel,
+            'date_de_naissance': date_de_naissance,
+            'photo_profil': photo_profil_url
+            }}
+        )
                     
-            return redirect('infos-user')
+        return redirect('infos-user')
 
     return render(request, 'infos-user.html', {'utilisateur': utilisateur})
     

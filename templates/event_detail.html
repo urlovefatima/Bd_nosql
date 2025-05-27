@@ -596,7 +596,14 @@
                     <div class="mb-3">
                         <p class="fw-bold mb-1">Organisateur</p>
                         <div class="d-flex align-items-center">
-                            <img src="{{ user.photo_profil }}" alt="Organisateur" class="rounded-circle me-2" width="30" height="30">
+                            
+                            {% if user.photo_profil %}
+                                <img src="{{ user.photo_profil }}" alt="Organisateur" class="rounded-circle me-2" width="30" height="30">
+                            {% else %}
+                                <img src="/media/profils/profile_default.jpeg" alt="Photo de Profil" class="rounded-circle" style="width: 30px; height: 30px; margin-right:10px;">
+                            {% endif %} 
+                                
+                            
                             <span>{{user.prenom}} {{user.nom}}</span>
                         </div>
                     </div>
