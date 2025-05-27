@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block footer %}
+{% endblock footer %}
+
 {% block content %}
 <style>
         :root {
@@ -58,7 +61,7 @@
             gap: 1rem;
         }
         
-        .user-avatar, .user-profile {
+        .user-avatar {
             width: 80px;
             height: 80px;
             background: linear-gradient(135deg, var(--primary), var(--primary-light));
@@ -70,10 +73,16 @@
             font-size: 1.5rem;
             font-weight: 700;
         }
+
         .user-profile > img{
-            width: 100%;
-            border-radius: 50%;
+            width: 65px;
+            height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius:50%;
         }
+        
         .user-details h3 {
             font-size: 1.1rem;
             font-weight: 600;
@@ -633,7 +642,7 @@
                 <div class="user-info">
                     {% if utilisateur.photo_profil %}
                     <div class="user-profile">
-                            <img src="{{ utilisateur.photo_profil }}" alt="{{ tilisateur.prenom }}">
+                        <img src="{{ utilisateur.photo_profil }}" alt="{{ tilisateur.prenom }}">
                     </div>
                     {% else %}
                     <div class="user-avatar">
@@ -648,7 +657,7 @@
             </div>
             
             <nav class="sidebar-nav">
-                <a href="{% url 'infos-user' %}" class="nav-item active">
+                <a href="{% url 'infos-user' %}" class="nav-item">
                     <i class="fas fa-user"></i>
                     Informations
                 </a>
@@ -684,15 +693,6 @@
                             <div class="stat-number">{{ reserved_events|length }}</div>
                             <div class="stat-label">Réservations</div>
                         </div>
-                        <div class="stat-card">
-                            <div class="stat-number">
-                                {% now "Y-m-d" as today %}
-                                {% for event in reserved_events %}
-                                    {% if event.date >= today %}{{ forloop.counter }}{% endif %}
-                                {% empty %}0{% endfor %}
-                            </div>
-                            <div class="stat-label">À venir</div>
-                        </div>
                     </div>
                 </div>
             </section>
@@ -714,11 +714,7 @@
                             {% for event in events %}
                             <article class="event-card">
                                 <div class="event-image">
-                                    {% if event.image %}
-                                        <img src="{{ event.image_url }}" alt="{{ event.title }}">
-                                    {% else %}
-                                        <i class="fas fa-calendar-alt"></i>
-                                    {% endif %}
+                                    <img src="{{ event.image_url }}" alt="{{ event.title }}">
                                     <div class="event-status status-created">Créé</div>
                                 </div>
                                 <div class="event-content">
@@ -789,11 +785,8 @@
                             {% for event in reserved_events %}
                             <article class="event-card">
                                 <div class="event-image">
-                                    {% if event.image %}
-                                        <img src="{{ event.image.url }}" alt="{{ event.title }}">
-                                    {% else %}
-                                        <i class="fas fa-ticket-alt"></i>
-                                    {% endif %}
+                                    <img src="{{ event.image_url }}" alt="{{ event.title }}">
+                                    
                                     <div class="event-status status-reserved">Réservé</div>
                                 </div>
                                 <div class="event-content">
@@ -810,17 +803,23 @@
                                         </div>
                                         <div class="event-detail">
                                             <i class="far fa-clock"></i>
-                                            <span>{{ event.date_heure|date:"H"|default:"Heure non spécifiée" }}</span>
+                                            <span>{{ event.date_heure|time:"H:i" }}</span>
+                                        </div>
+                                        <div class="event-detail">
+                                            <i class="fas fa-tag"></i>
+                                            <span>{{ event.statut }}</span>
                                         </div>
                                     </div>
                                     <div class="event-footer">
                                         <div class="event-capacity">
-                                            <i class="fas fa-ticket-alt"></i>
-                                            <span>Places réservées</span>
+                                            <i class="fas fa-users"></i>
+                                            <span>{{ event.capacite|default:"0" }} places</span>
                                         </div>
-                                        <a class="btn btn-primary" href="{% url 'EventDetail:event_detail' event.id %}">
+                                        <div class="event-action">
+                                            <a class="btn btn-primary" href="{% url 'EventDetail:event_detail' event.id %}">
                                                 <i class="fas fa-arrow-right"></i> Détails
-                                        </a>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </article>

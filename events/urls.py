@@ -29,7 +29,7 @@ urlpatterns = [
     path('profil/', include('Profil.urls')),
     path('historique/', include('historique.urls')),
     path('', include('authenticate.urls')),
-    path('retour/', TemplateView.as_view(template_name='retour.html'), name='retour'),
+    # path('essai/', TemplateView.as_view(template_name='essai.html'), name='essai'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

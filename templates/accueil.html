@@ -787,7 +787,6 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Montserrat";
         }
         
         .organisateurs{
@@ -956,7 +955,7 @@
         }
         
         .explore-button {
-            background-color: #10104b;
+            background-color: #8a2be2;
             color: white;
             border: none;
             border-radius: 10px;
@@ -1171,6 +1170,179 @@
                 text-align: center;
             }
         }
+
+        .img-1{
+            width:680px;
+            height:770px;
+        }
+
+        .main-image {
+            width: 600px;
+            height: 580px;
+        }
+
+        .secondary-image{
+            height:580px;
+            width:560px;
+        }
+
+        .discovery-section {
+            background: linear-gradient(135deg, #8B5A96 0%, #B869C7 100%);
+            padding: 80px 0;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .discovery-title {
+            font-size: 5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 40px;
+            color: black;
+        }
+
+        .discovery-description {
+            font-size: 1.5rem;
+            font-weight: bold;
+            line-height: 1.6;
+            opacity: 0.95;
+            margin-bottom: 10px;
+        }
+
+        .image-container {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .image-container:hover {
+            transform: translateY(-5px);
+        }
+
+        
+
+        .location-card {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 15px;
+            color: #333;
+        }
+
+        .location-number {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .location-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 3px;
+            color: #333;
+        }
+
+        .location-date {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .location-venue {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .venue-text {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .venue-icon {
+            width: 20px;
+            height: 20px;
+            background: #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .left-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .text-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .bottom-image {
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .layout-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .discovery-title {
+                font-size: 2.5rem;
+            }
+            
+            .discovery-section {
+                padding: 60px 0;
+            }
+
+            .main-image, .secondary-image {
+                height: 250px;
+            }
+        }
+
+        /* Animation pour les cartes */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .image-container {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .image-container:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+
     </style>
 <body>
     <nav class="navbar navbar-expand-lg fixed-top">
@@ -1357,12 +1529,14 @@
                     </a>
                 </div>
                 <div class="col-lg-6 eventify-cards">
-                    <div class="row">
+
+                    <img src="{% static 'img/Group 73_2.png' %}" class='img-1'>
+                    {% comment %} <div class="row">
                         <div class="col-md-6">
                             <div class="event-card">
                                 <img src="{% static 'img/Screenshot 2025-05-14 111143.png' %}" alt="Amadeu Event">
                                 <div class="event-card-content">
-                                    <h5 class="event-title">AMADEU</h5>
+                                    <h5 class="event-title">AMADEUS</h5>
                                     <p class="event-date">Concert musical</p>
                                 </div>
                             </div>
@@ -1380,14 +1554,16 @@
                     <div class="events-count">
                         <div class="count-number">46+</div>
                         <div class="count-text">Événements par semaine</div>
-                    </div>
+                    </div> {% endcomment %}
                 </div>
             </div>
         </div>
     </section>
 
+    
+
     <!-- Section 2: Découvrez de superbes lieux -->
-    <section class="section-discover">
+    {% comment %} <section class="section-discover">
         <div class="container">
             <h2 class="discover-title">Découvrez<br>de superbes<br>lieux !</h2>
             
@@ -1414,6 +1590,59 @@
                         <div class="floating-element"></div>
                         <div class="floating-element"></div>
                         <div class="floating-element"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> {% endcomment %}
+
+    <section class="discovery-section">
+        <div class="container">
+            <div class="layout-grid">
+                <!-- Contenu gauche -->
+                <div class="left-content">
+                    <div class="text-content">
+                        <h2 class="discovery-title">Découvrez<br>de superbes<br>lieux !</h2>
+                    </div>
+                    
+                    <!-- Image du bas (BLINCREU) -->
+                    <div class="bottom-image">
+                        <div class="image-container">
+                            <img src="{% static 'img/Group 75.png' %}" alt="Blincreu Event" class="secondary-image">
+                            {% comment %} <div class="location-card">
+                                <div class="location-number">LIEU : 2</div>
+                                <div class="location-title">THEBAL:</div>
+                                <div class="location-date">Match incontournable</div>
+                                <div class="location-venue">
+                                    <span class="venue-text">Stade Amadou Diamniadio</span>
+                                    <div class="venue-icon">M</div>
+                                </div>
+                            </div> {% endcomment %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contenu droite -->
+                <div class="right-content">
+                    <!-- Image principale -->
+                    <div class="image-container mb-4">
+                        <img src="{% static 'img/Group 74.png' %}" alt="Biennale de Dakar" class="main-image">
+                        {% comment %} <div class="location-card">
+                            <div class="location-number">LIEU : 1</div>
+                            <div class="location-title">Biennale de Dakar</div>
+                            <div class="location-date">Mai 2025</div>
+                            <div class="location-venue">
+                                <span class="venue-text">Grand Théâtre National</span>
+                                <div class="venue-icon">M</div>
+                            </div>
+                        </div> {% endcomment %}
+                    </div>
+
+                    <!-- Texte descriptif -->
+                    <div class="description-text">
+                        <p class="discovery-description">
+                            Explorez de nouvelles idées dans des lieux d'une beauté saisissante. Participez à des matchs pleins d'adrénalines, conférences sur les startups tech, expositions d'art et rencontrez des esprits brillants venus du monde entier.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -1488,7 +1717,7 @@
         </div>
         
         <div class="explore-button-container my-5">
-            <a href="{% url "events" %}" class="explore-button">Explorer événements</a>
+            <a href="{% url 'events' %}" class="explore-button">Explorer événements</a>
         </div>
     </div>
 
