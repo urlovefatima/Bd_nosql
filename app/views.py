@@ -81,7 +81,9 @@ def get_events_aujourdhui(request):
                 "$gte": datetime.now(),
                 "$lt": datetime(datetime.now().year, datetime.now().month, datetime.now().day, 23, 59, 59, 999999)
             }
-        }, {"_id": 0}))
+        }))
+        for event in events:
+            event['id'] = str(event['_id'])
         return render(request, 'events_aujourdhui.html', {'events': events})
     else:
         return render(request, 'events_aujourdhui.html', {'events': []})
@@ -94,7 +96,9 @@ def get_events_semaine(request):
                 "$gte": datetime.now(),
                 "$lt": datetime.now() + timedelta(days=6-datetime.now().weekday())
             }
-        }, {"_id": 0}))
+        }))
+        for event in events:
+            event['id'] = str(event['_id'])
         return render(request, 'events_semaine.html', {'events': events})
     else:
         return render(request, 'events_semaine.html', {'events': []})
@@ -107,7 +111,9 @@ def get_events_mois(request):
                 "$lt": datetime(datetime.now().year, datetime.now().month+1, 1) if datetime.now().month < 12 
                       else datetime(datetime.now().year+1, 1, 1)
             }
-        }, {"_id": 0}))
+        }))
+        for event in events:
+            event['id'] = str(event['_id'])
         return render(request, 'events_mois.html', {'events': events})
     else:
         return render(request, 'events_mois.html', {'events': []})

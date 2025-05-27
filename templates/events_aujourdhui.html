@@ -42,7 +42,7 @@
                                     <span>{{ event.capacite|default:"200" }} places</span>
                                 </div>
                                 <div class="event-action">
-                                    <a class="btn btn-primary">
+                                    <a class="btn btn-primary" href="{% url 'EventDetail:event_detail' event.id %}">
                                         <i class="fas fa-arrow-right"></i> Détails
                                     </a>
                                 </div>
