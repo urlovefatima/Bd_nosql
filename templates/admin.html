@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --purple-primary: #7b10ff;
+            --purple-primary: #a855f7;
             --sidebar-width: 220px;
             --notification-width: 320px;
         }
@@ -124,7 +124,7 @@
 
 
         .search-bar input {
-            background-color:rgba(123, 16, 255, 0.2);
+            background-color:#a855f7;
             border-radius: 20px;
             padding: 10px 15px;
             border: 1px solid white;
@@ -323,7 +323,7 @@
             font-size: 12px;
         }
         .badge-purple {
-            background-color: #7b10ff;
+            background-color: #a855f7;
         }
         .badge-red {
             background-color: #ea5455;
@@ -463,13 +463,65 @@
             padding: 10px 20px;
             border: none;
         }
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            top: 5rem;
+            right: 1rem;
+            z-index: 1001;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        @media (max-width: 768px) {
+            .text-muted{
+                display:none;
+            }
+            .sidebar {
+                transform: translateX(-100%);
+                width: 100%;
+                max-width: 80px;
+                overflow:hidden;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+
+        }
+
+        /* Overlay for mobile */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+        @media (max-width: 768px) {
+            .sidebar-overlay.active {
+                display: block;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Sidebar Overlay for mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div class="sidebar" id = "sidebar">
         <div class="p-3 d-flex align-items-center">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{% url "accueil" %}">
             <div class="logo-container">
               <svg
                 class="logo-img"
@@ -484,7 +536,7 @@
                   rx="5"
                   ry="5"
                   fill="none"
-                  stroke="#7b10ff"
+                  stroke="#a855f7"
                   stroke-width="4"
                 />
                 <line
@@ -492,7 +544,7 @@
                   y1="40"
                   x2="85"
                   y2="40"
-                  stroke="#7b10ff"
+                  stroke="#a855f7"
                   stroke-width="4"
                 />
                 <line
@@ -500,7 +552,7 @@
                   y1="20"
                   x2="30"
                   y2="30"
-                  stroke="#7b10ff"
+                  stroke="#a855f7"
                   stroke-width="4"
                 />
                 <line
@@ -508,13 +560,13 @@
                   y1="20"
                   x2="70"
                   y2="30"
-                  stroke="#7b10ff"
+                  stroke="#a855f7"
                   stroke-width="4"
                 />
-                <path d="M25,50 L35,50 L35,60 L25,60 Z" fill="#7b10ff" />
-                <path d="M45,50 L55,50 L55,60 L45,60 Z" fill="#7b10ff" />
-                <path d="M65,50 L75,50 L75,60 L65,60 Z" fill="#7b10ff" />
-                <path d="M25,70 L55,70 L55,80 L25,80 Z" fill="#7b10ff" />
+                <path d="M25,50 L35,50 L35,60 L25,60 Z" fill="#a855f7" />
+                <path d="M45,50 L55,50 L55,60 L45,60 Z" fill="#a855f7" />
+                <path d="M65,50 L75,50 L75,60 L65,60 Z" fill="#a855f7" />
+                <path d="M25,70 L55,70 L55,80 L25,80 Z" fill="#a855f7" />
               </svg>
               <span class="logo-text">Eventify</span>
             </div>
@@ -561,7 +613,7 @@
     <div class="main-content">
         <!-- Top Header -->
         <div class="top-header mb-4">
-            <button class="menu-toggle">
+            <button class="menu-toggle"  onclick="toggleSidebar()">
                 <i class="fas fa-bars"></i>
             </button>
             
@@ -581,7 +633,7 @@
                 
                 
                 <div class="d-flex align-items-center">
-                    <img src="{{admin.photo_profil}}" alt="User" class="user-avatar">
+                    <img src="{{photo_profil}}" alt="User" class="user-avatar">
                     <div>
                         <p class="mb-0 fw-bold">{{admin.username}}</p>
                         <p class="mb-0 small text-muted">Admin</p>
@@ -708,7 +760,67 @@
             this.classList.add('active');
         });
          {% endcomment %}
-        
+                // Fonction pour basculer la sidebar mobile
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            if (sidebar && overlay) {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('active');
+            }
+        }
+
+        // Fonction pour fermer la sidebar
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            if (sidebar && overlay) {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+            }
+        }
+
+        // Fermer la sidebar quand on clique sur un lien (mobile)
+        document.addEventListener('DOMContentLoaded', function() {
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) {
+                        closeSidebar();
+                    }
+                });
+            });
+
+            // Fermer la sidebar lors du redimensionnement vers desktop
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    closeSidebar();
+                }
+            });
+        });
+
+        // Gestion du scroll pour masquer/afficher le bouton mobile
+        let lastScrollTop = 0;
+        const mobileToggle = document.querySelector('.menu-toggle');
+
+        window.addEventListener('scroll', function() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (mobileToggle) {
+                if (scrollTop > lastScrollTop && scrollTop > 100) {
+                    // Scroll vers le bas - masquer le bouton
+                    mobileToggle.style.opacity = '0.7';
+                } else {
+                    // Scroll vers le haut - afficher le bouton
+                    mobileToggle.style.opacity = '1';
+                }
+            }
+            
+            lastScrollTop = scrollTop;
+        });
 
 
         

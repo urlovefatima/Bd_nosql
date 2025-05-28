@@ -342,6 +342,20 @@
           heroRight.style.transform = "translateX(0)";
         }, 600);
       });
+      // Fermer le navbar quand on clique ailleurs
+    document.addEventListener('click', function(event) {
+        const navbar = document.getElementById('navbarNav');
+        const toggler = document.querySelector('.navbar-toggler');
+        
+        if (navbar && navbar.classList.contains('show')) {
+            if (!navbar.contains(event.target) && !toggler.contains(event.target)) {
+                // Fermer le navbar
+                const collapse = new bootstrap.Collapse(navbar, {
+                    hide: true
+                });
+            }
+        }
+    });
     </script>
 
 

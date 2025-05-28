@@ -29,14 +29,15 @@ def get_historique_event(request, email):
     else:
         return render(request, 'profil.html', {'error': "Base de données non disponible."})
 def get_historique_event_reserved(request, email):
+    email_verifie = request.session.get('email')
     if db is not None:
         try:
             user = db.users.find_one({"email": email})
         except Exception as e:
             return render(request, 'profil.html', {'error': f"email invalide: {e}"})
 
-        if not user:
-            return render(request, 'profil.html', {'error': "Utilisateur non trouvé."})
+        if not user or (email_verifie != email):
+            return redirect("connexion")
         user_id = user['_id']
         events_reserve = []
         list_reserve = list(db.reservations.find({'utilisateur': user_id}))

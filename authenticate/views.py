@@ -231,15 +231,13 @@ def deconnexion(request):
 
 def accueil(request):
     events = list(db.events.find())
-    events_semaine = list(db.events.find({
-            "date_heure": {
-                "$gte": datetime.now(),
-                "$lt": datetime.now() + timedelta(days=6-datetime.now().weekday())
-            }
-        }))
-    for event in events_semaine:
+    events_six = []
+    for event in events:
         event['id'] = str(event['_id'])
-    return render(request, 'accueil.html', {'events': events, "events_semaine": events_semaine})
+        if event['date_heure'] >= datetime.now():
+                events_six.append(event)
+    events_six = sorted(events_six, key=lambda e: e['date_heure'])
+    return render(request, 'accueil.html', {'events': events, "events_six": events_six})
 
 
 

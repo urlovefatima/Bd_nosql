@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from mongo import db
+from datetime import datetime
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from datetime import datetime
@@ -10,7 +11,7 @@ import os
 
 def profil_utilisateur(request):
     email = request.session.get('email')
-
+    is_admin = False
     if not email:
         messages.error(request, "Vous devez être connecté pour accéder à votre profil.")
         return redirect('connexion')
@@ -20,8 +21,8 @@ def profil_utilisateur(request):
     if not utilisateur:
         messages.error(request, "Utilisateur introuvable.")
         return redirect('connexion')
-    from datetime import datetime
-
+    if db.admin.find_one({"email": email}):
+        is_admin = True
     events = []
     reserved_events = []
 
@@ -40,22 +41,24 @@ def profil_utilisateur(request):
             ev['id'] = str(ev['_id'])
     for ev in reserved_events:
             ev['id'] = str(ev['_id'])
-    return render(request, 'profil.html', {'utilisateur': utilisateur, 'events': events, 'reserved_events': reserved_events})
+    return render(request, 'profil.html', {'utilisateur': utilisateur, 'events': events, 'reserved_events': reserved_events, "is_admin": is_admin})
 def consulted_profil(request, email):
-    if request.method == 'POST':
-        utilisateur = db.users.find_one({"email": email})
-        if not utilisateur:
-            messages.error(request, "Utilisateur introuvable.")
-            return redirect('accueil')
-        events = []
-        for event in list(db.events.find({'createur': utilisateur['_id']})):
-            if event['date_heure'] > datetime.now():
-                events.append(event)
-        events = sorted(events, key=lambda e: e['date_heure'])
-    else:
-        return render(request, 'profil.html')
-
-    return render(request, 'profil.html', {'utilisateur': utilisateur, 'events': events})
+    email_verify = request.session.get('email')
+    if email_verify == email:
+        return redirect("profil_utilisateur")
+    utilisateur = db.users.find_one({"email": email})
+    if not utilisateur:
+        messages.error(request, "Utilisateur introuvable.")
+        return redirect('accueil')
+    consulted = True
+    events = []
+    for event in list(db.events.find({'createur': utilisateur['_id']})):
+        if event['date_heure'] > datetime.now():
+            events.append(event)
+    events = sorted(events, key=lambda e: e['date_heure'])
+    for ev in events:
+            ev['id'] = str(ev['_id'])
+    return render(request, 'profil.html', {'utilisateur': utilisateur, 'events': events, "consulted": consulted})
 
 
 def infos_utilisateur(request):
