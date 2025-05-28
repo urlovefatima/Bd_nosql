@@ -6,27 +6,14 @@ from datetime import datetime
 from collections import Counter
 from django.http import JsonResponse
 
-def app_info(request):
-    # try:
-    #     user_id = ObjectId(id)
-    # except Exception:
-    #     return render(request, 'admin.html', {'error': "ID utilisateur invalide."})
-
-    # if db is None:
-    #     return render(request, 'admin.html', {'error': "Problème de connexion à la base de données."})
-
-    # user = db.users.find_one({"_id": user_id})
-
-    # if not user:
-    #     return render(request, 'admin.html', {'error': "Utilisateur introuvable."})
-
-    # if user.get('email') != 'dfasyaka@ept.sn':
-    #     return render(request, 'admin.html', {'error': "Vous n'avez pas les droits d'accès."})
-    
-    try:
-        admin = db.admin.find_one({"email": "dfasyaka@ept.sn"})
-    except Exception as e:
-        return render(request, 'admin.html', {'error': f"Problème sur l'administrateur : {e}"})
+def app_info(request, email):
+    email_verify = request.session.get("email")
+    if db is None:
+        return render(request, 'error.html', {'error': "Problème de connexion à la base de données."})
+    list_admin = ["dfasyaka@ept.sn", "fasyakadiouf@gmail.com", "ndiayemaimouna@ept.sn", "fdieye@ept.sn"]
+    admin = db.users.find_one({"email": email})
+    if (not admin) or (email_verify != email) or (email not in list_admin):
+        return redirect("profil_utilisateur")
         
     
     return render(request, 'admin.html', {
