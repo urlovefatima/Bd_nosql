@@ -6,23 +6,17 @@ from datetime import datetime
 from collections import Counter
 from django.http import JsonResponse
 
-def app_info(request, email):
-    email_verify = request.session.get("email")
+def app_info(request):
+    email = request.session.get("email")
+    if not email:
+        return redirect("connexion")
     if db is None:
         return render(request, 'error.html', {'error': "Problème de connexion à la base de données."})
     list_admin = ["dfasyaka@ept.sn", "fasyakadiouf@gmail.com", "ndiayemaimouna@ept.sn", "fdieye@ept.sn"]
-    admin = db.users.find_one({"email": email})
-    if (not admin) or (email_verify != email) or (email not in list_admin):
+    admin = db.admin.find_one({"email": email})
+    if (not admin) or (email not in list_admin):
         return redirect("profil_utilisateur")
         
-    
-    return render(request, 'admin.html', {
-        'admin': admin,
-
-    })
-
-def dashboard(request):
-    
     try:
         users = list(db.users.find({}))
         nomber_of_users = len(users)
@@ -104,6 +98,9 @@ def dashboard(request):
 
 
     })
+
+    
+   
 def format_elapsed_time(timestamp_str):
     try:
         # Convertir la chaîne en timestamp puis en datetime

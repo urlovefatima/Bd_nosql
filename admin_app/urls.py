@@ -1,11 +1,9 @@
 from django.urls import path
-from .views import app_info, stats_view, dashboard, user_section, delete_user, event_section,delete_event,search_events,search_users
+from .views import app_info, stats_view, user_section, delete_user, event_section,delete_event,search_events,search_users
 
 urlpatterns = [
-    path('', dashboard, name='dashboard'), 
     path('stats/', stats_view, name='stats'),
-    path('admin-acceuil/<str:email>', app_info, name='admin_acceuil'), 
-    path('dashboard/', dashboard, name='dashboard'),
+    path('admin-acceuil', app_info, name='admin_acceuil'), 
     path('users/', user_section, name='user_section'),
     path('events/', event_section, name='event_section'),
     path('delete_user/<str:email>/', delete_user, name='delete_user'),

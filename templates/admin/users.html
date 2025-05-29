@@ -39,7 +39,11 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="position-relative mb-3">
+                               {% if not user.photo_profil %}
+                                <img src="{% static 'profile_default.jpeg' %}" alt="User" class="rounded-circle mx-auto d-block" style="width: 100px; height: 100px;">
+                                {% else %}
                                 <img src="{{ user.photo_profil }}" alt="User" class="rounded-circle mx-auto d-block" style="width: 100px; height: 100px;">
+                                {% endif %}
                                 <div class="position-absolute top-0 end-0">
                                     <button class="btn btn-link p-2 no-arrow userMenuDropdown">
                                         <i style="color:#7b10ff;" class="fas fa-ellipsis-v"></i>

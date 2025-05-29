@@ -49,7 +49,8 @@ def inscription(request):
             "email": data['email'],
             "tel": data['telephone'],
             "date_de_naissance": data['bornday'],
-            "mot_de_passe": make_password(data['password'])
+            "mot_de_passe": make_password(data['password']),
+            "photo_profil": "/media/profile_default.jpeg"
         }
         print("insertion en cours")
         if user_doc['email'] in list_admin:
@@ -101,11 +102,10 @@ def upload_photo(request):
             return render(request, 'upload_photo.html', {'erreurs': erreurs})
         
         try:
-            # Générer un nom unique pour le fichier
+            
             unique_filename = f"{uuid.uuid4()}{file_extension}"
             image = Image.open(photo_file)
 
-            # Convertir en RGB si nécessaire (pour les PNG avec transparence)
             if image.mode in ('RGBA', 'LA', 'P'):
                 background = Image.new('RGB', image.size, (255, 255, 255))
                 if image.mode == 'P':
@@ -117,7 +117,6 @@ def upload_photo(request):
             image.save(output, format='JPEG', quality=85, optimize=True)
             output.seek(0)
 
-            # Sauvegarder le fichier dans le dossier media
             file_path = f"profile_photos/{unique_filename}"
             saved_path = default_storage.save(file_path, ContentFile(output.read()))
             email = request.session.get('email')
@@ -126,16 +125,15 @@ def upload_photo(request):
                 erreurs.append("Utilisateur non identifié. Veuillez vous reconnecter.")
                 return render(request, 'upload_photo.html', {'erreurs': erreurs})
             
-            # Mettre à jour la base de données MongoDB
+            
             photo_url = f"/media/{saved_path}"
             
-            # Vérifier si l'utilisateur existe dans la collection users
             user_updated = db.users.update_one(
                 {"email": email},
                 {"$set": {"photo_profil": photo_url}}
             )
             
-            # Si pas trouvé dans users, chercher dans admin
+            
             if user_updated.matched_count == 0:
                 admin_updated = db.admin.update_one(
                     {"email": email},
@@ -144,7 +142,7 @@ def upload_photo(request):
                 
                 if admin_updated.matched_count == 0:
                     erreurs.append("Utilisateur non trouvé dans la base de données.")
-                    # Supprimer le fichier uploadé si l'utilisateur n'est pas trouvé
+                    
                     if default_storage.exists(saved_path):
                         default_storage.delete(saved_path)
                     return render(request, 'upload_photo.html', {'erreurs': erreurs})
@@ -158,43 +156,6 @@ def upload_photo(request):
     
     return render(request, 'upload_photo.html')
 
-
-# Vue alternative si vous voulez récupérer l'utilisateur différemment
-# def upload_photo_with_user_id(request, user_id=None):
-#     """
-#     Version alternative où l'ID utilisateur est passé en paramètre
-#     """
-#     if request.method == 'POST':
-#         erreurs = []
-        
-#         if not user_id:
-#             user_id = request.POST.get('user_id')
-        
-#         if not user_id:
-#             erreurs.append("ID utilisateur manquant.")
-#             return render(request, 'upload_photo.html', {'erreurs': erreurs})
-        
-#         # Le reste du code reste identique, mais on utilise user_id pour la recherche
-#         # ... (même logique que ci-dessus)
-        
-#         # Pour la mise à jour MongoDB avec ObjectId
-#         from bson import ObjectId
-#         try:
-#             user_object_id = ObjectId(user_id)
-#             user_updated = db.users.update_one(
-#                 {"_id": user_object_id},
-#                 {"$set": {"photo_profil": photo_url}}
-#             )
-            
-#             if user_updated.matched_count == 0:
-#                 admin_updated = db.admin.update_one(
-#                     {"_id": user_object_id},
-#                     {"$set": {"photo_profil": photo_url}}
-#                 )
-#         except Exception as e:
-#             erreurs.append(f"Erreur lors de la mise à jour: {str(e)}")
-    
-#     return render(request, 'upload_photo.html')
 
 def connexion(request):
     if request.method == 'POST':

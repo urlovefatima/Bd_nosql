@@ -577,29 +577,23 @@
         
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link active" href="/admin_page/dashboard/" id="dashboard-link">
+                <a class="nav-link active" href="{% url "admin_acceuil" %}" id="dashboard-link">
                     <i class="fas fa-chart-pie"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/admin_page/users/" id="users-link">
+                <a class="nav-link" href="{% url "user_section" %}" id="users-link">
                     <i class="fas fa-users"></i>
                     <span>Users</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/admin_page/events/" id="events-link">
+                <a class="nav-link" href="{% url "event_section" %}" id="events-link">
                     <i class="fas fa-calendar-alt"></i>
                     <span>Events</span>
                 </a>
             </li>
-            {% comment %} <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="fas fa-bookmark"></i>
-                    <span>Reservation</span>
-                </a>
-            </li> {% endcomment %}
             <li class="nav-item">
                 <a class="nav-link" href="#">
                     <i class="fas fa-cog"></i>
@@ -635,10 +629,9 @@
                 <div class="d-flex align-items-center">
                     <img src="{{photo_profil}}" alt="User" class="user-avatar">
                     <div>
-                        <p class="mb-0 fw-bold">{{admin.username}}</p>
+                        <p class="mb-0 fw-bold">{{admin.prenom}} {{admin.nom}}</p>
                         <p class="mb-0 small text-muted">Admin</p>
                     </div>
-                    <i class="fas fa-chevron-down ms-2"></i>
                 </div>
             </div>
         </div>
