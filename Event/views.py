@@ -24,6 +24,23 @@ def post_event(request, id):
             proprity = False
             
         nombre_reservation = len(event['reservations'])
+
+        listes_reservations= []
+
+        if user and current_user and user['_id'] == current_user['_id']:
+            for id in event['reservations']:
+                reservation = db.reservations.find_one({"_id": ObjectId(id)})
+
+                if reservation:
+
+                    user = db.users.find_one({"_id": reservation['utilisateur']})
+
+                    infos = {
+                        'reservation': reservation,
+                        'user': user
+                    }
+                    listes_reservations.append(infos)
+        
         
         # Vérifier si l'utilisateur actuel a déjà une réservation
         reserved = False
@@ -36,11 +53,12 @@ def post_event(request, id):
         return render(request, 'event_detail.html', {
             'event': event, 
             'events': events, 
-            'user': user,  # Créateur de l'événement
-            'current_user': current_user,  # Utilisateur connecté
+            'user': user, 
+            'current_user': current_user, 
             'nombre_reservation': nombre_reservation, 
             'proprity': proprity,
-            'reserved': reserved
+            'reserved': reserved,
+            'listes_reservations': listes_reservations
         })
     else:
         error = f"L'événement n'existe pas."

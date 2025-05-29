@@ -479,12 +479,49 @@
             }
         }
                 
-                @media (max-width: 768px) {
-                    .banner {
-                        height: 250px;
-                    }
-                    
-                }
+        @media (max-width: 768px) {
+            .banner {
+                height: 250px;
+            }
+            
+        }
+
+
+        .title_2 {
+            margin-bottom: 2.5rem;
+            text-align: center;
+            position: relative;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+            background: linear-gradient(to right, #8939b4, #453994);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+
+        .reservation-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-dark);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .user-name {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .reservation-time {
+            color: var(--primary-dark);
+            font-weight: 500;
+        }
     </style>
 
     <!-- Event Banner -->
@@ -625,8 +662,20 @@
                 </div>
             </div>
         </div>
+        
+        {% if proprity %}
+            <div>
+                <h1 class="my-5 title_2">Listes des personnes qui ont réservées</h1>
+                <div class="reservation-item">
+                    {% for r in listes_reservations %}
+                        <span class="user-name">{{ r.user.prenom}} {{ r.user.nom}}</span>
+                        <span class="reservation-time">{{ r.reservation.date_heure}}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+        
     </div>
-
     
     <script>
         
