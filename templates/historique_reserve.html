@@ -1,11 +1,7 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Événements | Découvrez notre agenda</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+{% block content %}
     <style>
         :root {
             --primary: #453994;
@@ -147,14 +143,14 @@
         }
         
         .event-image {
-            width: 35%;
+            object-fit: cover;
             position: relative;
             overflow: hidden;
         }
         
         .event-image img {
             width: 100%;
-            height: 100%;
+            height: 320px;
             object-fit: cover;
             transition: transform 0.6s;
         }
@@ -420,7 +416,7 @@
                 padding: 0.5rem 1rem;
                 font-size: 0.85rem;
             }
-            
+        
             .event-date-badge {
                 width: 50px;
                 height: 50px;
@@ -438,25 +434,13 @@
             }
         }
     </style>
-</head>
-<body>
-    <div class="container">
+
+    <div class="container" style="margin-top: 200px;">
         <header>
-            <h1>Événements à découvrir</h1>
-            <p>Les rendez-vous culturels, artistiques et festifs à ne pas manquer</p>
+            <h1>Historique de vos réservations</h1>
+            <p>Redécouvrez les événements auxquels vous avez participés.</p>
         </header>
         
-        <section class="filter-section">
-            <div class="filters">
-                <button class="filter-btn active">Tous</button>
-                <button class="filter-btn">Catégorie</button>
-                <button class="filter-btn">Gratuit</button>
-                <button class="filter-btn">Payant</button>
-                <button class="filter-btn">Aujourd'hui</button>
-                <button class="filter-btn">Dans la semaine</button>
-                <button class="filter-btn">Dans le mois</button>
-            </div>
-        </section>
 
         <div class="events-grid">
             {% if events_reserve %}
@@ -464,6 +448,8 @@
                     <article class="event-card">
                         <div class="event-image">
                             {% if event.image_url %}
+                                <img src="{{event.image_url}}" alt="{{ event.titre }}" class='img-grise'>
+                            {% else %}
                                 <img src="{% static 'img/events.jpg' %}" alt="{{ event.titre }}" class='img-grise'>
                             
                             {% endif %}
@@ -516,38 +502,4 @@
         </div>
     </div>
 
-    <script>
-        document.querySelectorAll('.filter-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                document.querySelectorAll('.filter-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                
-                this.classList.add('active');
-                
-                const category = this.textContent;
-                if (category !== 'Tous') {
-                    window.location.href = `?category=${encodeURIComponent(category)}`;
-                } else {
-                    window.location.href = '?';
-                }
-            });
-        });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const category = urlParams.get('category');
-            
-            if (category) {
-                const filterButtons = document.querySelectorAll('.filter-btn');
-                filterButtons.forEach(btn => {
-                    if (btn.textContent === category) {
-                        btn.classList.add('active');
-                        document.querySelector('.filter-btn.active').classList.remove('active');
-                    }
-                });
-            }
-        });
-    </script>
-</body>
-</html>
+{% endblock %}

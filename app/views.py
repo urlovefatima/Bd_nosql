@@ -144,6 +144,7 @@ def create_event(request):
             categorie = form.cleaned_data['categorie']
             localisation = form.cleaned_data['localisation']
             date_heure = form.cleaned_data['date_heure']
+            date_expiration = date_heure.replace(month=date_heure.month + 1)
             capacite = form.cleaned_data['capacite']
             statut = form.cleaned_data['statut']
             prix = form.cleaned_data['prix']
@@ -180,16 +181,15 @@ def create_event(request):
                 'titre': titre,
                 'categorie': categorie,
                 'localisation': localisation,
-                'date_heure': date_heure,
+                'date_heure': date_heure, 
                 'capacite': capacite,
                 'statut': statut,
                 'prix' : prix,
                 'description': description,
                 'image_url': image_url,
                 'createur': user['_id'], 
-                'reservations':reservations
-            
-                
+                'reservations':reservations,
+                'expireAt': date_expiration
             })
             event_id = event_result.inserted_id
             

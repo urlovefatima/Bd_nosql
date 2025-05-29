@@ -46,6 +46,8 @@ def get_historique_event_reserved(request, email):
             if event_reserved['date_heure'] < datetime.now():
                 events_reserve.append(event_reserved)
         events_reserve = sorted(events_reserve, key=lambda e: e['date_heure'], reverse=True)
+        for event in events_reserve:
+            event['id'] = str(event['_id'])
         return render(request, 'historique_reserve.html', {
             'events_reserve': events_reserve
         })
