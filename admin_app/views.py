@@ -79,7 +79,7 @@ def app_info(request):
 
     
     try:
-        admin = db.admin.find_one({"email": "dfasyaka@ept.sn"})
+        admin = db.admin.find_one({"email": email})
     except Exception as e:
         return render(request, 'admin/dashboard.html', {'error': f"Problème sur l'administrateur : {e}"})
         
